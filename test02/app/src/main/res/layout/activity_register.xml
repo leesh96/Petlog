@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:id="@+id/userName"
+        android:hint="이름" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:id="@+id/userID"
+        android:hint="your@id.com" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:id="@+id/userPassword"
+        android:hint="비밀번호" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:inputType="text"
+        android:ems="10"
+        android:id="@+id/userNick"
+        android:hint="닉네임" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/userBdy"
+        android:hint="생년월일" />
+
+
+    <Button
+        android:text="가입하기"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/btn_submit"
+        android:textColor="#ffffff"
+        android:background="#DA3030"
+        android:onClick="insert"/>
+</LinearLayout>

@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">PDOLogin</string>
+    <string name="hint_email">Email ID를 입력하세요</string>
+    <string name="hint_password">Password를 입력하세요</string>
+    <string name="hint_name">성명을 입력하세요</string>
+    <string name="hint_bday">생년월일을 입력하세요</string>
+    <string name="hint_telNO">휴대폰 번호 입력하세요(선택사항)</string>
+    <string name="btn_login">로그인</string>
+    <string name="btn_register">회원가입</string>
+    <string name="btn_link_to_register">비회원이세요? 회원가입 신청</string>
+    <string name="btn_link_to_login">Already registred! Login Me.</string>
+    <string name="welcome">Welcome</string>
+    <string name="btn_logout">로그아웃</string>
+    <string name="name">Fullname</string>
+</resources>

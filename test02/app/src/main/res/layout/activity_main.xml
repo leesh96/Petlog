@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_home"
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="2dp">
+
+
+        <Button
+            android:id="@+id/diaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:textSize="40dp"
+            android:text="일기" />
+        <Button
+            android:id="@+id/petstarButton"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:textSize="40dp"
+            android:layout_marginTop="40dp"
+            android:text="펫스타그램" />
+
+        <Button
+            android:id="@+id/mypetButton"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:textSize="40dp"
+            android:layout_marginTop="40dp"
+            android:text="MyPet" />
+
+        <Button
+            android:id="@+id/talktalkButton"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:textSize="40dp"
+            android:layout_marginTop="40dp"
+            android:text="TalkTalk" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="PetLog"
+        android:textAlignment="center"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="70dp"
+        tools:ignore="MissingConstraints" />
+</androidx.constraintlayout.widget.ConstraintLayout>
