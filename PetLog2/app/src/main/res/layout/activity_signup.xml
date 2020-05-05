@@ -7,11 +7,12 @@
     android:layout_height="match_parent"
     android:background="@color/bg">
 
-    <ImageView
-        android:id="@+id/iv_bkarrow"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/ic_arrow_back"
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/button_style"
+        android:src="@drawable/ic_arrow_back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.035"
@@ -23,79 +24,87 @@
         android:id="@+id/tv6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/nanumbarungothic_b"
         android:text="@string/makeaccount"
         android:textAlignment="center"
         android:textColor="@color/text"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.167"
+        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.091" />
-
-    <EditText
-        android:id="@+id/et_inputemail"
-        android:layout_width="400dp"
-        android:layout_height="50dp"
-        android:background="@drawable/border_style"
-        android:ems="20"
-        android:hint="이메일주소를 입력하세요."
-        android:paddingLeft="20dp"
-        android:textColor="@color/text"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv6"
-        app:layout_constraintVertical_bias="0.089" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_back"
+        app:layout_constraintVertical_bias="0.05" />
 
     <TextView
         android:id="@+id/tv7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/nanumbarungothic_n"
         android:text="@string/email"
         android:textAlignment="center"
         android:textColor="@color/text"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.129"
+        app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv6"
-        app:layout_constraintVertical_bias="0.046" />
-
-    <TextView
-        android:id="@+id/tv8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
-        android:text="@string/password"
-        android:textAlignment="center"
-        android:textColor="@color/text"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.135"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_inputemail"
-        app:layout_constraintVertical_bias="0.003" />
+        app:layout_constraintVertical_bias="0.03" />
 
     <EditText
-        android:id="@+id/et_inputpswd"
+        android:id="@+id/et_userID"
         android:layout_width="400dp"
         android:layout_height="50dp"
         android:background="@drawable/border_style"
-        android:ems="20"
-        android:hint="비밀번호를 입력하세요."
+        android:ems="10"
+        android:fontFamily="@font/nanumbarungothic_n"
+        android:hint="이메일주소를 입력하세요."
+        android:inputType="textEmailAddress"
         android:paddingLeft="20dp"
         android:textColor="@color/text"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_inputemail"
-        app:layout_constraintVertical_bias="0.074" />
+        app:layout_constraintTop_toBottomOf="@+id/tv7"
+        app:layout_constraintVertical_bias="0.02" />
+
+
+
+    <TextView
+        android:id="@+id/tv8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/password"
+        android:textAlignment="center"
+        android:textColor="@color/text"
+        android:textSize="20sp"
+        android:fontFamily="@font/nanumbarungothic_n"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.14"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_userID"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <EditText
+        android:id="@+id/et_userPassword"
+        android:layout_width="400dp"
+        android:layout_height="50dp"
+        android:background="@drawable/border_style"
+        android:ems="10"
+        android:fontFamily="@font/nanumbarungothic_n"
+        android:hint="비밀번호를 입력하세요."
+        android:inputType="textPassword"
+        android:paddingLeft="20dp"
+        android:textColor="@color/text"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv8"
+        app:layout_constraintVertical_bias="0.02" />
 
     <TextView
         android:id="@+id/tv9"
@@ -105,29 +114,31 @@
         android:textAlignment="center"
         android:textColor="@color/text"
         android:textSize="20sp"
+        android:fontFamily="@font/nanumbarungothic_n"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_inputpswd"
-        app:layout_constraintVertical_bias="0.034" />
+        app:layout_constraintTop_toBottomOf="@+id/et_userPassword"
+        app:layout_constraintVertical_bias="0.03" />
 
     <EditText
-        android:id="@+id/et_inputpwcheck"
+        android:id="@+id/et_pwCheck"
         android:layout_width="400dp"
         android:layout_height="50dp"
         android:background="@drawable/border_style"
-        android:ems="20"
-        android:hint="@string/pwcheck"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:fontFamily="@font/nanumbarungothic_n"
+        android:hint="비밀번호를 한번 더 입력하세요."
         android:paddingLeft="20dp"
         android:textColor="@color/text"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.462"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_inputpswd"
-        app:layout_constraintVertical_bias="0.091" />
+        app:layout_constraintTop_toBottomOf="@+id/tv9"
+        app:layout_constraintVertical_bias="0.02" />
 
     <TextView
         android:id="@+id/tv10"
@@ -136,30 +147,32 @@
         android:text="@string/name"
         android:textAlignment="center"
         android:textColor="@color/text"
+        android:fontFamily="@font/nanumbarungothic_n"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.124"
+        app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_inputpwcheck"
-        app:layout_constraintVertical_bias="0.039" />
+        app:layout_constraintTop_toBottomOf="@+id/et_pwCheck"
+        app:layout_constraintVertical_bias="0.03" />
 
     <EditText
-        android:id="@+id/et_inputname"
+        android:id="@+id/et_userName"
         android:layout_width="400dp"
         android:layout_height="50dp"
         android:background="@drawable/border_style"
-        android:ems="20"
+        android:ems="10"
+        android:fontFamily="@font/nanumbarungothic_n"
         android:hint="이름을 입력하세요."
+        android:inputType="textPersonName"
         android:paddingLeft="20dp"
         android:textColor="@color/text"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.462"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_inputpwcheck"
-        app:layout_constraintVertical_bias="0.106" />
+        app:layout_constraintTop_toBottomOf="@+id/tv10"
+        app:layout_constraintVertical_bias="0.02" />
 
     <TextView
         android:id="@+id/tv11"
@@ -169,76 +182,79 @@
         android:textAlignment="center"
         android:textColor="@color/text"
         android:textSize="20sp"
+        android:fontFamily="@font/nanumbarungothic_n"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.129"
+        app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_inputname"
-        app:layout_constraintVertical_bias="0.048" />
+        app:layout_constraintTop_toBottomOf="@+id/et_userName"
+        app:layout_constraintVertical_bias="0.03" />
 
     <EditText
-        android:id="@+id/et_inputnickname"
+        android:id="@+id/et_userNickname"
         android:layout_width="400dp"
         android:layout_height="50dp"
         android:background="@drawable/border_style"
-        android:ems="20"
+        android:ems="10"
+        android:fontFamily="@font/nanumbarungothic_n"
         android:hint="닉네임을 입력하세요."
+        android:inputType="text"
         android:paddingLeft="20dp"
         android:textColor="@color/text"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.462"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_inputname"
-        app:layout_constraintVertical_bias="0.135" />
+        app:layout_constraintTop_toBottomOf="@+id/tv11"
+        app:layout_constraintVertical_bias="0.02" />
 
     <TextView
         android:id="@+id/tv12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/nanumbarungothic_n"
         android:text="@string/birthday"
         android:textAlignment="center"
         android:textColor="@color/text"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.135"
+        app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_inputnickname"
-        app:layout_constraintVertical_bias="0.067" />
+        app:layout_constraintTop_toBottomOf="@+id/et_userNickname"
+        app:layout_constraintVertical_bias="0.03" />
 
     <EditText
-        android:id="@+id/et_inputbday"
+        android:id="@+id/et_userBdy"
         android:layout_width="400dp"
         android:layout_height="50dp"
         android:background="@drawable/border_style"
         android:ems="20"
+        android:fontFamily="@font/nanumbarungothic_n"
         android:hint="생년월일을 입력하세요."
         android:paddingLeft="20dp"
         android:textColor="@color/text"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.462"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_inputnickname"
-        app:layout_constraintVertical_bias="0.187" />
+        app:layout_constraintTop_toBottomOf="@+id/tv12"
+        app:layout_constraintVertical_bias="0.02" />
 
-    <ImageButton
-        android:id="@+id/btn_signupDone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:id="@+id/btn_submit"
+        android:text="@string/sudone"
+        android:textSize="24sp"
+        android:textColor="@color/text"
+        android:textAlignment="center"
+        android:fontFamily="@font/nanumbarungothic_b"
         android:background="@drawable/button_style"
-        android:paddingLeft="30dp"
-        android:paddingTop="10dp"
-        android:paddingRight="30dp"
-        android:paddingBottom="10dp"
-        android:src="@drawable/ic_done"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_inputbday"
-        app:layout_constraintVertical_bias="0.28" />
+        app:layout_constraintTop_toBottomOf="@+id/et_userBdy"
+        app:layout_constraintVertical_bias="0.20" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

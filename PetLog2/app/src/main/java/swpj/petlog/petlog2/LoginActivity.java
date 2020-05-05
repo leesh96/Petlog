@@ -1,13 +1,13 @@
 package swpj.petlog.petlog2;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import android.app.Activity;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -16,54 +16,63 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LoginActivity extends AppCompatActivity {
-    private EditText et_loginemail, et_loginpw;
-    private Button btn_signin, btn_signup;
+public class LoginActivity extends Activity{
+    private EditText et_email, et_pass;
+    private Button btn_login, btn_register;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        et_loginemail = findViewById(R.id.et_loginemail);
-        et_loginpw = findViewById(R.id.et_loginpw);
-        btn_signin = findViewById(R.id.btn_signin);
-        btn_signup = findViewById(R.id.btn_signup);
+        et_email = findViewById(R.id.et_email);
+        et_pass = findViewById(R.id.et_pass);
 
-        btn_signup.setOnClickListener(new View.OnClickListener() {
+        btn_register = findViewById(R.id.btn_signup);
+
+        btn_register.setOnClickListener( new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+            public void onClick(View view) {
+                Intent intent  = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
         });
 
-        btn_signin.setOnClickListener(new View.OnClickListener() {
+        btn_login = findViewById(R.id.btn_signin);
+
+        btn_login.setOnClickListener( new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                final String u_id = et_loginemail.getText().toString();
-                String u_pw = et_loginpw.getText().toString();
+            public void onClick(View view) {
+                String u_id = et_email.getText().toString();
+                String u_pw = et_pass.getText().toString();
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject jasonObject = new JSONObject(response);
-                            boolean success = jasonObject.getBoolean("success");
-                            if (success) {
-                                String u_id = jasonObject.getString("u_id");
-                                String u_pw = jasonObject.getString("u_pw");
-                                Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean success = jsonObject.getBoolean("success");
 
-                                Intent intent  = new Intent(LoginActivity.this, MainActivity.class);
-                                intent.putExtra("log", "user_info");
-                                intent.putExtra("u_id", u_id);
+                            if (success) {//로그인 성공시
+
+                                String u_id = jsonObject.getString("userID");
+                                String u_pw = jsonObject.getString("userPassword");
+                                String u_name = jsonObject.getString("userName");
+                                String u_nickname = jsonObject.getString("userNick");
+
+                                Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
-                            }
-                            else {
-                                Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
+                                intent.putExtra("userID", u_id);
+                                intent.putExtra("userPass", u_pw);
+                                intent.putExtra("userName", u_name);
+                                intent.putExtra("userNick", u_nickname);
+
+                            } else {//로그인 실패시
+                                Toast.makeText(getApplicationContext(), "로그인 실패 다시 시도하세요", Toast.LENGTH_SHORT).show();
                                 return;
                             }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

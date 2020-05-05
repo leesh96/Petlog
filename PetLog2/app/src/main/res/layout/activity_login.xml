@@ -14,12 +14,13 @@
         android:text="@string/app_name"
         android:textAlignment="center"
         android:textColor="@color/text"
-        android:textSize="40sp"
+        android:textSize="50sp"
+        android:fontFamily="@font/nanumbarungothic_b"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.200" />
+        app:layout_constraintVertical_bias="0.1" />
 
     <TextView
         android:id="@+id/tv3"
@@ -32,8 +33,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35" />
+        app:layout_constraintTop_toBottomOf="@+id/tv2"
+        app:layout_constraintVertical_bias="0.1"
+        android:fontFamily="@font/nanumbarungothic_b"/>
 
 
     <TextView
@@ -44,6 +46,7 @@
         android:textAlignment="center"
         android:textColor="@color/text"
         android:textSize="20sp"
+        android:fontFamily="@font/nanumbarungothic_n"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.14"
@@ -52,7 +55,7 @@
         app:layout_constraintVertical_bias="0.05" />
 
     <EditText
-        android:id="@+id/et_loginemail"
+        android:id="@+id/et_email"
         android:layout_width="400dp"
         android:layout_height="50dp"
         android:background="@drawable/border_style"
@@ -61,6 +64,7 @@
         android:paddingLeft="20dp"
         android:textColor="@color/text"
         android:textSize="20sp"
+        android:fontFamily="@font/nanumbarungothic_n"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,15 +79,16 @@
         android:textAlignment="center"
         android:textColor="@color/text"
         android:textSize="20sp"
+        android:fontFamily="@font/nanumbarungothic_n"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.145"
+        app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_loginemail"
+        app:layout_constraintTop_toBottomOf="@+id/et_email"
         app:layout_constraintVertical_bias="0.05" />
 
     <EditText
-        android:id="@+id/et_loginpw"
+        android:id="@+id/et_pass"
         android:layout_width="400dp"
         android:layout_height="50dp"
         android:background="@drawable/border_style"
@@ -92,42 +97,60 @@
         android:paddingLeft="20dp"
         android:textColor="@color/text"
         android:textSize="20sp"
+        android:fontFamily="@font/nanumbarungothic_n"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv5"
         app:layout_constraintVertical_bias="0.02" />
 
-    <Button
-        android:id="@+id/btn_signup"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:background="@drawable/button_style"
-        android:text="@string/signup"
-        android:textAlignment="center"
-        android:textColor="@color/text"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.197"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv3"
-        app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/btn_signin"
-        android:layout_width="120dp"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:background="@drawable/button_style"
         android:text="@string/login"
         android:textAlignment="center"
         android:textColor="@color/text"
         android:textSize="24sp"
+        android:fontFamily="@font/nanumbarungothic_b"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.805"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv3"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintTop_toBottomOf="@+id/et_pass"
+        app:layout_constraintVertical_bias="0.15" />
+
+    <Button
+        android:id="@+id/btn_findpw"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="@drawable/button_style"
+        android:text="@string/findpw"
+        android:textAlignment="center"
+        android:textColor="@color/text"
+        android:textSize="24sp"
+        android:fontFamily="@font/nanumbarungothic_b"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_signin"
+        app:layout_constraintVertical_bias="0.05" />
+
+    <Button
+        android:id="@+id/btn_signup"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="@drawable/button_style"
+        android:text="@string/signup"
+        android:textAlignment="center"
+        android:textColor="@color/text"
+        android:textSize="24sp"
+        android:fontFamily="@font/nanumbarungothic_b"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_findpw"
+        app:layout_constraintVertical_bias="0.05" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -66,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
                     String Nick = (String) params[3];
                     String Bdy = (String) params[4];
 
-                    String link = "http://128.199.106.86/SignUptest.php";
+                    String link = "http://128.199.106.86/SignUp.php";
                     //String link = "http://192.168.1.2/test2.php";
                     String data = URLEncoder.encode("Id", "UTF-8") + "=" + URLEncoder.encode(Id, "UTF-8");
                     data += "&" + URLEncoder.encode("Pw", "UTF-8") + "=" + URLEncoder.encode(Pw, "UTF-8");
