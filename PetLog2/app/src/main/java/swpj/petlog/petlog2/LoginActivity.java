@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 public class LoginActivity extends Activity{
     private EditText et_email, et_pass;
-    private Button btn_login, btn_register;
+    private Button btn_login, btn_register, btn_findpw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,17 @@ public class LoginActivity extends Activity{
         btn_register.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent  = new Intent(LoginActivity.this, RegisterActivityTest.class);
+                Intent intent  = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_findpw = findViewById(R.id.btn_findpw);
+
+        btn_findpw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, FindpwActivity.class);
                 startActivity(intent);
             }
         });

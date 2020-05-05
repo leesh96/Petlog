@@ -1,7 +1,7 @@
 package swpj.petlog.petlog2;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import android.view.Window;
 
 import androidx.annotation.NonNull;
 
-public class LoadingActivity extends Activity {
+public class LoadingActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

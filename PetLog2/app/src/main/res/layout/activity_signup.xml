@@ -60,6 +60,7 @@
         android:background="@drawable/button_style"
         android:fontFamily="@font/nanumbarungothic_n"
         android:text="중복확인"
+        android:textColor="@color/text"
         android:textAlignment="center"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/et_userID"

@@ -1,12 +1,12 @@
 package swpj.petlog.petlog2;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class SignupDoneActivity extends Activity {
+public class SignupDoneActivity extends AppCompatActivity {
     private Button btn_gotologin;
 
     @Override
