@@ -52,6 +52,23 @@
         app:layout_constraintTop_toBottomOf="@+id/tv6"
         app:layout_constraintVertical_bias="0.03" />
 
+
+    <Button
+        android:id="@+id/btn_checkemail"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:background="@drawable/button_style"
+        android:fontFamily="@font/nanumbarungothic_n"
+        android:text="중복확인"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/et_userID"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.902"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv6"
+        app:layout_constraintVertical_bias="0.589" />
+
     <EditText
         android:id="@+id/et_userID"
         android:layout_width="400dp"
@@ -190,6 +207,24 @@
         app:layout_constraintTop_toBottomOf="@+id/et_userName"
         app:layout_constraintVertical_bias="0.03" />
 
+
+    <Button
+        android:id="@+id/btn_checknick"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:background="@drawable/button_style"
+        android:fontFamily="@font/nanumbarungothic_n"
+        android:text="중복확인"
+        android:textAlignment="center"
+        android:textColor="@color/text"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/et_userNickname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.902"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_userName"
+        app:layout_constraintVertical_bias="0.529" />
+
     <EditText
         android:id="@+id/et_userNickname"
         android:layout_width="400dp"
@@ -231,10 +266,12 @@
         android:background="@drawable/border_style"
         android:ems="20"
         android:fontFamily="@font/nanumbarungothic_n"
-        android:hint="생년월일을 입력하세요."
+        android:hint="생년월일을 선택하세요."
         android:paddingLeft="20dp"
         android:textColor="@color/text"
         android:textSize="20sp"
+        android:clickable="true"
+        android:focusable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

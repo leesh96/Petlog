@@ -1,12 +1,15 @@
 package swpj.petlog.petlog2;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -16,6 +19,9 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class RegisterActivity extends Activity {
     private EditText editTextId;
@@ -25,6 +31,27 @@ public class RegisterActivity extends Activity {
     private EditText editTextBdy;
     private EditText pwcheck;
     private Button btn_submit;
+    private AlertDialog dialog;
+
+    Calendar myCalendar = Calendar.getInstance();
+
+    DatePickerDialog.OnDateSetListener myDatePicker = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, month);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+    };
+
+    private void updateLabel() {
+        String myFormat = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.KOREA);
+
+        EditText et_date = (EditText) findViewById(R.id.et_userBdy);
+        et_date.setText(sdf.format(myCalendar.getTime()));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +65,13 @@ public class RegisterActivity extends Activity {
         pwcheck = (EditText) findViewById(R.id.et_pwCheck);
         btn_submit = findViewById(R.id.btn_submit);
 
+        editTextBdy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(RegisterActivity.this, android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,10 +82,16 @@ public class RegisterActivity extends Activity {
                 String Bdy = editTextBdy.getText().toString();
                 String Pwcheck = pwcheck.getText().toString();
 
-                insertToDatabase(Id, Pw, Name, Nick, Bdy);
-
-                Intent intent = new Intent(RegisterActivity.this, SignupDoneActivity.class);
-                startActivity(intent);
+                if(Pw.equals(Pwcheck)) {
+                    insertToDatabase(Id, Pw, Name, Nick, Bdy);
+                    Intent intent = new Intent(RegisterActivity.this, SignupDoneActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    dialog = builder.setMessage("비밀번호 확인이 일치하지 않습니다.").setNegativeButton("확인", null).create();
+                    dialog.show();
+                }
             }
         });
     }
@@ -81,7 +121,6 @@ public class RegisterActivity extends Activity {
                     String Bdy = (String) params[4];
 
                     String link = "http://128.199.106.86/SignUp.php";
-                    //String link = "http://192.168.1.2/test2.php";
                     String data = URLEncoder.encode("Id", "UTF-8") + "=" + URLEncoder.encode(Id, "UTF-8");
                     data += "&" + URLEncoder.encode("Pw", "UTF-8") + "=" + URLEncoder.encode(Pw, "UTF-8");
                     data += "&" + URLEncoder.encode("Name", "UTF-8") + "=" + URLEncoder.encode(Name, "UTF-8");
