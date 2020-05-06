@@ -1,14 +1,24 @@
 package swpj.petlog.petlog2;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -16,8 +26,11 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
-public class RegisterActivity extends Activity {
+public class RegisterActivity extends AppCompatActivity {
     private EditText editTextId;
     private EditText editTextPw;
     private EditText editTextName;
@@ -25,33 +38,180 @@ public class RegisterActivity extends Activity {
     private EditText editTextBdy;
     private EditText pwcheck;
     private Button btn_submit;
+    private Button btn_validateid;
+    private Button btn_validatenick;
+    private AlertDialog dialog;
+    private boolean validateid = false;
+    private boolean validatenick = false;
+
+    Calendar myCalendar = Calendar.getInstance();
+
+    DatePickerDialog.OnDateSetListener myDatePicker = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, month);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+    };
+
+    private void updateLabel() {
+        String myFormat = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.KOREA);
+
+        EditText et_date = (EditText) findViewById(R.id.et_userBdy);
+        et_date.setText(sdf.format(myCalendar.getTime()));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
         editTextId = (EditText) findViewById(R.id.et_userID);
         editTextPw = (EditText) findViewById(R.id.et_userPassword);
         editTextName = (EditText) findViewById(R.id.et_userName);
         editTextNick = (EditText) findViewById(R.id.et_userNickname);
         editTextBdy = (EditText) findViewById(R.id.et_userBdy);
         pwcheck = (EditText) findViewById(R.id.et_pwCheck);
+
+        btn_validateid = findViewById(R.id.btn_checkemail);
+        btn_validatenick = findViewById(R.id.btn_checknick);
         btn_submit = findViewById(R.id.btn_submit);
+
+        btn_validateid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String Id = editTextId.getText().toString();
+                if (validateid)
+                    return;
+                if (Id.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    dialog = builder.setMessage("아이디를 입력하세요.").setPositiveButton("확인", null).create();
+                    dialog.show();
+                    return;
+                }
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+                            if (success) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                dialog = builder.setMessage("가입할 수 있는 아이디입니다.").setPositiveButton("확인", null).create();
+                                dialog.show();
+                                editTextId.setEnabled(false);
+                                validateid = true;
+                                btn_validateid.setText("완료");
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                dialog = builder.setMessage("가입할 수 없는 아이디입니다!").setPositiveButton("확인", null).create();
+                                dialog.show();
+                                return;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                ValidateRequestId validateRequest = new ValidateRequestId(Id, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
+                queue.add(validateRequest);
+            }
+        });
+
+        btn_validatenick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String Nick = editTextNick.getText().toString();
+                if (validatenick)
+                    return;
+                if (Nick.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    dialog = builder.setMessage("닉네임을 입력하세요.").setPositiveButton("확인", null).create();
+                    dialog.show();
+                    return;
+                }
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+                            if (success) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                dialog = builder.setMessage("사용할 수 있는 닉네임입니다.").setPositiveButton("확인", null).create();
+                                dialog.show();
+                                editTextNick.setEnabled(false);
+                                validatenick = true;
+                                btn_validatenick.setText("완료");
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                dialog = builder.setMessage("사용할 수 없는 닉네임입니다!").setPositiveButton("확인", null).create();
+                                dialog.show();
+                                return;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                ValidateRequestNick validateRequest = new ValidateRequestNick(Nick, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
+                queue.add(validateRequest);
+            }
+        });
+
+        editTextBdy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(RegisterActivity.this, android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
 
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Id = editTextId.getText().toString();
-                String Pw = editTextPw.getText().toString();
-                String Name = editTextName.getText().toString();
-                String Nick = editTextNick.getText().toString();
-                String Bdy = editTextBdy.getText().toString();
-                String Pwcheck = pwcheck.getText().toString();
+                final String Id = editTextId.getText().toString();
+                final String Pw = editTextPw.getText().toString();
+                final String Name = editTextName.getText().toString();
+                final String Nick = editTextNick.getText().toString();
+                final String Bdy = editTextBdy.getText().toString();
+                final String Pwcheck = pwcheck.getText().toString();
 
-                insertToDatabase(Id, Pw, Name, Nick, Bdy);
-
-                Intent intent = new Intent(RegisterActivity.this, SignupDoneActivity.class);
-                startActivity(intent);
+                if(validateid & validatenick) {
+                    if (Pw.equals(Pwcheck)) {
+                        insertToDatabase(Id, Pw, Name, Nick, Bdy);
+                        Intent intent = new Intent(RegisterActivity.this, SignupDoneActivity.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                        dialog = builder.setMessage("비밀번호 확인이 일치하지 않습니다!").setNegativeButton("확인", null).create();
+                        dialog.show();
+                        return;
+                    }
+                }
+                else if ((validateid == false) & (validatenick == true)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    dialog = builder.setMessage("아이디 중복확인을 해주세요!").setNegativeButton("확인", null).create();
+                    dialog.show();
+                    return;
+                }
+                else if ((validatenick == false) & (validateid == true)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    dialog = builder.setMessage("닉네임 중복확인을 해주세요!").setNegativeButton("확인", null).create();
+                    dialog.show();
+                    return;
+                }
+                else if ((validatenick == false) & (validateid == false)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    dialog = builder.setMessage("아이디, 닉네임 중복확인 필수!").setNegativeButton("확인", null).create();
+                    dialog.show();
+                    return;
+                }
             }
         });
     }
@@ -81,7 +241,6 @@ public class RegisterActivity extends Activity {
                     String Bdy = (String) params[4];
 
                     String link = "http://128.199.106.86/SignUp.php";
-                    //String link = "http://192.168.1.2/test2.php";
                     String data = URLEncoder.encode("Id", "UTF-8") + "=" + URLEncoder.encode(Id, "UTF-8");
                     data += "&" + URLEncoder.encode("Pw", "UTF-8") + "=" + URLEncoder.encode(Pw, "UTF-8");
                     data += "&" + URLEncoder.encode("Name", "UTF-8") + "=" + URLEncoder.encode(Name, "UTF-8");

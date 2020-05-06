@@ -100,14 +100,14 @@ public class RegisterActivity extends AppCompatActivity {
                             boolean success = jsonResponse.getBoolean("success");
                             if (success) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                dialog = builder.setMessage("사용할 수 있는 아이디입니다.").setPositiveButton("확인", null).create();
+                                dialog = builder.setMessage("가입할 수 있는 아이디입니다.").setPositiveButton("확인", null).create();
                                 dialog.show();
                                 editTextId.setEnabled(false);
                                 validateid = true;
                                 btn_validateid.setText("완료");
                             } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                dialog = builder.setMessage("사용할 수 없는 아이디입니다!").setPositiveButton("확인", null).create();
+                                dialog = builder.setMessage("가입할 수 없는 아이디입니다!").setPositiveButton("확인", null).create();
                                 dialog.show();
                                 return;
                             }
