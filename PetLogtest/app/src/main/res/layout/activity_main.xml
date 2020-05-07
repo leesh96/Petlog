@@ -92,6 +92,8 @@
             android:textSize="26sp" />
 
         <ImageButton
+            android:id="@+id/btn_mypet"
+            android:clickable="true"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_above="@+id/tv13"
