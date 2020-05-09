@@ -36,7 +36,6 @@ public class ResetpwActivity extends AppCompatActivity {
         btn_changePw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String userID = intent.getStringExtra("userID");
                 final String Pw = editTextPw.getText().toString();
                 final String Pwcheck = editTextPwcheck.getText().toString();
@@ -66,10 +65,15 @@ public class ResetpwActivity extends AppCompatActivity {
                                 }
                                 else {
                                     AlertDialog.Builder builder = new AlertDialog.Builder(ResetpwActivity.this);
-                                    dialog = builder.setMessage("비밀번호 확인이 일치하지 않습니다!").setNegativeButton("확인", null).create();
+                                    dialog = builder.setMessage("비밀번호 변경 실패!").setNegativeButton("확인", null).create();
                                     dialog.show();
                                     return;
                                 }
+                            }
+                            else{
+                                AlertDialog.Builder builder = new AlertDialog.Builder(ResetpwActivity.this);
+                                dialog = builder.setMessage("비밀번호 확인이 일치하지 않습니다!").setNegativeButton("확인", null).create();
+                                dialog.show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
