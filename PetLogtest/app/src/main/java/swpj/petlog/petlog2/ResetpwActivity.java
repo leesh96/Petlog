@@ -27,8 +27,6 @@ public class ResetpwActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resetpassword);
 
-        final Intent intent = getIntent();
-
         editTextPw = (EditText) findViewById(R.id.et_resetPw);
         editTextPwcheck = (EditText) findViewById(R.id.et_resetPwcheck);
         btn_changePw = (Button) findViewById(R.id.btn_resetPw);
@@ -36,7 +34,7 @@ public class ResetpwActivity extends AppCompatActivity {
         btn_changePw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userID = intent.getStringExtra("userID");
+                String userID = PreferenceManager.getString(ResetpwActivity.this, "findpwID");
                 final String Pw = editTextPw.getText().toString();
                 final String Pwcheck = editTextPwcheck.getText().toString();
 
@@ -60,6 +58,7 @@ public class ResetpwActivity extends AppCompatActivity {
                                         public void onClick(View v) {
                                             Intent toLogin = new Intent(ResetpwActivity.this, LoginActivity.class);
                                             startActivity(toLogin);
+                                            PreferenceManager.removeKey(ResetpwActivity.this, "findpwID");
                                         }
                                     });
                                 }

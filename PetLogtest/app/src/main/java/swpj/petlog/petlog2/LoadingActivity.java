@@ -1,17 +1,15 @@
 package swpj.petlog.petlog2;
 
-import android.annotation.SuppressLint;
 import androidx.appcompat.app.AppCompatActivity;
-import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.Window;
-
 import androidx.annotation.NonNull;
 
 public class LoadingActivity extends AppCompatActivity {
+    private Intent intent;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,10 +18,21 @@ public class LoadingActivity extends AppCompatActivity {
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
-                startActivity(new Intent(LoadingActivity.this, LoginActivity.class));
-                finish();
+                if(PreferenceManager.getString(LoadingActivity.this, "userID").length() == 0) {
+                    intent = new Intent(LoadingActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else {
+                    intent = new Intent(LoadingActivity.this, MainActivity.class);
+                    intent.putExtra("STD_NUM", PreferenceManager.getString(LoadingActivity.this, "userID").toString());
+                    startActivity(intent);
+                    finish();
+                }
             }
         };
         handler.sendEmptyMessageDelayed(0, 3000);
     }
 }
+
+

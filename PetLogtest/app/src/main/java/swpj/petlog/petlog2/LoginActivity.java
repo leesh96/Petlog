@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -16,7 +16,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LoginActivity extends Activity{
+public class LoginActivity extends AppCompatActivity {
     private EditText et_email, et_pass;
     private Button btn_login, btn_register, btn_findpw;
 
@@ -73,10 +73,10 @@ public class LoginActivity extends Activity{
                                 Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
-                                intent.putExtra("userID", u_id);
-                                intent.putExtra("userPass", u_pw);
-                                intent.putExtra("userName", u_name);
-                                intent.putExtra("userNick", u_nickname);
+                                PreferenceManager.setString(LoginActivity.this, "userID", u_id);
+                                PreferenceManager.setString(LoginActivity.this, "userPass", u_pw);
+                                PreferenceManager.setString(LoginActivity.this, "userName", u_name);
+                                PreferenceManager.setString(LoginActivity.this, "userNick", u_nickname);
 
                             } else {//로그인 실패시
                                 Toast.makeText(getApplicationContext(), "로그인 실패 다시 시도하세요", Toast.LENGTH_SHORT).show();

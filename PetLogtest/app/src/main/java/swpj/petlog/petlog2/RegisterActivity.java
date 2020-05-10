@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -43,6 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
     private AlertDialog dialog;
     private boolean validateid = false;
     private boolean validatenick = false;
+    private ImageButton btn_back;
 
     Calendar myCalendar = Calendar.getInstance();
 
@@ -75,11 +77,16 @@ public class RegisterActivity extends AppCompatActivity {
         editTextNick = (EditText) findViewById(R.id.et_userNickname);
         editTextBdy = (EditText) findViewById(R.id.et_userBdy);
         pwcheck = (EditText) findViewById(R.id.et_pwCheck);
-
+        btn_back = (ImageButton) findViewById(R.id.btn_back);
         btn_validateid = findViewById(R.id.btn_checkemail);
         btn_validatenick = findViewById(R.id.btn_checknick);
         btn_submit = findViewById(R.id.btn_submit);
-
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         btn_validateid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,6 +191,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if(validateid & validatenick) {
                     if (Pw.equals(Pwcheck)) {
                         insertToDatabase(Id, Pw, Name, Nick, Bdy);
+                        PreferenceManager.setString(RegisterActivity.this, "signupNick", Nick);
                         Intent intent = new Intent(RegisterActivity.this, SignupDoneActivity.class);
                         startActivity(intent);
                     }

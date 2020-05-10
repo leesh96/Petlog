@@ -26,6 +26,7 @@
         <activity android:name=".FindpwActivity"></activity>
         <activity android:name=".ResetpwActivity"></activity>
         <activity android:name=".AddMypetInfoActivity"></activity>
+        <activity android:name=".MypetMainActivity"></activity>
     </application>
 
 </manifest>

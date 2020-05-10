@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="400dp" android:layout_height="900dp"
+    android:background="@color/bg">
+    <ImageView
+        android:id="@+id/petface"
+        android:layout_width="360dp"
+        android:layout_height="270dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_gallary_100dp"
+        android:padding="@android:dimen/app_icon_size" />
+
+    <EditText
+        android:id="@+id/et_petName"
+        android:layout_width="360dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/petface"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:background="@drawable/border_style"
+        android:fontFamily="@font/nanumbarungothic_n"
+        android:editable="false"
+        android:hint="이름 : "
+        android:inputType="text"
+        android:paddingLeft="20dp"
+        android:textColor="@color/text"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/et_petSex"
+        android:layout_width="360dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/et_petName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:background="@drawable/border_style"
+        android:fontFamily="@font/nanumbarungothic_n"
+        android:hint="성별 : "
+        android:inputType="text"
+        android:paddingLeft="20dp"
+        android:textColor="@color/text"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/et_petSpecie"
+        android:layout_width="360dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/et_petSex"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:fontFamily="@font/nanumbarungothic_n"
+        android:background="@drawable/border_style"
+        android:hint="종 : "
+        android:inputType="text"
+        android:paddingLeft="20dp"
+        android:textColor="@color/text"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/et_petAge"
+        android:layout_width="360dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/et_petSpecie"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:background="@drawable/border_style"
+        android:fontFamily="@font/nanumbarungothic_n"
+        android:hint="나이 : "
+        android:inputType="text"
+        android:paddingLeft="20dp"
+        android:textColor="@color/text"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/et_petBday"
+        android:layout_width="360dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/et_petAge"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:ems="10"
+        android:focusable="false"
+        android:fontFamily="@font/nanumbarungothic_n"
+        android:hint="생일 : "
+        android:inputType="date"
+        android:paddingLeft="20dp"
+        android:textColor="@color/text"
+        android:textSize="14sp"
+        android:background="@drawable/border_style"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_style_inmain">
+
+        <RelativeLayout
+            android:id="@+id/rl_1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/theme4">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="@font/nanumbarungothic_n"
+                android:text="메모"
+                android:textAlignment="center"
+                android:textColor="@color/text"
+                android:textSize="18dp" />
+
+            <ImageButton
+                android:id="@+id/btn_memoapply"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10dp"
+                android:layout_toStartOf="@+id/btn_memodel"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_check_coltheme_24dp" />
+
+            <ImageButton
+                android:id="@+id/btn_memodel"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_delete" />
+
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/mypet_memo"
+            android:layout_width="380dp"
+            android:layout_height="220dp"
+            android:layout_below="@+id/rl_1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/transparent"
+            android:inputType="textMultiLine" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

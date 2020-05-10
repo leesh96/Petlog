@@ -25,19 +25,9 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
+            android:clickable="true"
             android:background="@drawable/button_style_inmain"
             android:src="@drawable/ic_arrow_back" />
-
-        <ImageButton
-            android:id="@+id/btn_home"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/btn_back"
-            android:background="@drawable/button_style_inmain"
-            android:src="@drawable/ic_home" />
 
         <TextView
             android:layout_width="wrap_content"

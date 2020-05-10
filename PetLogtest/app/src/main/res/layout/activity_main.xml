@@ -27,7 +27,7 @@
             android:text="@string/app_name"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="40sp" />
+            android:textSize="40dp" />
 
         <ImageButton
             android:layout_width="50dp"
@@ -55,7 +55,8 @@
             android:layout_height="120dp"
             android:layout_alignParentLeft="true"
             android:background="@drawable/button_style"
-            android:src="@drawable/ic_diarybtn" />
+            android:src="@drawable/ic_diarybtn"
+            android:clickable="true"/>
 
         <TextView
             android:layout_width="120dp"
@@ -68,7 +69,7 @@
             android:text="@string/Diary"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="26sp" />
+            android:textSize="26dp" />
 
         <ImageButton
             android:id="@+id/btn_petstain"
@@ -76,7 +77,8 @@
             android:layout_height="120dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/button_style"
-            android:src="@drawable/ic_petstabtn" />
+            android:src="@drawable/ic_petstabtn"
+            android:clickable="true"/>
 
         <TextView
             android:layout_width="120dp"
@@ -89,7 +91,7 @@
             android:text="@string/petsta"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="26sp" />
+            android:textSize="26dp" />
 
         <ImageButton
             android:id="@+id/btn_mypet"
@@ -111,7 +113,7 @@
             android:text="@string/mypet"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="26sp" />
+            android:textSize="26dp" />
 
         <ImageButton
             android:layout_width="120dp"
@@ -119,6 +121,7 @@
             android:layout_above="@+id/tv14"
             android:layout_alignStart="@+id/tv14"
             android:layout_marginBottom="10dp"
+            android:clickable="true"
             android:background="@drawable/button_style"
             android:src="@drawable/ic_talktalkbtn" />
 
@@ -132,7 +135,15 @@
             android:text="@string/talk"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="26sp" />
+            android:textSize="26dp" />
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="logout"
+            android:layout_centerInParent="true"/>
+
 
     </RelativeLayout>
 
