@@ -29,6 +29,9 @@
         <activity android:name=".ResetpwActivity"></activity>
         <activity android:name=".AddMypetInfoActivity"></activity>
         <activity android:name=".MypetMainActivity"></activity>
+        <activity android:name=".WriteDiaryActivity"></activity>
+        <activity android:name=".DiaryListActivity"></activity>
+
     </application>
 
 </manifest>

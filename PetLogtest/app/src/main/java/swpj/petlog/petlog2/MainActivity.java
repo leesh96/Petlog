@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
-    private ImageButton imgbtn_mypet;
+    private ImageButton imgbtn_mypet, imgbtn_dairy;
     private Button btn_logout;
 
     @Override
@@ -32,6 +32,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 PreferenceManager.clear(MainActivity.this);
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        imgbtn_dairy = (ImageButton) findViewById(R.id.btn_diaryin);
+        imgbtn_dairy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DiaryListActivity.class);
                 startActivity(intent);
             }
         });
