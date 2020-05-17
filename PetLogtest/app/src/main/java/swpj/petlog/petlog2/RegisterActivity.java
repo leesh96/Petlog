@@ -194,6 +194,7 @@ public class RegisterActivity extends AppCompatActivity {
                         PreferenceManager.setString(RegisterActivity.this, "signupNick", Nick);
                         Intent intent = new Intent(RegisterActivity.this, SignupDoneActivity.class);
                         startActivity(intent);
+                        finish();
                     }
                     else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);

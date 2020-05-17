@@ -1,135 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/bg">
 
-    <ImageView
-        android:id="@+id/petface"
-        android:layout_width="360dp"
-        android:layout_height="270dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_gallary_100dp"
-        android:padding="@android:dimen/app_icon_size" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/theme4">
 
-    <TextView
-        android:id="@+id/tv_petName"
-        android:layout_width="360dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
-        android:gravity="center_vertical"
-        android:background="@drawable/border_style"
-        android:fontFamily="@font/nanumbarungothic_n"
-        android:paddingLeft="20dp"
-        android:textColor="@color/text"
-        android:textSize="14sp" />
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:clickable="true"
+            android:background="@drawable/button_style_inmain"
+            android:src="@drawable/ic_arrow_back"/>
 
-    <TextView
-        android:id="@+id/tv_petSex"
-        android:layout_width="360dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/border_style"
-        android:fontFamily="@font/nanumbarungothic_n"
-        android:gravity="center_vertical"
-        android:paddingLeft="20dp"
-        android:textColor="@color/text"
-        android:textSize="14sp" />
+        <ImageButton
+            android:id="@+id/btn_home"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="80dp"
+            android:clickable="true"
+            android:background="@drawable/button_style_inmain"
+            android:src="@drawable/ic_home"/>
 
-    <TextView
-        android:id="@+id/tv_petSpecie"
-        android:layout_width="360dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:gravity="center_vertical"
-        android:fontFamily="@font/nanumbarungothic_n"
-        android:background="@drawable/border_style"
-        android:paddingLeft="20dp"
-        android:textColor="@color/text"
-        android:textSize="14sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/nanumbarungothic_b"
+            android:text="@string/mypet"
+            android:textAlignment="center"
+            android:textColor="@color/text"
+            android:textSize="40sp" />
 
-    <TextView
-        android:id="@+id/tv_petAge"
-        android:layout_width="360dp"
-        android:layout_height="40dp"
-        android:gravity="center_vertical"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/border_style"
-        android:fontFamily="@font/nanumbarungothic_n"
-        android:paddingLeft="20dp"
-        android:textColor="@color/text"
-        android:textSize="14sp" />
+        <ImageButton
+            android:id="@+id/btn_mypetmodify"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="20dp"
+            android:clickable="true"
+            android:background="@drawable/button_style_inmain"
+            android:src="@drawable/ic_modify"/>
 
-    <TextView
-        android:id="@+id/tv_petBday"
-        android:layout_width="360dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:focusable="false"
-        android:fontFamily="@font/nanumbarungothic_n"
-        android:paddingLeft="20dp"
-        android:textColor="@color/text"
-        android:gravity="center_vertical"
-        android:textSize="14sp"
-        android:background="@drawable/border_style"/>
+    </RelativeLayout>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/button_style_inmain">
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/petface"
+            android:layout_width="320dp"
+            android:layout_height="240dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_gallary_100dp"
+            android:padding="@android:dimen/app_icon_size" />
+
+        <TextView
+            android:id="@+id/tv_petName"
+            android:layout_width="360dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/border_style"
+            android:fontFamily="@font/nanumbarungothic_n"
+            android:paddingLeft="20dp"
+            android:textColor="@color/text"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_petSex"
+            android:layout_width="360dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/border_style"
+            android:fontFamily="@font/nanumbarungothic_n"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:textColor="@color/text"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_petSpecie"
+            android:layout_width="360dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
+            android:fontFamily="@font/nanumbarungothic_n"
+            android:background="@drawable/border_style"
+            android:paddingLeft="20dp"
+            android:textColor="@color/text"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_petAge"
+            android:layout_width="360dp"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/border_style"
+            android:fontFamily="@font/nanumbarungothic_n"
+            android:paddingLeft="20dp"
+            android:textColor="@color/text"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_petBday"
+            android:layout_width="360dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:focusable="false"
+            android:fontFamily="@font/nanumbarungothic_n"
+            android:paddingLeft="20dp"
+            android:textColor="@color/text"
+            android:gravity="center_vertical"
+            android:textSize="14sp"
+            android:background="@drawable/border_style"/>
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/theme4">
+            android:layout_height="300dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_style_inmain">
 
-            <TextView
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:fontFamily="@font/nanumbarungothic_n"
-                android:text="메모"
-                android:gravity="center_vertical"
-                android:textColor="@color/text"
-                android:textSize="18dp" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/theme4">
 
-            <ImageButton
-                android:id="@+id/btn_memoapply"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_check_coltheme_24dp" />
+                <TextView
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:fontFamily="@font/nanumbarungothic_n"
+                    android:text="메모"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text"
+                    android:textSize="18dp" />
 
-            <ImageButton
-                android:id="@+id/btn_memodel"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_delete" />
+                <ImageButton
+                    android:id="@+id/btn_memoapply"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_check_coltheme_24dp" />
+
+                <ImageButton
+                    android:id="@+id/btn_memodel"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_delete" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/mypet_memo"
+                android:layout_width="440dp"
+                android:layout_height="240dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/white"
+                android:inputType="textMultiLine" />
 
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/mypet_memo"
-            android:layout_width="380dp"
-            android:layout_height="220dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:background="@android:color/transparent"
-            android:inputType="textMultiLine" />
 
     </LinearLayout>
 

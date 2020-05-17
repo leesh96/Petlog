@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg"
+    android:layout_marginBottom="5dp"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/item_face"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
+        android:padding="10dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:textSize="32dp"
+            android:textColor="@color/text"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:text="이름입니다"/>
+
+        <TextView
+            android:id="@+id/item_specie"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/text"
+            android:textSize="18dp"
+            android:layout_marginTop="5dp"
+            android:text="종입니다"
+            android:layout_marginLeft="10dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

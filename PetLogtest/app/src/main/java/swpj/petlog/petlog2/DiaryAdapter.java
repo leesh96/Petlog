@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,16 @@ import java.util.ArrayList;
 public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.CustomViewHolder> {
     private ArrayList<DiarylistData> mList = null;
     private Activity context = null;
+
+    public interface OnItemClickListener {
+        void onItemClick(View v, int pos);
+    }
+
+    private OnItemClickListener mListener = null;
+
+    public void setOnItemClickListener (OnItemClickListener listener) {
+        this.mListener = listener;
+    }
 
     public DiaryAdapter(Activity context, ArrayList<DiarylistData> list) {
         this.context = context;
@@ -30,7 +41,18 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.CustomViewHo
             this.imageViewMood = (ImageView) view.findViewById(R.id.item_mood);
             this.textViewTitle = (TextView) view.findViewById(R.id.item_title);
             this.textViewDate = (TextView) view.findViewById(R.id.item_date);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        if (mListener != null) mListener.onItemClick(v, pos);
+                    }
+                }
+            });
         }
+
     }
 
     @NonNull

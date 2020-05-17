@@ -11,6 +11,7 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,7 +43,6 @@ public class DiaryListActivity extends AppCompatActivity {
     private String jsonString;
     private ArrayList<DiarylistData> arrayList;
     private DiaryAdapter diaryAdapter;
-    private int dateclickcnt = 0;
 
     Calendar myCalendar = Calendar.getInstance();
 
@@ -57,11 +57,27 @@ public class DiaryListActivity extends AppCompatActivity {
     };
 
     private void updateLabel() {
-        String myFormat = "yyyy-MM-dd";
+        String myFormat = "yyyy-MM-dd"; //포맷수정하기
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.KOREA);
 
         TextView et_date = (TextView) findViewById(R.id.diary_date);
         et_date.setText(sdf.format(myCalendar.getTime()));
+
+        final String userid = PreferenceManager.getString(DiaryListActivity.this, "userID");
+        arrayList.clear();
+        diaryAdapter.notifyDataSetChanged();
+        GetData task = new GetData();
+
+        String setdate = et_date.getText().toString();
+        final Date currentTime = Calendar.getInstance().getTime();
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+
+        if (setdate.equals(simpleDateFormat.format(currentTime))) {
+            task.execute(PHPURL, userid, "");
+        }
+        else {
+            task.execute(PHPURL, userid, et_date.getText().toString());
+        }
     }
 
     @Override
@@ -100,7 +116,6 @@ public class DiaryListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new DatePickerDialog(DiaryListActivity.this, android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-                dateclickcnt++;
             }
         });
 
@@ -115,16 +130,24 @@ public class DiaryListActivity extends AppCompatActivity {
         arrayList.clear();
         diaryAdapter.notifyDataSetChanged();
 
-        if (dateclickcnt != 0) {
-            arrayList.clear();
-            diaryAdapter.notifyDataSetChanged();
-            GetData task = new GetData();
-            task.execute(PHPURL, userid, textViewdate.getText().toString());
-        }
-        else {
-            GetData task = new GetData();
-            task.execute(PHPURL, userid, "");
-        }
+        GetData task = new GetData();
+        task.execute(PHPURL, userid, "");
+
+        diaryAdapter.setOnItemClickListener(new DiaryAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                DiarylistData diarylistData = arrayList.get(position);
+
+                Intent intent = new Intent(DiaryListActivity.this, ShowDiaryActivity.class);
+                intent.putExtra("diaryid", diarylistData.getMember_id());
+                intent.putExtra("diarytitle", diarylistData.getMember_title());
+                intent.putExtra("diarycontents", diarylistData.getMember_contents());
+                intent.putExtra("diarymood", diarylistData.getMember_mood());
+                intent.putExtra("diarydate", diarylistData.getMember_date());
+                startActivity(intent);
+            }
+        });
+
     }
 
     private class GetData extends AsyncTask<String, Void, String>{
@@ -227,7 +250,9 @@ public class DiaryListActivity extends AppCompatActivity {
     private void showResult() {
 
         String TAG_JSON = "diary";
+        String TAG_ID = "id";
         String TAG_TITLE = "title";
+        String TAG_CONTENTS = "contents";
         String TAG_DATE = "date";
         String TAG_MOOD = "mood";
 
@@ -239,15 +264,19 @@ public class DiaryListActivity extends AppCompatActivity {
 
                 JSONObject item = jsonArray.getJSONObject(i);
 
+                int id = Integer.parseInt(item.getString(TAG_ID));
                 String Title = item.getString(TAG_TITLE);
                 String Date = item.getString(TAG_DATE);
                 String Moodwhat = item.getString(TAG_MOOD);
+                String Contents = item.getString(TAG_CONTENTS);
                 int mood = Integer.parseInt(Moodwhat);
 
                 DiarylistData diarylistData = new DiarylistData(Title, Date);
 
-                diarylistData.setMember_mood(mood);
+                diarylistData.setMember_id(id);
                 diarylistData.setMember_title(Title);
+                diarylistData.setMember_contents(Contents);
+                diarylistData.setMember_mood(mood);
                 diarylistData.setMember_date(Date);
 
                 arrayList.add(diarylistData);

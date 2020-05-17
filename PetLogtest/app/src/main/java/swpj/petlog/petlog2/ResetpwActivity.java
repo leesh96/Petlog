@@ -59,6 +59,7 @@ public class ResetpwActivity extends AppCompatActivity {
                                             Intent toLogin = new Intent(ResetpwActivity.this, LoginActivity.class);
                                             startActivity(toLogin);
                                             PreferenceManager.removeKey(ResetpwActivity.this, "findpwID");
+                                            finish();
                                         }
                                     });
                                 }

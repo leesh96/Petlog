@@ -31,6 +31,8 @@
         <activity android:name=".MypetMainActivity"></activity>
         <activity android:name=".WriteDiaryActivity"></activity>
         <activity android:name=".DiaryListActivity"></activity>
+        <activity android:name=".ShowDiaryActivity"></activity>
+        <activity android:name=".ShowMypetActivity"></activity>
 
     </application>
 

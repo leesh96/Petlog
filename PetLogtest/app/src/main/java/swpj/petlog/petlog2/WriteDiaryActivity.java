@@ -1,5 +1,6 @@
 package swpj.petlog.petlog2;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -38,6 +40,26 @@ public class WriteDiaryActivity extends AppCompatActivity {
     private String[] mood = {"기쁨", "슬픔", "화남", "아픔", "무표정"};
     public int inputmood;
 
+    Calendar myCalendar = Calendar.getInstance();
+
+    DatePickerDialog.OnDateSetListener myDatePicker = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, month);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+    };
+
+    private void updateLabel() {
+        String myFormat = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.KOREA);
+
+        TextView et_date = (TextView) findViewById(R.id.diary_showdate);
+        et_date.setText(sdf.format(myCalendar.getTime()));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +90,15 @@ public class WriteDiaryActivity extends AppCompatActivity {
         });
 
         Date currentTime = Calendar.getInstance().getTime();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd", Locale.KOREA);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
         textViewDate.setText(simpleDateFormat.format(currentTime));
+
+        textViewDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(WriteDiaryActivity.this, android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
 
         imageViewMood.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +152,7 @@ public class WriteDiaryActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(WriteDiaryActivity.this, DiaryListActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

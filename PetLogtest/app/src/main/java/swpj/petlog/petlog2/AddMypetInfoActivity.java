@@ -1,12 +1,15 @@
 package swpj.petlog.petlog2;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -24,9 +27,14 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,6 +48,8 @@ public class AddMypetInfoActivity extends AppCompatActivity {
     private Bitmap bitmapFace;
     private ImageButton btn_back;
     private String image;
+    //private static String PHPURL = "http://128.199.106.86/addMypet.php";
+    //private static String TAG = "addmypet";
 
     Calendar myCalendar = Calendar.getInstance();
 
@@ -72,13 +82,14 @@ public class AddMypetInfoActivity extends AppCompatActivity {
         editTextAge = (EditText) findViewById(R.id.et_petAge);
         editTextBday = (EditText) findViewById(R.id.et_petBday);
 
+        final String PetOwner = PreferenceManager.getString(AddMypetInfoActivity.this, "userID");
+
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        final String PetOwner = PreferenceManager.getString(AddMypetInfoActivity.this, "userID");
 
         editTextBday.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,8 +130,9 @@ public class AddMypetInfoActivity extends AppCompatActivity {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(AddMypetInfoActivity.this);
                                 dialog = builder.setMessage("데이터 업로드 성공").setNegativeButton("확인", null).create();
                                 dialog.show();
-                                Intent intent = new Intent(AddMypetInfoActivity.this, MainActivity.class);
+                                Intent intent = new Intent(AddMypetInfoActivity.this, MypetMainActivity.class);
                                 startActivity(intent);
+                                finish();
                             } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(AddMypetInfoActivity.this);
                                 dialog = builder.setMessage("데이터 업로드 실패").setNegativeButton("확인", null).create();
@@ -184,5 +196,79 @@ public class AddMypetInfoActivity extends AppCompatActivity {
         return bm;
     }
 
+    /* class InsertData extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(WriteDiaryActivity.this,
+                    "Please Wait", null, true, true);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            progressDialog.dismiss();
+            Log.d(TAG, "POST response  - " + result);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String title = (String)params[1];
+            String contents = (String)params[2];
+            String userid = (String)params[3];
+            String writedate = (String)params[4];
+            String mood = (String)params[5];
+
+            String serverURL = (String)params[0];
+            String postParameters = "title=" + title + "&contents=" + contents + "&userid=" + userid + "&writedate=" + writedate + "&mood=" + mood;
+
+            try {
+                URL url = new URL(serverURL);
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.connect();
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG, "POST response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+                bufferedReader.close();
+
+                return sb.toString();
+
+            } catch (Exception e) {
+                Log.d(TAG, "InsertData: Error ", e);
+                return new String("Error: " + e.getMessage());
+            }
+        }
+    }*/
 }
 
