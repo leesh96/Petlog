@@ -9,11 +9,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.selection.SelectionTracker;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -147,7 +147,6 @@ public class DiaryListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     private class GetData extends AsyncTask<String, Void, String>{

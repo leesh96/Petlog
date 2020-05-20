@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ModuleInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +31,7 @@ import java.util.Locale;
 
 public class WriteDiaryActivity extends AppCompatActivity {
     private static String PHPURL = "http://128.199.106.86/writeDiary.php";
+    private static String mPHPURL = "http://128.199.106.86/modifyDiary.php";
     private static String TAG = "diary";
 
     private ImageView imageViewMood, imageViewPic;
@@ -74,6 +76,44 @@ public class WriteDiaryActivity extends AppCompatActivity {
         imageButtonback = (ImageButton) findViewById(R.id.btn_back);
         imageButtonhome = (ImageButton) findViewById(R.id.btn_home);
 
+        final int getId = getIntent().getIntExtra("m_diaryid", 1);
+        String getTitle = getIntent().getStringExtra("m_diarytitle");
+        String getContents = getIntent().getStringExtra("m_diarycontents");
+        String getDate = getIntent().getStringExtra("m_diarydate");
+        final int getMood = getIntent().getIntExtra("m_diarymood", 0);
+        final boolean isModify = getIntent().getBooleanExtra("ismodify", false);
+
+        Date currentTime = Calendar.getInstance().getTime();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+        textViewDate.setText(simpleDateFormat.format(currentTime));
+
+        if (isModify) {
+            textViewDate.setText(getDate);
+            textViewDate.setEnabled(false);
+            editTextTitle.setText(getTitle);
+            editTextContent.setText(getContents);
+            if (getMood == 0) {
+                imageViewMood.setImageResource(R.drawable.ic_happy);
+                inputmood = 0;
+            }
+            if (getMood == 1) {
+                imageViewMood.setImageResource(R.drawable.ic_sad);
+                inputmood = 1;
+            }
+            if (getMood == 2) {
+                imageViewMood.setImageResource(R.drawable.ic_angry);
+                inputmood = 2;
+            }
+            if (getMood == 3) {
+                imageViewMood.setImageResource(R.drawable.ic_sick);
+                inputmood = 3;
+            }
+            if (getMood == 4) {
+                imageViewMood.setImageResource(R.drawable.ic_none);
+                inputmood = 4;
+            }
+        }
+
         imageButtonhome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,10 +128,6 @@ public class WriteDiaryActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        Date currentTime = Calendar.getInstance().getTime();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-        textViewDate.setText(simpleDateFormat.format(currentTime));
 
         textViewDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,18 +177,33 @@ public class WriteDiaryActivity extends AppCompatActivity {
         imageButtonUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title = editTextTitle.getText().toString();
-                String contents = editTextContent.getText().toString();
-                String userid = PreferenceManager.getString(WriteDiaryActivity.this, "userID");
-                String writedate = textViewDate.getText().toString();
-                String mood = Integer.toString(inputmood);
+                if (isModify) {
+                    String title = editTextTitle.getText().toString();
+                    String contents = editTextContent.getText().toString();
+                    String mood = Integer.toString(inputmood);
+                    String diaryid = Integer.toString(getId);
 
-                InsertData task = new InsertData();
-                task.execute(PHPURL, title, contents, userid, writedate, mood);
+                    ModifyData task = new ModifyData();
+                    task.execute(mPHPURL, title, contents, mood, diaryid);
 
-                Intent intent = new Intent(WriteDiaryActivity.this, DiaryListActivity.class);
-                startActivity(intent);
-                finish();
+                    Intent intent = new Intent(WriteDiaryActivity.this, DiaryListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else {
+                    String title = editTextTitle.getText().toString();
+                    String contents = editTextContent.getText().toString();
+                    String userid = PreferenceManager.getString(WriteDiaryActivity.this, "userID");
+                    String writedate = textViewDate.getText().toString();
+                    String mood = Integer.toString(inputmood);
+
+                    InsertData task = new InsertData();
+                    task.execute(PHPURL, title, contents, userid, writedate, mood);
+
+                    Intent intent = new Intent(WriteDiaryActivity.this, DiaryListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
     }
@@ -185,6 +236,80 @@ public class WriteDiaryActivity extends AppCompatActivity {
 
             String serverURL = (String)params[0];
             String postParameters = "title=" + title + "&contents=" + contents + "&userid=" + userid + "&writedate=" + writedate + "&mood=" + mood;
+
+            try {
+                URL url = new URL(serverURL);
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.connect();
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG, "POST response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+                bufferedReader.close();
+
+                return sb.toString();
+
+            } catch (Exception e) {
+                Log.d(TAG, "InsertData: Error ", e);
+                return new String("Error: " + e.getMessage());
+            }
+        }
+    }
+
+    class ModifyData extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(WriteDiaryActivity.this,
+                    "Please Wait", null, true, true);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            progressDialog.dismiss();
+            Log.d(TAG, "POST response  - " + result);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String title = (String)params[1];
+            String contents = (String)params[2];
+            String mood = (String)params[3];
+            String diaryid = (String)params[4];
+
+            String serverURL = (String)params[0];
+            String postParameters = "title=" + title + "&contents=" + contents + "&mood=" + mood + "&diaryid=" + diaryid;
 
             try {
                 URL url = new URL(serverURL);

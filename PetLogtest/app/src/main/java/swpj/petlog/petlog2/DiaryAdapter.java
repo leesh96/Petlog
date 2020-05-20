@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -52,7 +51,6 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.CustomViewHo
                 }
             });
         }
-
     }
 
     @NonNull
@@ -91,20 +89,4 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.CustomViewHo
         return (null != mList ? mList.size() : 0);
     }
 
-    /*
-    public void addItem(DiarylistData item) {
-        mList.add(item);
-    }
-
-    public void setItems(ArrayList<DiarylistData> items) {
-        this.mList = items;
-    }
-
-    public DiarylistData getItem(int position) {
-        return mList.get(position);
-    }
-
-    public void setItem(int position, DiarylistData item) {
-        mList.set(position, item);
-    }*/
 }

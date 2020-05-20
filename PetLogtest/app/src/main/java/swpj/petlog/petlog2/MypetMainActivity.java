@@ -21,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,11 +40,15 @@ public class MypetMainActivity extends AppCompatActivity {
     private ImageButton imgbtn_home, imgbtn_mypetmenu;
 
     private static String PHPURL = "http://128.199.106.86/showMypet.php";
-    private static String TAG = "getmypet";
+    private static String TAG = "mypet";
+    private static String dPHPURL = "http://128.199.106.86/deleteMypet.php";
     private String jsonString;
     private ArrayList<MypetData> arrayList;
-    private MypetAdapter mypetAdapter;
-    private RecyclerView recyclerViewMypet;
+
+    private ViewPager viewPager;
+    private MypetPagerAdapter pagerAdapter;
+
+    private boolean isModify = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +67,23 @@ public class MypetMainActivity extends AppCompatActivity {
             }
         });
 
+        viewPager = (ViewPager) findViewById(R.id.vp_mypet);
+        arrayList = new ArrayList<>();
+        pagerAdapter = new MypetPagerAdapter(this, arrayList);
+        viewPager.setAdapter(pagerAdapter);
+        arrayList.clear();
+        pagerAdapter.notifyDataSetChanged();
+
+        GetData task = new GetData();
+        task.execute(PHPURL, userID);
+
         imgbtn_mypetmenu = (ImageButton) findViewById(R.id.btn_mypetmenu);
         imgbtn_mypetmenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context wrapper = new ContextThemeWrapper(MypetMainActivity.this, R.style.mypetmenustyle);
                 PopupMenu popupMenu = new PopupMenu(MypetMainActivity.this, v);
-                MenuInflater inflater = popupMenu.getMenuInflater();
+                final MenuInflater inflater = popupMenu.getMenuInflater();
                 Menu menu = popupMenu.getMenu();
 
                 inflater.inflate(R.menu.mypet_menu, menu);
@@ -77,12 +92,36 @@ public class MypetMainActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.mypetadd:
-                                Intent intent = new Intent(MypetMainActivity.this, AddMypetInfoActivity.class);
-                                startActivity(intent);
+                                Intent intent1 = new Intent(MypetMainActivity.this, AddMypetInfoActivity.class);
+                                startActivity(intent1);
                                 break;
                             case R.id.mypetmodify:
+                                isModify = true;
+
+                                int curitem = viewPager.getCurrentItem();
+                                MypetData mypetData = arrayList.get(curitem);
+
+                                Intent intent2 = new Intent(MypetMainActivity.this, AddMypetInfoActivity.class);
+                                intent2.putExtra("petId", mypetData.getMember_id());
+                                intent2.putExtra("petName", mypetData.getMember_name());
+                                intent2.putExtra("petSex", mypetData.getMember_sex());
+                                intent2.putExtra("petSpecie", mypetData.getMember_specie());
+                                intent2.putExtra("petAge", mypetData.getMember_age());
+                                intent2.putExtra("petBday", mypetData.getMember_bday());
+                                intent2.putExtra("ismodify", isModify);
+                                startActivity(intent2);
                                 break;
                             case R.id.mypetdelete:
+                                int delitem = viewPager.getCurrentItem();
+                                MypetData delData = arrayList.get(delitem);
+                                String delId = Integer.toString(delData.getMember_id());
+
+                                arrayList.remove(delitem);
+                                pagerAdapter.notifyDataSetChanged();
+
+                                DeleteData task = new DeleteData();
+                                task.execute(dPHPURL, delId);
+
                                 break;
                         }
                         return false;
@@ -92,35 +131,6 @@ public class MypetMainActivity extends AppCompatActivity {
             }
         });
 
-        recyclerViewMypet = (RecyclerView) findViewById(R.id.mypet_rcview);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerViewMypet.setLayoutManager(layoutManager);
-
-        arrayList = new ArrayList<>();
-
-        mypetAdapter = new MypetAdapter(this, arrayList);
-        recyclerViewMypet.setAdapter(mypetAdapter);
-        arrayList.clear();
-        mypetAdapter.notifyDataSetChanged();
-
-        GetData task = new GetData();
-        task.execute(PHPURL, userID);
-
-        mypetAdapter.setOnItemClickListener(new MypetAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                MypetData mypetData = arrayList.get(position);
-
-                Intent intent = new Intent(MypetMainActivity.this, ShowMypetActivity.class );
-                intent.putExtra("petid", mypetData.getMember_id());
-                intent.putExtra("petname", mypetData.getMember_name());
-                intent.putExtra("petsex", mypetData.getMember_sex());
-                intent.putExtra("petspecie", mypetData.getMember_specie());
-                intent.putExtra("petage", mypetData.getMember_age());
-                intent.putExtra("petbday", mypetData.getMember_bday());
-                startActivity(intent);
-            }
-        });
     }
 
     public static Bitmap StringToBitMap(String image){
@@ -265,12 +275,83 @@ public class MypetMainActivity extends AppCompatActivity {
                 mypetData.setMember_bday(Bday);
 
                 arrayList.add(mypetData);
-                mypetAdapter.notifyDataSetChanged();
 
+                pagerAdapter.notifyDataSetChanged();
             }
 
         } catch (JSONException e) {
             Log.d(TAG, "showResult : ", e);
+        }
+    }
+
+    class DeleteData extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(MypetMainActivity.this,
+                    "Please Wait", null, true, true);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            progressDialog.dismiss();
+            Log.d(TAG, "POST response  - " + result);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String petid = (String)params[1];
+
+            String serverURL = (String)params[0];
+            String postParameters = "petid=" + petid;
+
+            try {
+                URL url = new URL(serverURL);
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.connect();
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG, "POST response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+                bufferedReader.close();
+
+                return sb.toString();
+
+            } catch (Exception e) {
+                Log.d(TAG, "InsertData: Error ", e);
+                return new String("Error: " + e.getMessage());
+            }
         }
     }
 }

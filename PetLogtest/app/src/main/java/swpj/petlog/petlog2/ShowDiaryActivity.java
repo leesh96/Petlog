@@ -13,6 +13,7 @@ public class ShowDiaryActivity extends AppCompatActivity {
     private ImageButton imageButtonback, imageButtonhome, imageButtonModify;
     private TextView textViewdate, textViewtitle, textViewcontents;
     private ImageView imageViewmood;
+    private boolean isModify = false;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -27,11 +28,11 @@ public class ShowDiaryActivity extends AppCompatActivity {
         textViewcontents = (TextView) findViewById(R.id.diary_content);
         imageViewmood = (ImageView) findViewById(R.id.diary_mood);
 
-        int getId = getIntent().getIntExtra("diaryid", 1);
-        String getTitle = getIntent().getStringExtra("diarytitle");
-        String getContents = getIntent().getStringExtra("diarycontents");
-        String getDate = getIntent().getStringExtra("diarydate");
-        int getMood = getIntent().getIntExtra("diarymood", 0);
+        final int getId = getIntent().getIntExtra("diaryid", 1);
+        final String getTitle = getIntent().getStringExtra("diarytitle");
+        final String getContents = getIntent().getStringExtra("diarycontents");
+        final String getDate = getIntent().getStringExtra("diarydate");
+        final int getMood = getIntent().getIntExtra("diarymood", 0);
 
         imageButtonhome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +72,15 @@ public class ShowDiaryActivity extends AppCompatActivity {
         imageButtonModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                isModify = true;
+                Intent intent = new Intent(ShowDiaryActivity.this, WriteDiaryActivity.class);
+                intent.putExtra("m_diaryid", getId);
+                intent.putExtra("m_diarytitle", getTitle);
+                intent.putExtra("m_diarycontents", getContents);
+                intent.putExtra("m_diarydate", getDate);
+                intent.putExtra("m_diarymood", getMood);
+                intent.putExtra("ismodify", isModify);
+                startActivity(intent);
             }
         });
     }

@@ -48,8 +48,8 @@ public class AddMypetInfoActivity extends AppCompatActivity {
     private Bitmap bitmapFace;
     private ImageButton btn_back;
     private String image;
-    //private static String PHPURL = "http://128.199.106.86/addMypet.php";
-    //private static String TAG = "addmypet";
+    private static String PHPURL = "http://128.199.106.86/modifyMypet.php";
+    private static String TAG = "mypet";
 
     Calendar myCalendar = Calendar.getInstance();
 
@@ -84,12 +84,28 @@ public class AddMypetInfoActivity extends AppCompatActivity {
 
         final String PetOwner = PreferenceManager.getString(AddMypetInfoActivity.this, "userID");
 
+        final int getId = getIntent().getIntExtra("petId", 0);
+        String getName = getIntent().getStringExtra("petName");
+        String getSex = getIntent().getStringExtra("petSex");
+        String getSpecie = getIntent().getStringExtra("petSpecie");
+        String getAge = getIntent().getStringExtra("petAge");
+        String getBday = getIntent().getStringExtra("petBday");
+        final boolean isModify = getIntent().getBooleanExtra("ismodify", false);
+
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+
+        if(isModify) {
+            editTextName.setText(getName);
+            editTextSex.setText(getSex);
+            editTextSpecies.setText(getSpecie);
+            editTextAge.setText(getAge);
+            editTextBday.setText(getBday);
+        }
 
         editTextBday.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,42 +126,62 @@ public class AddMypetInfoActivity extends AppCompatActivity {
         });
 
         btn_add = (Button) findViewById(R.id.btn_regist);
+        if(isModify){
+            btn_add.setText("수정하기");
+        }
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String PetName = editTextName.getText().toString();
-                String PetSex = editTextSex.getText().toString();
-                String PetSpecies = editTextSpecies.getText().toString();
-                String PetAge = editTextAge.getText().toString();
-                String PetBday = editTextBday.getText().toString();
+                if(isModify) {
+                    String PetName = editTextName.getText().toString();
+                    String PetSex = editTextSex.getText().toString();
+                    String PetSpecies = editTextSpecies.getText().toString();
+                    String PetAge = editTextAge.getText().toString();
+                    String PetBday = editTextBday.getText().toString();
+                    String PetId = Integer.toString(getId);
 
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            boolean success = jsonObject.getBoolean("success");
+                    ModifyData task = new ModifyData();
+                    task.execute(PHPURL, PetName, PetSex, PetSpecies, PetAge, PetBday, PetId);
 
-                            if (success) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(AddMypetInfoActivity.this);
-                                dialog = builder.setMessage("데이터 업로드 성공").setNegativeButton("확인", null).create();
-                                dialog.show();
-                                Intent intent = new Intent(AddMypetInfoActivity.this, MypetMainActivity.class);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(AddMypetInfoActivity.this);
-                                dialog = builder.setMessage("데이터 업로드 실패").setNegativeButton("확인", null).create();
-                                dialog.show();
+                    Intent intent = new Intent(AddMypetInfoActivity.this, MypetMainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else {
+                    String PetName = editTextName.getText().toString();
+                    String PetSex = editTextSex.getText().toString();
+                    String PetSpecies = editTextSpecies.getText().toString();
+                    String PetAge = editTextAge.getText().toString();
+                    String PetBday = editTextBday.getText().toString();
+
+                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                boolean success = jsonObject.getBoolean("success");
+
+                                if (success) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(AddMypetInfoActivity.this);
+                                    dialog = builder.setMessage("데이터 업로드 성공").setNegativeButton("확인", null).create();
+                                    dialog.show();
+                                    Intent intent = new Intent(AddMypetInfoActivity.this, MypetMainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(AddMypetInfoActivity.this);
+                                    dialog = builder.setMessage("데이터 업로드 실패").setNegativeButton("확인", null).create();
+                                    dialog.show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
-                };
-                AddMypetInfoRequest addMypetInfoRequest = new AddMypetInfoRequest(PetName, PetSex, PetSpecies, PetAge, PetBday, image, PetOwner, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(AddMypetInfoActivity.this);
-                queue.add(addMypetInfoRequest);
+                    };
+                    AddMypetInfoRequest addMypetInfoRequest = new AddMypetInfoRequest(PetName, PetSex, PetSpecies, PetAge, PetBday, image, PetOwner, responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(AddMypetInfoActivity.this);
+                    queue.add(addMypetInfoRequest);
+                }
             }
         });
     }
@@ -196,13 +232,13 @@ public class AddMypetInfoActivity extends AppCompatActivity {
         return bm;
     }
 
-    /* class InsertData extends AsyncTask<String, Void, String> {
+    class ModifyData extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
-            progressDialog = ProgressDialog.show(WriteDiaryActivity.this,
+            progressDialog = ProgressDialog.show(AddMypetInfoActivity.this,
                     "Please Wait", null, true, true);
         }
 
@@ -216,14 +252,15 @@ public class AddMypetInfoActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            String title = (String)params[1];
-            String contents = (String)params[2];
-            String userid = (String)params[3];
-            String writedate = (String)params[4];
-            String mood = (String)params[5];
+            String name = (String)params[1];
+            String sex = (String)params[2];
+            String specie = (String)params[3];
+            String age = (String)params[4];
+            String bday = (String)params[5];
+            String petid = (String)params[6];
 
             String serverURL = (String)params[0];
-            String postParameters = "title=" + title + "&contents=" + contents + "&userid=" + userid + "&writedate=" + writedate + "&mood=" + mood;
+            String postParameters = "name=" + name + "&sex=" + sex + "&specie=" + specie + "&age=" + age + "&bday=" + bday + "&petid=" + petid;
 
             try {
                 URL url = new URL(serverURL);
@@ -269,6 +306,6 @@ public class AddMypetInfoActivity extends AppCompatActivity {
                 return new String("Error: " + e.getMessage());
             }
         }
-    }*/
+    }
 }
 

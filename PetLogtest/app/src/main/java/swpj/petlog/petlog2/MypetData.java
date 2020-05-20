@@ -7,6 +7,15 @@ public class MypetData {
     private String member_specie;
     private String member_age;
     private String member_bday;
+    private String member_memo;
+
+    public String getMember_memo() {
+        return member_memo;
+    }
+
+    public void setMember_memo(String member_memo) {
+        this.member_memo = member_memo;
+    }
 
     public int getMember_id() {
         return member_id;
