@@ -32,6 +32,7 @@
         <activity android:name=".WriteDiaryActivity"></activity>
         <activity android:name=".DiaryListActivity"></activity>
         <activity android:name=".ShowDiaryActivity"></activity>
+        <activity android:name=".DiaryDeleteActivity"></activity>
 
     </application>
 

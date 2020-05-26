@@ -31,7 +31,9 @@ public class MypetPagerAdapter extends PagerAdapter {
     private Context mContext = null;
     private ArrayList<MypetData> mList = null;
     private String jsonString;
-
+    private static String PHPURL = "http://128.199.106.86/mypetMemo.php";
+    private static String dPHPURL= "http://128.199.106.86/deleteMemo.php";
+    private static String TAG = "memo";
 
     public MypetPagerAdapter(Context mContext, ArrayList<MypetData> mList) {
         this.mContext = mContext;
@@ -62,20 +64,26 @@ public class MypetPagerAdapter extends PagerAdapter {
             textViewspecie.setText(mList.get(position).getMember_specie());
             textViewage.setText(mList.get(position).getMember_age());
             textViewbday.setText(mList.get(position).getMember_bday());
+            editTextMemo.setText(mList.get(position).getMember_memo());
             int petid = mList.get(position).getMember_id();
-            String stringId = Integer.toString(petid);
+            final String petId = Integer.toString(petid);
 
             imageButtonMemoApply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    String memo = editTextMemo.getText().toString();
 
+                    InsertMemo task = new InsertMemo();
+                    task.execute(PHPURL, petId, memo);
                 }
             });
 
             imageButtonMemoDel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    editTextMemo.setText(null);
+                    DeleteMemo task = new DeleteMemo();
+                    task.execute(dPHPURL, petId);
                 }
             });
         }
@@ -100,5 +108,149 @@ public class MypetPagerAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return (view == (View)object);
+    }
+
+    class InsertMemo extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(mContext,
+                    "Please Wait", null, true, true);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            progressDialog.dismiss();
+            Log.d(TAG, "POST response  - " + result);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String petid = (String)params[1];
+            String memo = (String)params[2];
+
+            String serverURL = (String)params[0];
+
+            String postParameters = "petid=" + petid + "&memo=" + memo;
+
+            try {
+                URL url = new URL(serverURL);
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.connect();
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG, "POST response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+                bufferedReader.close();
+
+                return sb.toString();
+
+            } catch (Exception e) {
+                Log.d(TAG, "InsertData: Error ", e);
+                return new String("Error: " + e.getMessage());
+            }
+        }
+    }
+
+    class DeleteMemo extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(mContext,
+                    "Please Wait", null, true, true);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            progressDialog.dismiss();
+            Log.d(TAG, "POST response  - " + result);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String petid = (String)params[1];
+
+            String serverURL = (String)params[0];
+            String postParameters = "petid=" + petid;
+
+            try {
+                URL url = new URL(serverURL);
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.connect();
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG, "POST response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+                bufferedReader.close();
+
+                return sb.toString();
+
+            } catch (Exception e) {
+                Log.d(TAG, "InsertData: Error ", e);
+                return new String("Error: " + e.getMessage());
+            }
+        }
     }
 }

@@ -116,12 +116,11 @@ public class MypetMainActivity extends AppCompatActivity {
                                 MypetData delData = arrayList.get(delitem);
                                 String delId = Integer.toString(delData.getMember_id());
 
-                                arrayList.remove(delitem);
-                                pagerAdapter.notifyDataSetChanged();
-
                                 DeleteData task = new DeleteData();
                                 task.execute(dPHPURL, delId);
 
+                                finish();
+                                startActivity(getIntent());
                                 break;
                         }
                         return false;
@@ -249,6 +248,7 @@ public class MypetMainActivity extends AppCompatActivity {
         String TAG_SPECIE = "specie";
         String TAG_AGE = "age";
         String TAG_BDAY = "bday";
+        String TAG_MEMO = "memo";
 
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
@@ -264,6 +264,10 @@ public class MypetMainActivity extends AppCompatActivity {
                 String Specie = item.getString(TAG_SPECIE);
                 String Age = item.getString(TAG_AGE);
                 String Bday = item.getString(TAG_BDAY);
+                String Memo = null;
+                if (item.getString(TAG_MEMO) != "null") {
+                    Memo = item.getString(TAG_MEMO);
+                }
 
                 MypetData mypetData = new MypetData();
 
@@ -273,6 +277,7 @@ public class MypetMainActivity extends AppCompatActivity {
                 mypetData.setMember_specie(Specie);
                 mypetData.setMember_age(Age);
                 mypetData.setMember_bday(Bday);
+                mypetData.setMember_memo(Memo);
 
                 arrayList.add(mypetData);
 
