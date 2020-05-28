@@ -76,13 +76,22 @@ public class DiaryDeleteActivity extends AppCompatActivity {
         diaryDeleteAdapter.setOnCheckedChangeListener(new DiaryDeleteAdapter.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                int position = recyclerViewDiary.getChildAdapterPosition();
-
             }
         });
+
         imageButtondel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DeleteData task1 = new DeleteData();
+                ArrayList<String> delList = new ArrayList<>();
+
+                for(int i = 0; i < arrayList.size(); i++) {
+                    if (arrayList.get(i).isSelected()){
+                        String diaryId = Integer.toString(arrayList.get(i).getMember_id());
+                        delList.add(diaryId);
+                    }
+                }
+                task1.execute(delList);
 
                 Intent intent = new Intent(DiaryDeleteActivity.this, DiaryListActivity.class);
                 startActivity(intent);
@@ -229,7 +238,7 @@ public class DiaryDeleteActivity extends AppCompatActivity {
         }
     }
 
-    class DeleteData extends AsyncTask<String, Void, String> {
+    class DeleteData extends AsyncTask<ArrayList<String>, Void, String> {
         ProgressDialog progressDialog;
         @Override
         protected void onPreExecute() {
@@ -247,12 +256,25 @@ public class DiaryDeleteActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(ArrayList<String>... params) {
 
-            String diaryid = (String)params[1];
+            ArrayList<String> diaryid = (ArrayList<String>)params[0];
 
-            String serverURL = (String)params[0];
-            String postParameters = "diaryid=" + diaryid;
+            JSONArray jsonArray = new JSONArray();
+            try {
+                for(int i = 0; i < diaryid.size(); i++) {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("diaryid", diaryid.get(i));
+                    jsonArray.put(jsonObject);
+                }
+
+                Log.d("ArrayList to JSONArray", jsonArray.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            String serverURL = "http://128.199.106.86/deleteDiary.php";
+            String postParameters = "diaryid=" + jsonArray.toString();
 
             try {
                 URL url = new URL(serverURL);
@@ -264,8 +286,7 @@ public class DiaryDeleteActivity extends AppCompatActivity {
                 httpURLConnection.connect();
 
                 OutputStream outputStream = httpURLConnection.getOutputStream();
-                outputStream.write(postParameters.getBytes("UTF-8"));
-                outputStream.flush();
+                outputStream.write(postParameters.getBytes("utf-8"));
                 outputStream.close();
 
                 int responseStatusCode = httpURLConnection.getResponseCode();

@@ -6,10 +6,20 @@ public class DiarylistData {
     private String member_contents;
     private String member_date;
     private int member_mood;
+    private boolean selected;
 
     public DiarylistData(String member_title, String member_date) {
         this.member_title = member_title;
         this.member_date = member_date;
+        this.selected = false;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     public int getMember_id() {

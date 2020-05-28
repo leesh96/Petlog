@@ -8,6 +8,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -71,6 +72,7 @@ public class DiaryDeleteAdapter extends RecyclerView.Adapter<DiaryDeleteAdapter.
     public void onBindViewHolder(@NonNull DiaryDeleteAdapter.CustomViewHolder viewHolder, final int position) {
         viewHolder.textViewTitle.setText(mList.get(position).getMember_title());
         viewHolder.textViewDate.setText(mList.get(position).getMember_date());
+        viewHolder.checkBox.setChecked(mList.get(position).isSelected());
 
         int mood = mList.get(position).getMember_mood();
         if (mood == 0) {
@@ -89,6 +91,17 @@ public class DiaryDeleteAdapter extends RecyclerView.Adapter<DiaryDeleteAdapter.
             viewHolder.imageViewMood.setImageResource(R.drawable.ic_none);
         }
 
+        viewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    mList.get(position).setSelected(true);
+                }
+                else {
+                    mList.get(position).setSelected(false);
+                }
+            }
+        });
     }
 
     @Override

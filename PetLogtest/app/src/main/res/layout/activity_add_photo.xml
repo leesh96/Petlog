@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddPhotoActivity"
+    android:background="@color/bg">
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/theme4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/nanumbarungothic_b"
+            android:text="펫스타그램"
+            android:textAlignment="center"
+            android:textColor="@color/text"
+            android:textSize="40sp" />
+        <Button
+            android:id="@+id/addphoto_btn_upload"
+            android:text="업로드"
+            android:background="@drawable/border_style"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/nanumbarungothic_n"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="320dp"
+        android:layout_height="480dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:layout_constraintVertical_bias="0.42">
+
+        <ImageView
+            android:id="@+id/addphoto_image"
+            android:background="@drawable/ic_gallary_100dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_alignParentRight="true" />
+        <EditText
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_below="@+id/addphoto_image"
+            android:hint="글을 입력하세요."
+            android:paddingLeft="20dp"
+            android:background="@drawable/border_style"
+            android:privateImeOptions="defaultInputmode=korean"
+            android:inputType="text"
+            android:id="@+id/petsta_content">
+        </EditText>
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

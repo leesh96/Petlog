@@ -33,6 +33,8 @@
         <activity android:name=".DiaryListActivity"></activity>
         <activity android:name=".ShowDiaryActivity"></activity>
         <activity android:name=".DiaryDeleteActivity"></activity>
+        <activity android:name=".PetstaMain"></activity>
+        <activity android:name=".AddPhotoActivity"></activity>
 
     </application>
 
