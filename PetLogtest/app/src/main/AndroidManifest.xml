@@ -3,6 +3,7 @@
     package="swpj.petlog.petlog2">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -21,6 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".SignupDoneActivity"></activity>
@@ -33,6 +35,7 @@
         <activity android:name=".DiaryListActivity"></activity>
         <activity android:name=".ShowDiaryActivity"></activity>
         <activity android:name=".DiaryDeleteActivity"></activity>
+
         <activity android:name=".PetstaMain"></activity>
         <activity android:name=".AddPhotoActivity"></activity>
 

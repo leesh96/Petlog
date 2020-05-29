@@ -50,7 +50,6 @@ public class PetstaMain extends AppCompatActivity {
         petsta_my_fragment = new Petsta_my_fragment();
         petsta_all_fragment = new Petsta_all_fragment();
         petsta_write_fragment = new Petsta_write_fragment();
-        petsta_write_fragment.
         petsta_profile_fragment = new Petsta_profile_fragment();
 
     }

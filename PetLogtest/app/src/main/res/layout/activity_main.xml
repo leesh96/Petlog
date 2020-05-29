@@ -94,7 +94,7 @@
             android:textSize="26dp" />
 
         <ImageButton
-            android:id="@+id/btn_mypet"
+            android:id="@+id/btn_mypetin"
             android:clickable="true"
             android:layout_width="120dp"
             android:layout_height="120dp"
@@ -116,6 +116,7 @@
             android:textSize="26dp" />
 
         <ImageButton
+            android:id="@+id/btn_talktalkin"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_above="@+id/tv14"
@@ -143,7 +144,6 @@
             android:layout_height="wrap_content"
             android:text="logout"
             android:layout_centerInParent="true"/>
-
 
     </RelativeLayout>
 
