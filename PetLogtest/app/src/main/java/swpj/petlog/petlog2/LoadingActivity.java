@@ -1,11 +1,14 @@
 package swpj.petlog.petlog2;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import swpj.petlog.petlog2.app.LoginActivity;
 
 public class LoadingActivity extends AppCompatActivity {
     private Intent intent;

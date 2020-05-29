@@ -24,20 +24,32 @@
         </activity>
 
         <activity android:name=".MainActivity"></activity>
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".SignupDoneActivity"></activity>
-        <activity android:name=".RegisterActivity"></activity>
-        <activity android:name=".FindpwActivity"></activity>
-        <activity android:name=".ResetpwActivity"></activity>
-        <activity android:name=".AddMypetInfoActivity"></activity>
-        <activity android:name=".MypetMainActivity"></activity>
-        <activity android:name=".WriteDiaryActivity"></activity>
-        <activity android:name=".DiaryListActivity"></activity>
-        <activity android:name=".ShowDiaryActivity"></activity>
-        <activity android:name=".DiaryDeleteActivity"></activity>
+        <activity android:name=".app.LoginActivity"></activity>
+        <activity android:name=".app.SignupDoneActivity"></activity>
+        <activity android:name=".app.RegisterActivity"></activity>
+        <activity android:name=".app.FindpwActivity"></activity>
+        <activity android:name=".app.ResetpwActivity"></activity>
+        <activity android:name=".mypet.AddMypetInfoActivity"></activity>
+        <activity android:name=".mypet.MypetMainActivity"></activity>
+        <activity android:name=".diary.WriteDiaryActivity"></activity>
+        <activity android:name=".diary.DiaryListActivity"></activity>
+        <activity android:name=".diary.ShowDiaryActivity"></activity>
+        <activity android:name=".diary.DiaryDeleteActivity"></activity>
 
-        <activity android:name=".PetstaMain"></activity>
-        <activity android:name=".AddPhotoActivity"></activity>
+        <activity android:name=".petsta.PetstaMain"></activity>
+        <activity android:name=".petsta.AddPhotoActivity"></activity>
+        
+        <activity android:name=".talktalk.TalktalkActivity"></activity>
+        <activity android:name=".talktalk.navigation.ShareCommentActivity"></activity>
+        <activity android:name=".talktalk.navigation.WalkCommentActivity"></activity>
+        <activity android:name=".talktalk.ShareActivity"></activity>
+        <activity android:name=".talktalk.ShareDetailActivity"></activity>
+        <activity android:name=".talktalk.ShareEditActivity"></activity>
+        <activity android:name=".talktalk.ShareWriteActivity"></activity>
+        <activity android:name=".talktalk.WalkActivity"></activity>
+        <activity android:name=".talktalk.SetWalkImageActivity"></activity>
+        <activity android:name=".talktalk.WalkDetailActivity"></activity>
+        <activity android:name=".talktalk.WalkWriteActivity"></activity>
 
     </application>
 

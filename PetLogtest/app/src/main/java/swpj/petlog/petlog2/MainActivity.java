@@ -8,6 +8,12 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import swpj.petlog.petlog2.app.LoginActivity;
+import swpj.petlog.petlog2.diary.DiaryListActivity;
+import swpj.petlog.petlog2.mypet.MypetMainActivity;
+import swpj.petlog.petlog2.petsta.PetstaMain;
+import swpj.petlog.petlog2.talktalk.TalktalkActivity;
+
 public class MainActivity extends AppCompatActivity {
     private ImageButton imgbtn_mypet, imgbtn_dairy, imgbtn_petsta, imgbtn_talktalk;
     private Button btn_logout;
@@ -59,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
         imgbtn_talktalk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(MainActivity.this, TalktalkActivity.class);
+                startActivity(intent);
             }
         });
     }
