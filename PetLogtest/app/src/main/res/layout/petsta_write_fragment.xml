@@ -7,19 +7,20 @@
 
     <ImageView
         android:id="@+id/addphoto_image"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
-        android:background="@drawable/ic_gallary_100dp"/>
+        android:padding="50dp"
+        android:src="@drawable/ic_gallary_100dp"/>
 
     <EditText
         android:id="@+id/petsta_content"
         android:layout_width="400dp"
         android:layout_height="200dp"
         android:layout_below="@id/addphoto_image"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         android:hint="내용을 입력하세요."
         android:paddingLeft="10dp"
         android:fontFamily="@font/nanumbarungothic_n"
@@ -36,7 +37,7 @@
         android:layout_height="50dp"
         android:layout_below="@+id/petsta_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/button_style"
         android:fontFamily="@font/nanumbarungothic_b"
         android:text="공유하기"

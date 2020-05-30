@@ -1,6 +1,5 @@
 package swpj.petlog.petlog2.petsta;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -36,6 +35,8 @@ import java.util.Date;
 import swpj.petlog.petlog2.PreferenceManager;
 import swpj.petlog.petlog2.R;
 
+import static android.app.Activity.RESULT_OK;
+
 public class Petsta_write_fragment extends Fragment{
     int PICK_IMAGE_FROM_ALBUM = 1;
     private Button addphoto_btn_upload;
@@ -55,6 +56,7 @@ public class Petsta_write_fragment extends Fragment{
 
         editContent = (EditText) rootView.findViewById(R.id.petsta_content);
         addphoto_image = (ImageView) rootView.findViewById(R.id.addphoto_image);
+
         addphoto_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +103,7 @@ public class Petsta_write_fragment extends Fragment{
                 queue.add(addPhotoRequest);
             }
         });
+
         return rootView;
     }
 
@@ -129,7 +132,7 @@ public class Petsta_write_fragment extends Fragment{
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_FROM_ALBUM){
-            if(resultCode == Activity.RESULT_OK){
+            if(resultCode == RESULT_OK){
                 try {
                     InputStream is = getActivity().getContentResolver().openInputStream(data.getData());
                     bitmap = BitmapFactory.decodeStream(is);
