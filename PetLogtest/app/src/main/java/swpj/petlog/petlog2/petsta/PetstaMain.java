@@ -27,7 +27,6 @@ public class PetstaMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.petsta_main);
 
-
         bottomNavigationView = findViewById(R.id.bottomNavi);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -49,7 +48,6 @@ public class PetstaMain extends AppCompatActivity {
                 return true;
             }
         });
-        //Petsta_write_fragment petsta_write_fragment = (Petsta_write_fragment) getSupportFragmentManager().findFragmentById(R.id.main_frame);
         petsta_my_fragment = new Petsta_my_fragment();
         petsta_all_fragment = new Petsta_all_fragment();
         petsta_write_fragment = new Petsta_write_fragment();

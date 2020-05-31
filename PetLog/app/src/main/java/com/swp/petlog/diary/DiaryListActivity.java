@@ -147,6 +147,7 @@ public class DiaryListActivity extends AppCompatActivity {
                 intent.putExtra("diarymood", diarylistData.getMember_mood());
                 intent.putExtra("diarydate", diarylistData.getMember_date());
                 startActivity(intent);
+
             }
         });
 

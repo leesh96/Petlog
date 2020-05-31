@@ -37,7 +37,6 @@
         <activity android:name=".diary.DiaryDeleteActivity"></activity>
 
         <activity android:name=".petsta.PetstaMain"></activity>
-        <activity android:name=".petsta.AddPhotoActivity"></activity>
         
         <activity android:name=".talktalk.TalktalkActivity"></activity>
         <activity android:name=".talktalk.navigation.ShareCommentActivity"></activity>

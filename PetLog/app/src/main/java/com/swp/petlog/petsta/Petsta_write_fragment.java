@@ -96,7 +96,7 @@ public class Petsta_write_fragment extends Fragment {
                         }
                     }
                 };
-                AddPhotoRequest addPhotoRequest = new AddPhotoRequest(nickname, contents, petsta_image, responseListener);
+                AddPhotoRequest addPhotoRequest = new AddPhotoRequest(nickname, contents, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(getActivity());
                 queue.add(addPhotoRequest);
             }

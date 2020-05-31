@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -69,11 +70,15 @@ public class Petsta_write_fragment extends Fragment{
 
         final String nickname = PreferenceManager.getString(getActivity(), "userNick");
 
+        Toast.makeText(getActivity(), "nickname=" + nickname, Toast.LENGTH_SHORT).show();
+
         addphoto_btn_upload = (Button) rootView.findViewById(R.id.btn_share);
         addphoto_btn_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String contents = editContent.getText().toString();
+
+                Toast.makeText(getActivity(), "contents=" + contents, Toast.LENGTH_SHORT).show();
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
@@ -98,7 +103,7 @@ public class Petsta_write_fragment extends Fragment{
                         }
                     }
                 };
-                AddPhotoRequest addPhotoRequest = new AddPhotoRequest(nickname, contents, petsta_image, responseListener);
+                AddPhotoRequest addPhotoRequest = new AddPhotoRequest(nickname, contents, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(getActivity());
                 queue.add(addPhotoRequest);
             }

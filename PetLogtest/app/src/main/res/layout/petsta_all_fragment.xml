@@ -7,7 +7,6 @@
 
 
     <RelativeLayout
-        android:layout_below="@+id/app_bar1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">

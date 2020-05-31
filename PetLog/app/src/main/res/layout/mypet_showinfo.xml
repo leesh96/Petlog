@@ -133,7 +133,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
                 android:background="@android:color/white"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:fontFamily="@font/nanumbarungothic_n"/>
 
         </LinearLayout>
 

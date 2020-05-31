@@ -37,7 +37,6 @@
         <activity android:name=".diary.DiaryDeleteActivity"></activity>
 
         <activity android:name=".petsta.PetstaMain"></activity>
-        <activity android:name=".petsta.AddPhotoActivity"></activity>
 
         <activity android:name=".talktalk.TalktalkActivity"></activity>
         <activity android:name=".talktalk.navigation.ShareCommentActivity"></activity>
@@ -50,6 +49,8 @@
         <activity android:name=".talktalk.SetWalkImageActivity"></activity>
         <activity android:name=".talktalk.WalkDetailActivity"></activity>
         <activity android:name=".talktalk.WalkWriteActivity"></activity>
+
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 
     </application>
 

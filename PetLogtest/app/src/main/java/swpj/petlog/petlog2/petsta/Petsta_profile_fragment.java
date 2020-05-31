@@ -1,88 +1,221 @@
 package swpj.petlog.petlog2.petsta;
-import android.graphics.Bitmap;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import swpj.petlog.petlog2.PreferenceManager;
 import swpj.petlog.petlog2.R;
 
-
 public class Petsta_profile_fragment extends Fragment{
-    private View view;
-    int PICK_IMAGE_FROM_ALBUM = 1;
-    private String petsta_profile_image;
-    private Bitmap bitmap;
-    private EditText profile_text_me;
+    private static String PHPURL = "http://128.199.106.86/petstaIntro.php";
+    private static String TAG = "petsta";
+
+    private ImageView profilePic;
+    private TextView textViewNick, textViewFollowcnt;
+    private EditText editTextIntro;
+    private Button btn_controlFollow;
+    private String nickname = PreferenceManager.getString(getActivity(), "userNick");
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-       View v = inflater.inflate(R.layout.petsta_profile_fragment, container, false);
+        View v = inflater.inflate(R.layout.petsta_profile_fragment, container, false);
 
-        /*profile_text_me = (EditText) v.findViewById(R.id.profile_text_me) ;
-        ImageView petsta_profile_image = (ImageView) v.findViewById(R.id.petsta_profile_image);
-        petsta_profile_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, 1);
-            }
-        });
-        */
+        profilePic = (ImageView) v.findViewById(R.id.petsta_profile_image);
+        textViewNick = (TextView) v.findViewById(R.id.profile_text);
+        textViewFollowcnt = (TextView) v.findViewById(R.id.follow_cnt);
+        editTextIntro = (EditText) v.findViewById(R.id.profile_text_me);
+        btn_controlFollow = (Button) v.findViewById(R.id.btn_control_follow);
+
+        textViewNick.setText(nickname);
 
         return v;
     }
 
-    /*
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_FROM_ALBUM){
-            if(resultCode == Activity.RESULT_OK){
-                try {
-                    InputStream is = getActivity().getContentResolver().openInputStream(data.getData());
-                    bitmap = BitmapFactory.decodeStream(is);
-                    is.close();
-                    bitmap = resize(bitmap);
-                    petsta_profile_image.setImageBitmap(bitmap);
-                    petsta_profile_image = BitmapToString(bitmap);
-                    try {
-                        petsta_profile_image = URLEncoder.encode(petsta_profile_image, "utf-8");
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+    TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String intro = editTextIntro.getText().toString();
+            InsertData task = new InsertData();
+            task.execute(PHPURL, nickname, intro);
+        }
+    };
+
+    class GetData extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(getActivity(),
+                    "Please Wait", null, true, true);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            progressDialog.dismiss();
+            Log.d(TAG, "POST response  - " + result);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String nickname = (String)params[1];
+            String intro = (String)params[2];
+
+            String serverURL = (String)params[0];
+            String postParameters = "nickname=" + nickname + "&intro=" + intro;
+
+            try {
+                URL url = new URL(serverURL);
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.connect();
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG, "POST response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
                 }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+                bufferedReader.close();
+
+                return sb.toString();
+
+            } catch (Exception e) {
+                Log.d(TAG, "InsertData: Error ", e);
+                return new String("Error: " + e.getMessage());
             }
         }
     }
 
+    class InsertData extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
 
-    public static String BitmapToString(Bitmap bitmap){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] bytes = baos.toByteArray();
-        String temp= Base64.encodeToString(bytes, Base64.DEFAULT);
+            progressDialog = ProgressDialog.show(getActivity(),
+                    "Please Wait", null, true, true);
+        }
 
-        return temp;
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            progressDialog.dismiss();
+            Log.d(TAG, "POST response  - " + result);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String nickname = (String)params[1];
+            String intro = (String)params[2];
+
+            String serverURL = (String)params[0];
+            String postParameters = "nickname=" + nickname + "&intro=" + intro;
+
+            try {
+                URL url = new URL(serverURL);
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.connect();
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG, "POST response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+                bufferedReader.close();
+
+                return sb.toString();
+
+            } catch (Exception e) {
+                Log.d(TAG, "InsertData: Error ", e);
+                return new String("Error: " + e.getMessage());
+            }
+        }
     }
 
-    private  Bitmap resize(Bitmap bm){
-        Configuration config=getResources().getConfiguration();
-        if(config.smallestScreenWidthDp>=600)
-            bm = Bitmap.createScaledBitmap(bm, 300, 180, true);
-        else if(config.smallestScreenWidthDp>=400)
-            bm = Bitmap.createScaledBitmap(bm, 200, 120, true);
-        else if(config.smallestScreenWidthDp>=360)
-            bm = Bitmap.createScaledBitmap(bm, 180, 108, true);
-        else
-            bm = Bitmap.createScaledBitmap(bm, 160, 96, true);
-        return bm;
-    }*/
 }
+
+
