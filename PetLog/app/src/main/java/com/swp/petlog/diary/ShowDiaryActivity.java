@@ -9,13 +9,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.swp.petlog.MainActivity;
 import com.swp.petlog.R;
 
 public class ShowDiaryActivity extends AppCompatActivity {
     private ImageButton imageButtonback, imageButtonhome, imageButtonModify;
     private TextView textViewdate, textViewtitle, textViewcontents;
-    private ImageView imageViewmood;
+    private ImageView imageViewmood, imageViewpic;
     private boolean isModify = false;
 
     @Override
@@ -30,12 +31,16 @@ public class ShowDiaryActivity extends AppCompatActivity {
         textViewtitle = (TextView) findViewById(R.id.diary_title);
         textViewcontents = (TextView) findViewById(R.id.diary_content);
         imageViewmood = (ImageView) findViewById(R.id.diary_mood);
+        imageViewpic = (ImageView) findViewById(R.id.diary_pic);
 
         final int getId = getIntent().getIntExtra("diaryid", 1);
         final String getTitle = getIntent().getStringExtra("diarytitle");
         final String getContents = getIntent().getStringExtra("diarycontents");
         final String getDate = getIntent().getStringExtra("diarydate");
         final int getMood = getIntent().getIntExtra("diarymood", 0);
+        final String getImgurl = getIntent().getStringExtra("diaryimg");
+
+        Glide.with(ShowDiaryActivity.this).load(getImgurl).into(imageViewpic);
 
         imageButtonhome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +77,7 @@ public class ShowDiaryActivity extends AppCompatActivity {
         textViewtitle.setText("제목 : " + getTitle);
         textViewcontents.setText("내용 : " + getContents);
 
+
         imageButtonModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +88,7 @@ public class ShowDiaryActivity extends AppCompatActivity {
                 intent.putExtra("m_diarycontents", getContents);
                 intent.putExtra("m_diarydate", getDate);
                 intent.putExtra("m_diarymood", getMood);
+                intent.putExtra("m_diaryPic", getImgurl);
                 intent.putExtra("ismodify", isModify);
                 startActivity(intent);
             }

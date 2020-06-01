@@ -10,9 +10,7 @@
         android:id="@+id/petface"
         android:layout_width="320dp"
         android:layout_height="240dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_gallary_100dp"
-        android:padding="@android:dimen/app_icon_size" />
+        android:layout_gravity="center_horizontal" />
 
     <TextView
             android:id="@+id/tv_petName"

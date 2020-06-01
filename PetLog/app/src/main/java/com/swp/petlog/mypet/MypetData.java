@@ -8,6 +8,15 @@ public class MypetData {
     private String member_age;
     private String member_bday;
     private String member_memo;
+    private String member_face;
+
+    public String getMember_face() {
+        return member_face;
+    }
+
+    public void setMember_face(String member_face) {
+        this.member_face = member_face;
+    }
 
     public String getMember_memo() {
         return member_memo;

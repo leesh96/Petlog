@@ -110,6 +110,7 @@ public class MypetMainActivity extends AppCompatActivity {
                                 intent2.putExtra("petSpecie", mypetData.getMember_specie());
                                 intent2.putExtra("petAge", mypetData.getMember_age());
                                 intent2.putExtra("petBday", mypetData.getMember_bday());
+                                intent2.putExtra("petFace", mypetData.getMember_face());
                                 intent2.putExtra("ismodify", isModify);
                                 startActivity(intent2);
                                 break;
@@ -251,6 +252,7 @@ public class MypetMainActivity extends AppCompatActivity {
         String TAG_AGE = "age";
         String TAG_BDAY = "bday";
         String TAG_MEMO = "memo";
+        String TAG_IMG =  "face";
 
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
@@ -267,6 +269,7 @@ public class MypetMainActivity extends AppCompatActivity {
                 String Age = item.getString(TAG_AGE);
                 String Bday = item.getString(TAG_BDAY);
                 String Memo = null;
+                String Faceurl = "http://128.199.106.86/" + item.getString(TAG_IMG);
                 if (item.getString(TAG_MEMO) != "null") {
                     Memo = item.getString(TAG_MEMO);
                 }
@@ -280,6 +283,7 @@ public class MypetMainActivity extends AppCompatActivity {
                 mypetData.setMember_age(Age);
                 mypetData.setMember_bday(Bday);
                 mypetData.setMember_memo(Memo);
+                mypetData.setMember_face(Faceurl);
 
                 arrayList.add(mypetData);
 

@@ -7,6 +7,15 @@ public class DiarylistData {
     private String member_date;
     private int member_mood;
     private boolean selected;
+    private String member_img;
+
+    public String getMember_img() {
+        return member_img;
+    }
+
+    public void setMember_img(String member_img) {
+        this.member_img = member_img;
+    }
 
     public DiarylistData(String member_title, String member_date) {
         this.member_title = member_title;

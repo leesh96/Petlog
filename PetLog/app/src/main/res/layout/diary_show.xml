@@ -106,12 +106,10 @@
 
             <ImageView
                 android:id="@+id/diary_pic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="400dp"
+                android:layout_height="300dp"
                 android:layout_marginTop="40dp"
-                android:src="@drawable/ic_gallary"
-                android:layout_gravity="center"
-                android:padding="10dp"/>
+                android:layout_gravity="center" />
 
         </LinearLayout>
 

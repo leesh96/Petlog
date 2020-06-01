@@ -146,6 +146,8 @@ public class DiaryListActivity extends AppCompatActivity {
                 intent.putExtra("diarycontents", diarylistData.getMember_contents());
                 intent.putExtra("diarymood", diarylistData.getMember_mood());
                 intent.putExtra("diarydate", diarylistData.getMember_date());
+                intent.putExtra("diaryimg", diarylistData.getMember_img());
+
                 startActivity(intent);
 
             }
@@ -161,7 +163,6 @@ public class DiaryListActivity extends AppCompatActivity {
     }
 
     private class GetData extends AsyncTask<String, Void, String>{
-
         ProgressDialog progressDialog;
         String errorString = null;
 
@@ -263,6 +264,7 @@ public class DiaryListActivity extends AppCompatActivity {
         String TAG_ID = "id";
         String TAG_TITLE = "title";
         String TAG_CONTENTS = "contents";
+        String TAG_IMG = "imgurl";
         String TAG_DATE = "date";
         String TAG_MOOD = "mood";
 
@@ -279,6 +281,7 @@ public class DiaryListActivity extends AppCompatActivity {
                 String Date = item.getString(TAG_DATE);
                 String Moodwhat = item.getString(TAG_MOOD);
                 String Contents = item.getString(TAG_CONTENTS);
+                String Imgurl = "http://128.199.106.86/" + item.getString(TAG_IMG);
                 int mood = Integer.parseInt(Moodwhat);
 
                 DiarylistData diarylistData = new DiarylistData(Title, Date);
@@ -288,6 +291,7 @@ public class DiaryListActivity extends AppCompatActivity {
                 diarylistData.setMember_contents(Contents);
                 diarylistData.setMember_mood(mood);
                 diarylistData.setMember_date(Date);
+                diarylistData.setMember_img(Imgurl);
 
                 arrayList.add(diarylistData);
                 diaryAdapter.notifyDataSetChanged();

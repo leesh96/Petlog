@@ -1,13 +1,19 @@
 package com.swp.petlog.mypet;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -16,12 +22,19 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.content.CursorLoader;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
@@ -40,19 +53,23 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import com.bumptech.glide.Glide;
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
+import com.swp.petlog.diary.DiaryListActivity;
+import com.swp.petlog.diary.WriteDiaryActivity;
 
 public class AddMypetInfoActivity extends AppCompatActivity {
     private EditText editTextName, editTextSex, editTextSpecies, editTextAge, editTextBday;
     private Button btn_add;
     private AlertDialog dialog;
     private ImageView imageViewFace;
-    private Bitmap bitmapFace;
     private ImageButton btn_back;
-    private String image;
-    private static String PHPURL = "http://128.199.106.86/modifyMypet.php";
+    private String imgpath;
+    private static String PHPURL = "http://128.199.106.86/addMypet.php";
+    private static String mPHPURL = "http://128.199.106.86/modifyMypet.php";
     private static String TAG = "mypet";
+
 
     Calendar myCalendar = Calendar.getInstance();
 
@@ -84,6 +101,7 @@ public class AddMypetInfoActivity extends AppCompatActivity {
         editTextSpecies = (EditText) findViewById(R.id.et_petSpecie);
         editTextAge = (EditText) findViewById(R.id.et_petAge);
         editTextBday = (EditText) findViewById(R.id.et_petBday);
+        imageViewFace = (ImageView) findViewById(R.id.mypet_image);
 
         final String PetOwner = PreferenceManager.getString(AddMypetInfoActivity.this, "userID");
 
@@ -94,6 +112,7 @@ public class AddMypetInfoActivity extends AppCompatActivity {
         String getAge = getIntent().getStringExtra("petAge");
         String getBday = getIntent().getStringExtra("petBday");
         final boolean isModify = getIntent().getBooleanExtra("ismodify", false);
+        String getFace = getIntent().getStringExtra("petFace");
 
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +122,7 @@ public class AddMypetInfoActivity extends AppCompatActivity {
         });
 
         if(isModify) {
+            Glide.with(AddMypetInfoActivity.this).load(getFace).into(imageViewFace);
             editTextName.setText(getName);
             editTextSex.setText(getSex);
             editTextSpecies.setText(getSpecie);
@@ -117,16 +137,25 @@ public class AddMypetInfoActivity extends AppCompatActivity {
             }
         });
 
-        imageViewFace = (ImageView) findViewById(R.id.mypet_image);
+
         imageViewFace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent load_image = new Intent();
-                load_image.setType("image/*");
-                load_image.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(load_image, 1);
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, 10);
             }
         });
+
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            int permissionResult= checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if(permissionResult== PackageManager.PERMISSION_DENIED){
+                String[] permissions= new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permissions,10);
+            }
+        }else{
+            //cv.setVisibility(View.VISIBLE);
+        }
 
         btn_add = (Button) findViewById(R.id.btn_regist);
         if(isModify){
@@ -143,12 +172,10 @@ public class AddMypetInfoActivity extends AppCompatActivity {
                     String PetBday = editTextBday.getText().toString();
                     String PetId = Integer.toString(getId);
 
-                    ModifyData task = new ModifyData();
-                    task.execute(PHPURL, PetName, PetSex, PetSpecies, PetAge, PetBday, PetId);
+                    //ModifyData task = new ModifyData();
+                    //task.execute(mPHPURL, PetName, PetSex, PetSpecies, PetAge, PetBday, PetId);
 
-                    Intent intent = new Intent(AddMypetInfoActivity.this, MypetMainActivity.class);
-                    startActivity(intent);
-                    finish();
+                    modify(PetName, PetSex, PetSpecies, PetAge, PetBday, PetId);
                 }
                 else {
                     String PetName = editTextName.getText().toString();
@@ -157,85 +184,124 @@ public class AddMypetInfoActivity extends AppCompatActivity {
                     String PetAge = editTextAge.getText().toString();
                     String PetBday = editTextBday.getText().toString();
 
-                    Response.Listener<String> responseListener = new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(response);
-                                boolean success = jsonObject.getBoolean("success");
-
-                                if (success) {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(AddMypetInfoActivity.this);
-                                    dialog = builder.setMessage("데이터 업로드 성공").setNegativeButton("확인", null).create();
-                                    dialog.show();
-                                    Intent intent = new Intent(AddMypetInfoActivity.this, MypetMainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(AddMypetInfoActivity.this);
-                                    dialog = builder.setMessage("데이터 업로드 실패").setNegativeButton("확인", null).create();
-                                    dialog.show();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-                    AddMypetInfoRequest addMypetInfoRequest = new AddMypetInfoRequest(PetName, PetSex, PetSpecies, PetAge, PetBday, image, PetOwner, responseListener);
-                    RequestQueue queue = Volley.newRequestQueue(AddMypetInfoActivity.this);
-                    queue.add(addMypetInfoRequest);
+                    upload(PetName, PetSex, PetSpecies, PetAge, PetBday, PetOwner);
                 }
             }
         });
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                try {
-                    InputStream is = getContentResolver().openInputStream(data.getData());
-                    bitmapFace = BitmapFactory.decodeStream(is);
-                    is.close();
-                    bitmapFace = resize(bitmapFace);
-                    imageViewFace.setImageBitmap(bitmapFace);
-                    image = BitmapToString(bitmapFace);
-                    try {
-                        image = URLEncoder.encode(image, "utf-8");
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case 10 :
+                if(grantResults[0]==PackageManager.PERMISSION_GRANTED) //사용자가 허가 했다면
+                {
+                    Toast.makeText(this, "외부 메모리 읽기/쓰기 사용 가능", Toast.LENGTH_SHORT).show();
+
+                }else{//거부했다면
+                    Toast.makeText(this, "외부 메모리 읽기/쓰기 제한", Toast.LENGTH_SHORT).show();
+
                 }
-            }
+                break;
         }
     }
 
-    public static String BitmapToString(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] bytes = baos.toByteArray();
-        String temp= Base64.encodeToString(bytes, Base64.DEFAULT);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        return temp;
+        switch (requestCode){
+            case 10:
+                if(resultCode==RESULT_OK){
+                    //선택한 사진의 경로(Uri)객체 얻어오기
+                    Uri uri= data.getData();
+                    if(uri!=null){
+                        imageViewFace.setImageURI(uri);
+                        imgpath = getRealPathFromUri(uri);
+                    }
+                }else
+                {
+                    Toast.makeText(this, "이미지 선택을 하지 않았습니다.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 
-    private Bitmap resize(Bitmap bm){
-        Configuration config=getResources().getConfiguration();
-		if(config.smallestScreenWidthDp>=600)
-            bm = Bitmap.createScaledBitmap(bm, 300, 180, true);
-        else if(config.smallestScreenWidthDp>=400)
-            bm = Bitmap.createScaledBitmap(bm, 200, 120, true);
-        else if(config.smallestScreenWidthDp>=360)
-            bm = Bitmap.createScaledBitmap(bm, 180, 108, true);
-        else
-            bm = Bitmap.createScaledBitmap(bm, 160, 96, true);
-        return bm;
+    public String getRealPathFromUri(Uri uri){
+        String[] proj= {MediaStore.Images.Media.DATA};
+        CursorLoader loader= new CursorLoader(this, uri, proj, null, null, null);
+        Cursor cursor= loader.loadInBackground();
+        int column_index= ((Cursor) cursor).getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result= cursor.getString(column_index);
+        cursor.close();
+        return result;
     }
 
-    class ModifyData extends AsyncTask<String, Void, String> {
+    public void upload(String petname, String petsex, String petspecie, String petage, String petbday, String userid) {
+        SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, PHPURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(AddMypetInfoActivity.this, "성공" + response, Toast.LENGTH_SHORT).show();
+                Log.d("TAG", response);
+                Intent intent = new Intent(AddMypetInfoActivity.this, MypetMainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(AddMypetInfoActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                Log.d("TAG", error.toString());
+            }
+        });
+        //요청 객체에 보낼 데이터를 추가
+        smpr.addStringParam("petName", petname);
+        smpr.addStringParam("petSex", petsex);
+        smpr.addStringParam("petSpecies", petspecie);
+        smpr.addStringParam("petAge", petage);
+        smpr.addStringParam("petBday", petbday);
+        smpr.addStringParam("petOwner", userid);
+        smpr.addFile("petFace", imgpath);
+
+        //요청객체를 서버로 보낼 우체통 같은 객체 생성
+        RequestQueue requestQueue= Volley.newRequestQueue(AddMypetInfoActivity.this);
+        requestQueue.add(smpr);
+    }
+
+    public void modify(String petname, String petsex, String petspecie, String petage, String petbday, String petid) {
+        SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, mPHPURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(AddMypetInfoActivity.this, "성공" + response, Toast.LENGTH_SHORT).show();
+                Log.d("TAG", response);
+                Intent intent = new Intent(AddMypetInfoActivity.this, MypetMainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(AddMypetInfoActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                Log.d("TAG", error.toString());
+            }
+        });
+        //요청 객체에 보낼 데이터를 추가
+        smpr.addStringParam("petName", petname);
+        smpr.addStringParam("petSex", petsex);
+        smpr.addStringParam("petSpecie", petspecie);
+        smpr.addStringParam("petAge", petage);
+        smpr.addStringParam("petBday", petbday);
+        smpr.addStringParam("petid", petid);
+        smpr.addFile("petFace", imgpath);
+
+        //요청객체를 서버로 보낼 우체통 같은 객체 생성
+        RequestQueue requestQueue= Volley.newRequestQueue(AddMypetInfoActivity.this);
+        requestQueue.add(smpr);
+    }
+
+    /*class ModifyData extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
         @Override
         protected void onPreExecute() {
@@ -309,6 +375,6 @@ public class AddMypetInfoActivity extends AppCompatActivity {
                 return new String("Error: " + e.getMessage());
             }
         }
-    }
+    }*/
 }
 

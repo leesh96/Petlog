@@ -23,6 +23,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import com.bumptech.glide.Glide;
 import com.swp.petlog.R;
 
 public class MypetPagerAdapter extends PagerAdapter {
@@ -56,7 +57,7 @@ public class MypetPagerAdapter extends PagerAdapter {
             ImageButton imageButtonMemoDel = (ImageButton) view.findViewById(R.id.btn_memodel);
             final EditText editTextMemo = (EditText) view.findViewById(R.id.mypet_memo);
 
-            imageViewface.setImageResource(R.drawable.ic_gallary);
+            Glide.with(mContext).load(mList.get(position).getMember_face()).into(imageViewface);
             textViewname.setText(mList.get(position).getMember_name());
             textViewsex.setText(mList.get(position).getMember_sex());
             textViewspecie.setText(mList.get(position).getMember_specie());

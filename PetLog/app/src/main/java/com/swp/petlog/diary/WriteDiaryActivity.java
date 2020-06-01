@@ -46,6 +46,7 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
 
+import com.bumptech.glide.Glide;
 import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
@@ -105,12 +106,14 @@ public class WriteDiaryActivity extends AppCompatActivity {
         String getDate = getIntent().getStringExtra("m_diarydate");
         final int getMood = getIntent().getIntExtra("m_diarymood", 0);
         final boolean isModify = getIntent().getBooleanExtra("ismodify", false);
+        String getImgurl = getIntent().getStringExtra("m_diaryPic");
 
         Date currentTime = Calendar.getInstance().getTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
         textViewDate.setText(simpleDateFormat.format(currentTime));
 
         if (isModify) {
+            Glide.with(WriteDiaryActivity.this).load(getImgurl).into(imageViewPic);
             textViewDate.setText(getDate);
             textViewDate.setEnabled(false);
             editTextTitle.setText(getTitle);
@@ -225,11 +228,10 @@ public class WriteDiaryActivity extends AppCompatActivity {
                     String mood = Integer.toString(inputmood);
                     String diaryid = Integer.toString(getId);
 
-                    ModifyData task = new ModifyData();
-                    task.execute(mPHPURL, title, contents, mood, diaryid);
+                    //ModifyData task = new ModifyData();
+                    //task.execute(mPHPURL, title, contents, mood, diaryid);
 
-                    Intent intent = new Intent(WriteDiaryActivity.this, DiaryListActivity.class);
-                    startActivity(intent);
+                    modify(title, contents, mood, diaryid);
                 }
                 else {
                     String title = editTextTitle.getText().toString();
@@ -326,6 +328,34 @@ public class WriteDiaryActivity extends AppCompatActivity {
         requestQueue.add(smpr);
     }
 
+    public void modify(String title, String contents, String mood, String diaryid) {
+        SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, mPHPURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(WriteDiaryActivity.this, "성공" + response, Toast.LENGTH_SHORT).show();
+                Log.d("TAG", response);
+                Intent intent = new Intent(WriteDiaryActivity.this, DiaryListActivity.class);
+                startActivity(intent);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(WriteDiaryActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                Log.d("TAG", error.toString());
+            }
+        });
+        //요청 객체에 보낼 데이터를 추가
+        smpr.addStringParam("title", title);
+        smpr.addStringParam("contents", contents);
+        smpr.addStringParam("mood", mood);
+        smpr.addStringParam("diaryid", diaryid);
+        smpr.addFile("image", imgpath);
+
+        //요청객체를 서버로 보낼 우체통 같은 객체 생성
+        RequestQueue requestQueue= Volley.newRequestQueue(WriteDiaryActivity.this);
+        requestQueue.add(smpr);
+    }
+
     /* class InsertData extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
         @Override
@@ -402,7 +432,7 @@ public class WriteDiaryActivity extends AppCompatActivity {
                 return new String("Error: " + e.getMessage());
             }
         }
-    }*/
+    }
 
     class ModifyData extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
@@ -476,6 +506,6 @@ public class WriteDiaryActivity extends AppCompatActivity {
                 return new String("Error: " + e.getMessage());
             }
         }
-    }
+    }*/
 
 }
