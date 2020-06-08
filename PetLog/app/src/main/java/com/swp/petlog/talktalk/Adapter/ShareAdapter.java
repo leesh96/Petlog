@@ -5,16 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.swp.petlog.R;
+import com.swp.petlog.talktalk.ShareDetailActivity;
+import com.swp.petlog.talktalk.data.ShareData;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,10 +24,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-
-import com.swp.petlog.R;
-import com.swp.petlog.talktalk.ShareDetailActivity;
-import com.swp.petlog.talktalk.data.ShareData;
 
 
 public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> {
@@ -53,16 +51,13 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder viewholder, final int position) {
 
         //사이즈,위치 정할수있음.
-        //viewholder.id.setText(mList.get(position).getShare_id());
         viewholder.title.setText(mList.get(position).getShare_title());
         viewholder.nickname.setText(mList.get(position).getShare_nickname());
-        viewholder.date.setText(mList.get(position).getShare_nickname());
-
-        //viewholder.date.setText(mList.get(position),getShare_date());
+        viewholder.date.setText(mList.get(position).getShare_date());
 
         viewholder.title.setTextSize(20);
         viewholder.nickname.setTextSize(15);
-        viewholder.date.setGravity(Gravity.RIGHT);
+        //viewholder.date.setGravity(Gravity.RIGHT);
         //viewholder.nickname.setGravity(Gravity.LEFT);
         //viewholder.title.setGravity(Gravity.RIGHT);
 
@@ -78,12 +73,13 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
                 intent.putExtra("title",mList.get(position).getShare_title());
                 intent.putExtra("content",mList.get(position).getShare_content());
                 intent.putExtra("nickname",mList.get(position).getShare_nickname());
+                intent.putExtra("date",mList.get(position).getShare_date());
 
                 //intent.putExtra("img",mList.get(position).getShare_img());
 
 
                 context.startActivity(intent);
-                Toast.makeText(context,position +"번째 아이템 클릭",Toast.LENGTH_LONG).show(); //몇번째 아이템 클릭됐는지 토스트로 알려줌
+               // Toast.makeText(context,position +"번째 아이템 클릭",Toast.LENGTH_LONG).show(); //몇번째 아이템 클릭됐는지 토스트로 알려줌
             }
         });
     }
@@ -143,12 +139,10 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
             mView = view;
             //
             view.setOnClickListener(this);
-            //this.nickname= (TextView) view.findViewById(R.id.textView_list_nickname);
-           // this.id= (TextView) view.findViewById(R.id.textView_list_id);
+
             this.title = (TextView) view.findViewById(R.id.textView_list_title);
             this.nickname = (TextView) view.findViewById(R.id.textView_list_nickname);
             this.date =(TextView)view.findViewById(R.id.textView_list_date);
-            //this.content = (TextView) view.findViewById(R.id.textView_list_content);
             // this.img=(ImageView) view.findViewById(R.id.textView_list_img);
         }
         @Override

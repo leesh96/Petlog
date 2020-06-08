@@ -19,6 +19,9 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.swp.petlog.PreferenceManager;
+import com.swp.petlog.R;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -29,8 +32,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import com.swp.petlog.PreferenceManager;
-import com.swp.petlog.R;
 
 public class WalkWriteActivity extends AppCompatActivity {
     static final int getimagesetting=1001;//for request intent
@@ -61,29 +62,48 @@ public class WalkWriteActivity extends AppCompatActivity {
         buttonBack.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){ //쓰기화면에서 뒤로가기버튼클릭시 게시판메인으로이동
-                Intent intent=new Intent(getApplicationContext(),WalkActivity.class);
+                Intent intent=new Intent(getApplicationContext(), WalkActivity.class);
                 startActivity(intent);
             }
         });
 
+        ImageButton ButtonGps =(ImageButton)findViewById(R.id.btn_gps);
+        ButtonGps.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent=new Intent(getApplicationContext(), GoogleMapActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         final String nickname= PreferenceManager.getString(WalkWriteActivity.this,"userNick");
+
+        Intent intent = getIntent(); //데이터를 받기위해 선언
+        final String position = intent.getStringExtra("walktitle");
+        final Double posx=intent.getDoubleExtra("posx",0);  //위도 받아옴
+        final Double posy=intent.getDoubleExtra("posy",0);  //경도 받아옴
+       // final LatLng position1= intent.get("pos1");
+        final String posx1=Double.toString(posx);
+        final String posy1=Double.toString(posy);
 
         Button buttonInsert = (Button)findViewById(R.id.board_insert);
         buttonInsert.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
-
                 String title = mEditTextTitle.getText().toString();
                 String content = mEditTextContent.getText().toString();
                 //String walkimage = image.getBytes().toString();
 
                 InsertData task = new InsertData();
-                task.execute("http://" + IP_ADDRESS + "/walkInsert.php", title,content,nickname);
+                task.execute("http://" + IP_ADDRESS + "/walkInsert.php", title,content,nickname,position,posx1,posy1);
 
 
                 mEditTextTitle.setText("");
                 mEditTextContent.setText("");
-                Intent intent=new Intent(getApplicationContext(),WalkActivity.class);
+                Intent intent=new Intent(getApplicationContext(), WalkActivity.class);
                 startActivity(intent);
 
             }
@@ -223,8 +243,11 @@ public class WalkWriteActivity extends AppCompatActivity {
             String content = (String)params[2];
             String nickname = (String)params[3];
             //String walkimage = (String)params[4];
+            String position=(String)params[4];
+            String posx=(String)params[5];
+            String posy=(String)params[6];
             String serverURL = (String)params[0];
-            String postParameters = "title=" + title + "&content=" + content +"&nickname=" +nickname; //유저정보닉네임 외래키로 받아서 넣음!
+            String postParameters = "title=" + title + "&content=" + content +"&nickname=" +nickname+"&position="+position+"&posx="+posx+"&posy="+posy; //유저정보닉네임 외래키로 받아서 넣음!
 
 
             try {

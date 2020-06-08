@@ -8,11 +8,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.swp.petlog.PreferenceManager;
+import com.swp.petlog.R;
+import com.swp.petlog.talktalk.Adapter.ShareCommentAdapter;
+import com.swp.petlog.talktalk.ShareActivity;
+import com.swp.petlog.talktalk.data.ShareCommentData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,11 +33,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import com.swp.petlog.PreferenceManager;
-import com.swp.petlog.R;
-import com.swp.petlog.talktalk.Adapter.ShareCommentAdapter;
-import com.swp.petlog.talktalk.data.ShareCommentData;
-
 public class ShareCommentActivity extends AppCompatActivity {
     private static String mPHPURL="http://128.199.106.86/shareComment.php";
     private static String mGetPHPURL="http://128.199.106.86/GetshareComment.php";
@@ -41,6 +43,7 @@ public class ShareCommentActivity extends AppCompatActivity {
     private ShareCommentAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private String mJsonString;
+    private ImageButton btn_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,37 +58,58 @@ public class ShareCommentActivity extends AppCompatActivity {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));//구분선
 
         mArrayList = new ArrayList<>();
-        mAdapter = new ShareCommentAdapter(this, mArrayList);
+        mAdapter = new ShareCommentAdapter(mArrayList, this);
         mRecyclerView.setAdapter(mAdapter);
         mArrayList.clear();
         mAdapter.notifyDataSetChanged();
 
-//DB불러오는 PHP
-        GetData show=new GetData();
-        show.execute(mGetPHPURL,"");
-//
+
+        btn_back=(ImageButton)findViewById(R.id.btn_back);
+        btn_back.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent=new Intent(getApplicationContext(), ShareActivity.class);
+                startActivity(intent);
+            }
+        });
+
         Intent intent = getIntent(); //데이터를 받기위해 선언
         final String Title = intent.getStringExtra("title"); //현재 댓글 작성중인 게시글제목 불러옴
-
+        //200525 shareid 불러오기
+        final String ShareId = intent.getStringExtra("id");
+        //
         final String nickname= PreferenceManager.getString(ShareCommentActivity.this,"userNick");
 
+//DB불러오는 PHP
+        GetData show=new GetData();
+        show.execute(mGetPHPURL,ShareId);
+
+        Bundle extras = getIntent().getExtras();
+
+        //여기에 값 지정 해주면  액티비티에 해당데이터 넘어감////
+         String id=extras.getString("id");
+         String title=extras.getString("title");
+         final String finalTitle1 = title;
+         final String finalId1=id;
 
         Button btn_send=(Button)findViewById(R.id.comment_btn_send);
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String comment = mComment_content.getText().toString();
-                //final String title= PreferenceManager.getString(ShareCommentActivity.this,"title");
                 sendData task = new sendData();
-                task.execute(mPHPURL,comment,nickname,Title);//
-
-                Intent intent=new Intent(getApplicationContext(), ShareCommentActivity.class);
+                task.execute(mPHPURL,ShareId,comment,nickname,Title);//
+                //댓글작성시 해당게시물데이터값 다시 받아와서 인텐트로 댓글페이지새로고침처럼 만듬
+                Intent intent = new Intent(getApplicationContext(),ShareCommentActivity.class);
+                intent.putExtra("id",finalId1);
+                intent.putExtra("title",finalTitle1);
                 startActivity(intent);
+
+              //  Intent intent = new Intent(ShareCommentActivity.this, ShareCommentActivity.class);
+              //  startActivity(intent);
 
             }
         });
-
-
     }
     class sendData extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
@@ -120,16 +144,12 @@ public class ShareCommentActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-
-            String comment = (String)params[1];
-            String nickname = (String)params[2];
-            String title = (String)params[3];
+            String shareid = (String)params[1];
+            String comment = (String)params[2];
+            String nickname = (String)params[3];
+            String title = (String)params[4];
             String serverURL = (String)params[0];
-            String postParameters ="comment=" + comment+"&nickname=" + nickname+"&title="+title;
-
-            //String postParameters = "nickname=" + nickname + "&comment=" + comment+"&title="+title;
-            //String postParameters = "nickname=" + nickname + "&comment=" + comment +"&title=" +title; //유저정보닉네임 외래키로 받아서 넣음!
-
+            String postParameters = "share_id="+shareid+"&comment=" + comment+"&nickname=" + nickname+"&title="+title;
 
             try {
 
@@ -268,7 +288,9 @@ public class ShareCommentActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
             String serverURL = params[0];
-            String postParameters = params[1];
+            String shareid = (String)params[1];
+
+            String postParameters = "share_id="+shareid;
 
 
             try {
@@ -333,7 +355,8 @@ public class ShareCommentActivity extends AppCompatActivity {
         //이 부분이 php 변수명과 동일해야함(헷갈리지 않기위해 컬럼명과 똑같이한다) 똑같지않으면 출력오류
         String TAG_JSON = "dongmin";
         String TAG_ID = "id";
-       // String TAG_TITLE = "title";
+        String TAG_SHARE_ID="share_id";
+        String TAG_TITLE = "title";
         String TAG_CONTENT = "comment";
         String TAG_NICKNAME ="nickname";
 
@@ -347,8 +370,8 @@ public class ShareCommentActivity extends AppCompatActivity {
                 JSONObject item = jsonArray.getJSONObject(i);
 
                 //여기 잘못넣으면 리사이클러뷰안뜸 또는 php array확인할것!
-                String id = item.getString(TAG_ID);
-              //  String title = item.getString(TAG_TITLE);
+                String id = item.getString(TAG_SHARE_ID);
+                //String title = item.getString(TAG_TITLE);
                 String comment = item.getString(TAG_CONTENT);
                 String nickname =item.getString(TAG_NICKNAME);
 

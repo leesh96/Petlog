@@ -11,11 +11,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.swp.petlog.R;
+import com.swp.petlog.talktalk.data.WalkData;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -25,14 +29,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import com.swp.petlog.R;
-import com.swp.petlog.talktalk.data.WalkData;
-import com.swp.petlog.talktalk.navigation.WalkCommentActivity;
-
 //아이템클릭시 상세페이지!
 public class WalkDetailActivity extends AppCompatActivity {
     private ArrayList<WalkData>mList;
     private ImageButton imgbtn_walkmenu,btn_back,btn_comment;
+    private Button btn_look_pos;
     private static String TAG = "TEST02";
     private boolean isModify = false;
     private static String dPHPURL = "http://128.199.106.86/deleteWalk.php";
@@ -45,7 +46,7 @@ public class WalkDetailActivity extends AppCompatActivity {
         btn_back.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(getApplicationContext(),WalkActivity.class);
+                Intent intent=new Intent(getApplicationContext(), WalkActivity.class);
                 startActivity(intent);
             }
         });
@@ -55,6 +56,7 @@ public class WalkDetailActivity extends AppCompatActivity {
         String content="";
         String nickname="";
         String img="";
+        String walkpos="";
 
         Bundle extras = getIntent().getExtras();
 
@@ -65,6 +67,8 @@ public class WalkDetailActivity extends AppCompatActivity {
         content=extras.getString("content");
         nickname=extras.getString("nickname");
         img=extras.getString("img");
+        walkpos=extras.getString("walktitle");
+
 
 
         TextView idView = (TextView) findViewById(R.id.id);
@@ -81,22 +85,44 @@ public class WalkDetailActivity extends AppCompatActivity {
         //추가할거 -> 이미지, 댓글
 
         //클릭시 화면에 보여주는 곳//
-        idView.setText(idview);
         nickView.setText(nicknameview);
         titleView.setText(titleview);
         contentView.setText(contentview);
+////////////////////
+        Intent intent = getIntent(); //데이터를 받기위해 선언
+        final String walktitle = intent.getStringExtra("walktitle");
+        final String posx = intent.getStringExtra("posx");
+        final String posy = intent.getStringExtra("posy");
+////////////////////
+        //위치보기버튼클릭시
+        btn_look_pos=(Button)findViewById(R.id.btn_look_position);
+        btn_look_pos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //db에서 위치정보를 받아 넘김 지도가 열리고 산책로위치에 마커가찍힘.
+                //아직 데이터못들고옴
+                Intent intent= new Intent(getApplicationContext(), ResultGoogleMapActivity.class);
+                intent.putExtra("walktitle",walktitle);
+                intent.putExtra("posx",posx);
+                intent.putExtra("posy",posy);
+                startActivity(intent);
+            }
+        });
 
-        btn_comment=(ImageButton)findViewById(R.id.btn_comment);
-        final String finalTitle1 = title;
-        btn_comment.setOnClickListener(new View.OnClickListener() {
+        //btn_comment=(ImageButton)findViewById(R.id.btn_comment);
+        //final String finalTitle1 = title;
+       // final String finalId1=id;
+       /**btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getApplicationContext(), WalkCommentActivity.class);
                 intent.putExtra("title", finalTitle1);
+                intent.putExtra("id", finalId1);
+
                 startActivity(intent);
 
             }
-        });
+        });**/
 
         imgbtn_walkmenu = (ImageButton) findViewById(R.id.btn_walkmenu);
         final String finalContent = content;

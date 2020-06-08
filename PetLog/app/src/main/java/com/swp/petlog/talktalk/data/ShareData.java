@@ -10,8 +10,17 @@ public class ShareData {
     private String share_content;
     private String share_img;
     private String share_nickname;
+    private String share_date;
 
     //
+
+    public String getShare_date() {
+        return share_date;
+    }
+
+    public void setShare_date(String share_date) {
+        this.share_date = share_date;
+    }
 
     public String getShare_nickname() {
 
@@ -56,11 +65,12 @@ public class ShareData {
         this.share_content = share_content;
     }
 
-    public ShareData(String share_id,String share_title, String share_content, String share_nickname) {
+    public ShareData(String share_id,String share_title, String share_content, String share_nickname, String share_date) {
         this.share_id = share_id;
         this.share_title = share_title;
         this.share_content = share_content;
         this.share_nickname=share_nickname;
+        this.share_date=share_date;
         //  this.share_img = share_img;
     }
 }

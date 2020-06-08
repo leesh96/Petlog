@@ -11,14 +11,14 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.swp.petlog.R;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import com.swp.petlog.R;
 
 public class ShareEditActivity extends AppCompatActivity {
     private static String TAG = "test02";
@@ -30,52 +30,31 @@ public class ShareEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share_edit);
 
-
-            //mId=(EditText)findViewById(R.id.id);
             mTitle=(EditText)findViewById(R.id.editText_main_title);
             mContent=(EditText)findViewById(R.id.editText_main_content);
-            // mInsertButton=(Button)findViewById(R.id.board_insert);
-            // String id="";
-            //  String title="";
-            //  String content="";
-            // String nickname="";
-            // String img="";
 
-            //  Bundle extras = getIntent().getExtras();
+            Intent intent = getIntent(); //데이터를 받기위해 선언
 
-            // id=extras.getString("id");
-            //  title=extras.getString("title");
-            //  content=extras.getString("content");
-            //nickname=extras.getString("nickname");
-            //img=extras.getString("img");
-
-            //final String fWalkContent = content;
-            // final String fWalkTitle = title;
-            //final String fWalkId=id;
-
-            final int getId = getIntent().getIntExtra("id", 0);
-            String getTitle = getIntent().getStringExtra("title");
-            String getContent = getIntent().getStringExtra("content");
-            final boolean isModify = getIntent().getBooleanExtra("ismodify", false);
+            //final int getId = intent.getIntExtra("id", 0);
+            final String ShareId=intent.getStringExtra("id");
+            final String ShareTitle = intent.getStringExtra("title");
+            final String ShareContent = intent.getStringExtra("content");
+            final boolean isModify = intent.getBooleanExtra("ismodify", false);
 
             if(isModify){
-                mTitle.setText(getTitle);
-                mContent.setText(getContent);
+                mTitle.setText(ShareTitle);
+                mContent.setText(ShareContent);
             }
 
             Button btnedit = (Button) findViewById(R.id.btn_edit);
             btnedit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String WalkId=Integer.toString(getId);
-                    String WalkTitle=mTitle.getText().toString();
-                    String WalkContent=mContent.getText().toString();
+                    String ShareTitle=mTitle.getText().toString();
+                    String ShareContent=mContent.getText().toString();
 
-                    //  String WalkId=fWalkId;
-                    //  String WalkTitle=fWalkTitle;
-                    // String WalkContent=fWalkContent;
                     EditData task = new EditData();
-                    task.execute("http://128.199.106.86/modifyWalk.php",WalkId,WalkTitle,WalkContent);
+                    task.execute("http://128.199.106.86/modifyShare.php",ShareId,ShareTitle,ShareContent);
 
                     Intent intent = new Intent(ShareEditActivity.this, ShareActivity.class);
                     startActivity(intent);
@@ -108,12 +87,12 @@ public class ShareEditActivity extends AppCompatActivity {
             @Override
             protected String doInBackground(String... params) {
 
-                String title = (String)params[1];
-                String content = (String)params[2];
-                String id=(String)params[3];
+                String title = (String)params[2];
+                String content = (String)params[3];
+                String id=(String)params[1];
                 // String walkimage = (String)params[4];
                 String serverURL = (String)params[0];
-                String postParameters = "title=" + title + "&content=" + content+"&id="+id; //유저정보닉네임 외래키로 받아서 넣음!
+                String postParameters = "id=" + id + "&title="+title+"&content=" + content; //유저정보닉네임 외래키로 받아서 넣음!
 
 
                 try {

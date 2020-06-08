@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "207564508566",
+    "firebase_url": "https://petlog-ef7ba.firebaseio.com",
+    "project_id": "petlog-ef7ba",
+    "storage_bucket": "petlog-ef7ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:207564508566:android:6e8791f721e814c7bea1b7",
+        "android_client_info": {
+          "package_name": "com.example.test02"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "207564508566-kile2um67sdgjgco7egpoe21mtkq1kio.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.test02",
+            "certificate_hash": "3f1f3c140fd84c6896d15243b55125f591d1f6c4"
+          }
+        },
+        {
+          "client_id": "207564508566-oldqi7pgf8up9cpu6k6cn139nosikpsn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJn7RetwL0UvuIgPMVy97i1tFYKe82ew8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "207564508566-oldqi7pgf8up9cpu6k6cn139nosikpsn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

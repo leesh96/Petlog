@@ -9,8 +9,45 @@ public class WalkData {
     private String Walk_content;
     private String Walk_img;
     private String Walk_nickname;
+    private String Walk_date;
+    private String Walk_positiontitle;
+    private String Walk_posx;
+    private String Walk_posy;
 
-    //
+    public String getWalk_posx() {
+        return Walk_posx;
+    }
+
+    public void setWalk_posx(String walk_posx) {
+        Walk_posx = walk_posx;
+    }
+
+    public String getWalk_posy() {
+        return Walk_posy;
+    }
+
+    public void setWalk_posy(String walk_posy) {
+        Walk_posy = walk_posy;
+    }
+
+    public String getWalk_positiontitle() {
+        return Walk_positiontitle;
+    }
+
+    public void setWalk_positiontitle(String walk_positiontitle) {
+        Walk_positiontitle = walk_positiontitle;
+    }
+
+
+
+    public String getWalk_date() {
+        return Walk_date;
+    }
+
+    public void setWalk_date(String walk_date) {
+        Walk_date = walk_date;
+    }
+//
 
     public String getWalk_nickname() {
         return Walk_nickname;
@@ -52,11 +89,15 @@ public class WalkData {
         this.Walk_content = Walk_content;
     }
 
-    public WalkData(String Walk_title, String Walk_content, String Walk_nickname,String Walk_id) {
-        this.Walk_id = Walk_id;
-        this.Walk_title = Walk_title;
-        this.Walk_content = Walk_content;
-        this.Walk_nickname=Walk_nickname;
-        //this.Walk_img = Walk_img;
+    public WalkData(String walk_id, String walk_title, String walk_content, String walk_nickname, String walk_date,String walk_positiontitle,String walk_posx,String walk_posy) {
+        Walk_id = walk_id;
+        Walk_title = walk_title;
+        Walk_content = walk_content;
+        Walk_nickname = walk_nickname;
+        Walk_date = walk_date;
+        Walk_positiontitle=walk_positiontitle;
+        Walk_posx=walk_posx;
+        Walk_posy=walk_posy;
+
     }
 }

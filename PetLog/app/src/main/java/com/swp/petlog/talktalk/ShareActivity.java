@@ -15,13 +15,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.swp.petlog.MainActivity;
+import com.swp.petlog.R;
+import com.swp.petlog.talktalk.Adapter.ShareAdapter;
+import com.swp.petlog.talktalk.data.ShareData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,54 +36,29 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
-import com.swp.petlog.MainActivity;
-import com.swp.petlog.R;
-import com.swp.petlog.talktalk.Adapter.ShareAdapter;
-import com.swp.petlog.talktalk.data.ShareData;
 
 public class ShareActivity extends AppCompatActivity {
 
-    private static String IP_ADDRESS = "128.199.106.86";  //php ip주소
+    private static String IP_ADDRESS = "http://128.199.106.86/getshare.php";  //php ip주소
     private static String TAG = "phptest";
 
 
-    //private TextView mTextViewResult;
     private ArrayList<ShareData> mArrayList;
     private ShareAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private String mJsonString;
     private ImageButton imgbtn_sharemenu, btn_back;
 
-    //////////200517 날짜표시 구현
-
-    // 현재시간을 msec 으로 구한다.
-    long now = System.currentTimeMillis();
-    // 현재시간을 date 변수에 저장한다.
-    Date date = new Date(now);
-    // 시간을 나타냇 포맷을 정한다 ( yyyy/MM/dd 같은 형태로 변형 가능 )
-    SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-    // nowDate 변수에 값을 저장한다.
-    String formatDate = sdfNow.format(date);
-
-    TextView dateNow;
-
-
-    //////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
 
-        //mTextViewResult = (TextView) findViewById(R.id.textView_main_result);
         mRecyclerView = (RecyclerView) findViewById(R.id.listView_main_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));//구분선
-        //mTextViewResult.setMovementMethod(new ScrollingMovementMethod()); //스크롤메소드
 
         mArrayList = new ArrayList<>();
         mAdapter = new ShareAdapter(this, mArrayList);
@@ -88,20 +66,15 @@ public class ShareActivity extends AppCompatActivity {
         mArrayList.clear();
         mAdapter.notifyDataSetChanged();
 
-        ////200517 date////////////////////////////////////////////
-      //  dateNow = (TextView) findViewById(R.id.textView_list_date);
-        // dateNow.setText(formatDate);
-        ////////////////////////////////////////////////////////////
-
         GetData task = new GetData();
-        task.execute("http://" + IP_ADDRESS + "/getshare.php", "");
+        task.execute(IP_ADDRESS, "");
 
         //////200516////////
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), mRecyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 ShareData SD = mArrayList.get(position);
-                Toast.makeText(getApplicationContext(), SD.getShare_id()+' '+SD.getShare_title()+' '+SD.getShare_content(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), SD.getShare_id()+' '+SD.getShare_title()+' '+SD.getShare_content(), Toast.LENGTH_LONG).show();
 
             }
 
@@ -113,7 +86,7 @@ public class ShareActivity extends AppCompatActivity {
         btn_back.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(getApplicationContext(),TalktalkActivity.class);
+                Intent intent=new Intent(getApplicationContext(), TalktalkActivity.class);
                 startActivity(intent);
             }
         });
@@ -158,9 +131,9 @@ public class ShareActivity extends AppCompatActivity {
     public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         private GestureDetector gestureDetector;
-        private ShareActivity.ClickListener clickListener;
+        private ClickListener clickListener;
 
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ShareActivity.ClickListener clickListener) {
+        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener) {
             this.clickListener = clickListener;
             gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
                 @Override
@@ -303,6 +276,8 @@ public class ShareActivity extends AppCompatActivity {
         String TAG_TITLE = "title";
         String TAG_CONTENT = "content";
         String TAG_NICKNAME ="nickname";
+        String TAG_DATE ="date";
+
 
 
         try {
@@ -318,13 +293,15 @@ public class ShareActivity extends AppCompatActivity {
                 String title = item.getString(TAG_TITLE);
                 String content = item.getString(TAG_CONTENT);
                 String nickname =item.getString(TAG_NICKNAME);
+                String date =item.getString(TAG_DATE);
 
-                ShareData shareData = new ShareData(id,title,content,nickname);
+                ShareData shareData = new ShareData(id,title,content,nickname,date);
 
                 shareData.setShare_id(id);
                 shareData.setShare_title(title);
                 shareData.setShare_content(content);
                 shareData.setShare_nickname(nickname);
+                shareData.setShare_date(date);
 
                 mArrayList.add(shareData);
                 mAdapter.notifyDataSetChanged();

@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".WalkWriteActivity"
+    android:background="@color/theme4"
     android:padding="10dp">
 
 
@@ -35,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:hint="제목을 입력하세요."
+            android:hint="산책로를 입력하세요."
             android:inputType="text" />
 
         <EditText
@@ -51,7 +52,19 @@
             android:id="@+id/btn_walk_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:src="@drawable/ic_add_a_photo_black_24dp" />
+
+        <ImageButton
+            android:id="@+id/btn_gps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_gallary"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            app:layout_constraintLeft_toRightOf="@+id/btn_walk_image"
+            app:layout_constraintTop_toBottomOf="@+id/editText_main_content" />
 
         <Button
             android:id="@+id/board_insert"

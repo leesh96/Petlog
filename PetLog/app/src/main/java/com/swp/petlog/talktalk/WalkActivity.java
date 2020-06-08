@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.GestureDetector;
@@ -17,12 +16,16 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.swp.petlog.MainActivity;
+import com.swp.petlog.R;
+import com.swp.petlog.talktalk.Adapter.WalkAdapter;
+import com.swp.petlog.talktalk.data.WalkData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,14 +37,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
-import com.swp.petlog.MainActivity;
-import com.swp.petlog.R;
-import com.swp.petlog.talktalk.Adapter.WalkAdapter;
-import com.swp.petlog.talktalk.data.WalkData;
 
 public class WalkActivity extends AppCompatActivity {
     private static String IP_ADDRESS = "128.199.106.86";  //php ip주소
@@ -55,30 +51,15 @@ public class WalkActivity extends AppCompatActivity {
     private ImageButton imgbtn_walkmenu,btn_back;
 
 
-    //////////200517 날짜표시 구현
-
-    // 현재시간을 msec 으로 구한다.
-    long now = System.currentTimeMillis();
-    // 현재시간을 date 변수에 저장한다.
-    Date date = new Date(now);
-    // 시간을 나타냇 포맷을 정한다 ( yyyy/MM/dd 같은 형태로 변형 가능 )
-    SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-    // nowDate 변수에 값을 저장한다.
-    String formatDate = sdfNow.format(date);
-    TextView dateNow;
-
-    //////////
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walk);
 
-        mTextViewResult = (TextView) findViewById(R.id.textView_main_result);
         mRecyclerView = (RecyclerView) findViewById(R.id.listView_main_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));//구분선
-        mTextViewResult.setMovementMethod(new ScrollingMovementMethod()); //스크롤메소드
+       // mTextViewResult.setMovementMethod(new ScrollingMovementMethod()); //스크롤메소드
 
         mArrayList = new ArrayList<>();
         mAdapter = new WalkAdapter(this, mArrayList);
@@ -87,16 +68,16 @@ public class WalkActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
 
 
-        WalkActivity.GetData task = new WalkActivity.GetData();
+        GetData task = new GetData();
         task.execute("http://" + IP_ADDRESS + "/getwalk.php", "");
 
 
         //////200516////////
-        mRecyclerView.addOnItemTouchListener(new WalkActivity.RecyclerTouchListener(getApplicationContext(), mRecyclerView, new WalkActivity.ClickListener() {
+        mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), mRecyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 WalkData SD = mArrayList.get(position);
-                Toast.makeText(getApplicationContext(), SD.getWalk_id() + ' ' + SD.getWalk_title() + ' ' + SD.getWalk_content(), Toast.LENGTH_LONG).show();
+              //  Toast.makeText(getApplicationContext(), SD.getWalk_id() + ' ' + SD.getWalk_title() + ' ' + SD.getWalk_content(), Toast.LENGTH_LONG).show();
 
             }
 
@@ -108,7 +89,7 @@ public class WalkActivity extends AppCompatActivity {
         btn_back.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(getApplicationContext(),TalktalkActivity.class);
+                Intent intent=new Intent(getApplicationContext(), TalktalkActivity.class);
                 startActivity(intent);
             }
         });
@@ -153,9 +134,9 @@ public class WalkActivity extends AppCompatActivity {
     public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         private GestureDetector gestureDetector;
-        private WalkActivity.ClickListener clickListener;
+        private ClickListener clickListener;
 
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final WalkActivity.ClickListener clickListener) {
+        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener) {
             this.clickListener = clickListener;
             gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
                 @Override
@@ -212,12 +193,12 @@ public class WalkActivity extends AppCompatActivity {
             super.onPostExecute(result);
 
             progressDialog.dismiss();
-            mTextViewResult.setText(result);
+            //mTextViewResult.setText(result);
             Log.d(TAG, "response - " + result);
 
             if (result == null) {
 
-                mTextViewResult.setText(errorString);
+              //  mTextViewResult.setText(errorString);
             } else {
 
                 mJsonString = result;
@@ -296,6 +277,11 @@ public class WalkActivity extends AppCompatActivity {
         String TAG_TITLE = "title";
         String TAG_CONTENT = "content";
         String TAG_NICKNAME ="nickname";
+        String TAG_DATE ="date";
+        String TAG_POSTITLE="position";
+        String TAG_POSX="posx";
+        String TAG_POSY="posy";
+
 
 
         try {
@@ -311,12 +297,21 @@ public class WalkActivity extends AppCompatActivity {
                 String title = item.getString(TAG_TITLE);
                 String content = item.getString(TAG_CONTENT);
                 String nickname =item.getString(TAG_NICKNAME);
+                String date =item.getString(TAG_DATE);
+                String walkpostitle=item.getString(TAG_POSTITLE);
+                String posx=item.getString(TAG_POSX);
+                String posy=item.getString(TAG_POSY);
 
-                WalkData walkData = new WalkData(title,content,nickname,id);
+                WalkData walkData = new WalkData(title,content,nickname,id,date,walkpostitle,posx,posy);
                 walkData.setWalk_id(id);
                 walkData.setWalk_title(title);
                 walkData.setWalk_content(content);
                 walkData.setWalk_nickname(nickname);
+                walkData.setWalk_date(date);
+                walkData.setWalk_positiontitle(walkpostitle);
+                walkData.setWalk_posx(posx);
+                walkData.setWalk_posy(posy);
+
 
                 mArrayList.add(walkData);
                 mAdapter.notifyDataSetChanged();

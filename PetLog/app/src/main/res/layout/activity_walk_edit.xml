@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".walkEditActivity"
     android:padding="10dp">
 
 
@@ -42,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:hint="제목을 입력하세요."
+            android:hint="산책로를 입력하세요."
             android:inputType="text" />
 
         <EditText

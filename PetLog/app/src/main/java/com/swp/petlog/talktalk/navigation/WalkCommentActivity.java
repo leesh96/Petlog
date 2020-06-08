@@ -52,7 +52,7 @@ public class WalkCommentActivity extends AppCompatActivity {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));//구분선
 
         mArrayList = new ArrayList<>();
-        mAdapter = new ShareCommentAdapter(this, mArrayList);
+        mAdapter = new ShareCommentAdapter(mArrayList, this);
         mRecyclerView.setAdapter(mAdapter);
         mArrayList.clear();
         mAdapter.notifyDataSetChanged();

@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:background="@color/theme4"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:context="navigation.WalkCommentActivity"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.appcompat.widget.Toolbar

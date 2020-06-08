@@ -17,6 +17,9 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.swp.petlog.PreferenceManager;
+import com.swp.petlog.R;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -29,9 +32,6 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import com.swp.petlog.PreferenceManager;
-import com.swp.petlog.R;
 
 public class ShareWriteActivity extends AppCompatActivity {
 
@@ -89,7 +89,7 @@ public class ShareWriteActivity extends AppCompatActivity {
         buttonBack.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){ //쓰기화면에서 뒤로가기버튼클릭시 나눔게시판메인으로이동
-                Intent intent=new Intent(getApplicationContext(),ShareActivity.class);
+                Intent intent=new Intent(getApplicationContext(), ShareActivity.class);
                 startActivity(intent);
             }
         });
@@ -107,7 +107,7 @@ public class ShareWriteActivity extends AppCompatActivity {
                 task.execute("http://" + IP_ADDRESS + "/shareinsert.php",title,content,nickname); //
                 //task.execute("http://" + IP_ADDRESS + "/shareinsert.php",title,content); // 디비에 집어너음
 
-                Intent intent=new Intent(getApplicationContext(),ShareActivity.class);
+                Intent intent=new Intent(getApplicationContext(), ShareActivity.class);
                 startActivity(intent);
 
                 mEditTextTitle.setText("");

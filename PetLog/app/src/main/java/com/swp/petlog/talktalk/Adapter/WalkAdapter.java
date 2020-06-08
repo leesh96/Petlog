@@ -11,10 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.swp.petlog.R;
+import com.swp.petlog.talktalk.WalkDetailActivity;
+import com.swp.petlog.talktalk.data.WalkData;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,10 +25,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-
-import com.swp.petlog.R;
-import com.swp.petlog.talktalk.WalkDetailActivity;
-import com.swp.petlog.talktalk.data.WalkData;
 
 
 public class WalkAdapter extends RecyclerView.Adapter<WalkAdapter.ViewHolder> {
@@ -56,14 +55,11 @@ public class WalkAdapter extends RecyclerView.Adapter<WalkAdapter.ViewHolder> {
         //viewholder.id.setText(mList.get(position).getShare_id());
         viewholder.title.setText(mList.get(position).getWalk_title());
         viewholder.nickname.setText(mList.get(position).getWalk_nickname());
+        viewholder.date.setText(mList.get(position).getWalk_date());
 
         viewholder.title.setTextSize(20);
         viewholder.nickname.setTextSize(15);
-
-        //viewholder.content.setText(mList.get(position).getShare_content());
-        //viewholder.date.setText(mList.get(position).getShare_date()); //날짜
         viewholder.nickname.setGravity(Gravity.LEFT);
-        viewholder.title.setGravity(Gravity.RIGHT);
 
         viewholder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,12 +73,19 @@ public class WalkAdapter extends RecyclerView.Adapter<WalkAdapter.ViewHolder> {
                 intent.putExtra("title",mList.get(position).getWalk_title());
                 intent.putExtra("content",mList.get(position).getWalk_content());
                 intent.putExtra("nickname",mList.get(position).getWalk_nickname());
+                intent.putExtra("date",mList.get(position).getWalk_date());
+                //산책로주소이름
+                intent.putExtra("walktitle",mList.get(position).getWalk_positiontitle());
+                intent.putExtra("posx",mList.get(position).getWalk_posx());
+                intent.putExtra("posy",mList.get(position).getWalk_posy());
+
+
 
                 //intent.putExtra("img",mList.get(position).getShare_img());
 
 
                 context.startActivity(intent);
-                Toast.makeText(context,position +"번째 아이템 클릭",Toast.LENGTH_LONG).show(); //몇번째 아이템 클릭됐는지 토스트로 알려줌
+              //  Toast.makeText(context,position +"번째 아이템 클릭",Toast.LENGTH_LONG).show(); //몇번째 아이템 클릭됐는지 토스트로 알려줌
             }
         });
     }
@@ -132,6 +135,8 @@ public class WalkAdapter extends RecyclerView.Adapter<WalkAdapter.ViewHolder> {
         protected TextView title;
         protected TextView content;
         protected TextView nickname;
+        protected TextView date;
+
 
         protected ImageView img;
 
@@ -142,11 +147,10 @@ public class WalkAdapter extends RecyclerView.Adapter<WalkAdapter.ViewHolder> {
             mView = view;
             //
             view.setOnClickListener(this);
-            //this.nickname= (TextView) view.findViewById(R.id.textView_list_nickname);
-            // this.id= (TextView) view.findViewById(R.id.textView_list_id);
+
             this.title = (TextView) view.findViewById(R.id.textView_list_title);
             this.nickname = (TextView) view.findViewById(R.id.textView_list_nickname);
-            //this.content = (TextView) view.findViewById(R.id.textView_list_content);
+            this.date =(TextView)view.findViewById(R.id.textView_list_date);
             // this.img=(ImageView) view.findViewById(R.id.textView_list_img);
         }
         @Override
