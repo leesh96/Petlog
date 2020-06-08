@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_push"
+            android:icon="@drawable/ic_notifications_black_24dp"
+            android:title="PUSH알림" />
+        <item
+            android:id="@+id/nav_notice"
+            android:icon="@drawable/ic_chat_bubble_black_24dp"
+            android:title="공지사항" />
+
+    <item
+        android:title="version">
+
+            <item
+                  android:id="@+id/nav_version"
+                  android:icon="@drawable/ic_verified_user_black_24dp"
+                  android:title="버전확인팝업으로띄우기"/>
+    </item>
+    <item
+        android:id="@+id/nav_logout"
+        android:icon="@drawable/ic_eject_black_24dp"
+        android:title="Logout" />
+    </group>
+
+</menu>
+
