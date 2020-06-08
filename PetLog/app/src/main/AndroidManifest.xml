@@ -50,6 +50,9 @@
         <activity android:name=".talktalk.SetWalkImageActivity"></activity>
         <activity android:name=".talktalk.WalkDetailActivity"></activity>
         <activity android:name=".talktalk.WalkWriteActivity"></activity>
+        <activity android:name=".app.NoticeActivity"></activity>
+        <activity android:name=".app.PushActivity"></activity>
+        <activity android:name=".app.NoticeDetailActivity"></activity>
 
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 

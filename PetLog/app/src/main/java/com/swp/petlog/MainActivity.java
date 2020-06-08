@@ -22,6 +22,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.swp.petlog.app.ChangeInfoActivity;
 import com.swp.petlog.app.LoginActivity;
+import com.swp.petlog.app.NoticeActivity;
+import com.swp.petlog.app.PushActivity;
 import com.swp.petlog.diary.DiaryListActivity;
 import com.swp.petlog.mypet.MypetMainActivity;
 import com.swp.petlog.petsta.PetstaMain;
@@ -86,18 +88,23 @@ public class MainActivity extends AppCompatActivity {
                         menuItem.setChecked(false);
                         break;
                     case R.id.noti:
-                        Toast.makeText(MainActivity.this, PreferenceManager.getString(MainActivity.this, "userFace"), Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.setalert:
-                        break;
-                    case R.id.account:
-                        Intent intent = new Intent(MainActivity.this, ChangeInfoActivity.class);
+                        Intent intent = new Intent(MainActivity.this, NoticeActivity.class);
                         startActivity(intent);
                         menuItem.setChecked(false);
                         break;
-                    case R.id.logout:
-                        Intent intent2 = new Intent(MainActivity.this, LoginActivity.class);
+                    case R.id.setalert:
+                        Intent intent2 = new Intent(MainActivity.this, PushActivity.class);
                         startActivity(intent2);
+                        menuItem.setChecked(false);
+                        break;
+                    case R.id.account:
+                        Intent intent3 = new Intent(MainActivity.this, ChangeInfoActivity.class);
+                        startActivity(intent3);
+                        menuItem.setChecked(false);
+                        break;
+                    case R.id.logout:
+                        Intent intent4 = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent4);
                         PreferenceManager.clear(MainActivity.this);
                         finish();
                         menuItem.setChecked(false);
