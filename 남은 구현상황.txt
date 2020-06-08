@@ -5,8 +5,7 @@
 톡톡 게시물에 사진 넣고 보여주는거 이식
 
 펫스타그램
-내피드 보기 - 내 게시물 + 구독자 (follow테이블에서 following_nickname 가져오고 SELECT WHERE) 게시물 가져와서 보여주기
-	 - order by write_time DESC
+내피드 보기 - 정렬방식 어떻게?
 
 피드 -  작성자 프로필사진 띄우기
 

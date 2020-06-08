@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,20 +47,17 @@ public class Petsta_my_fragment extends Fragment {
     private PetstaPostAdapter adapter;
 
     private ArrayList<String> Follower;
+    private String nickname;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.petsta_my_fragment, container, false);
-        String nickname = PreferenceManager.getString(getActivity(), "userNick");
         btn_back = (ImageButton) view.findViewById(R.id.btn_back);
         btn_home = (ImageButton) view.findViewById(R.id.btn_home);
         btn_search = (ImageButton) view.findViewById(R.id.btn_search);
 
-        Follower = new ArrayList<>();
-        Follower.add(nickname);
-        GetFollower task = new GetFollower();
-        task.execute(fPHPURL, nickname);
+        nickname = PreferenceManager.getString(getActivity(), "userNick");
 
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,9 +75,7 @@ public class Petsta_my_fragment extends Fragment {
             }
         });
 
-
-
-        recyclerViewpetsta = (RecyclerView) view.findViewById(R.id.allfeed_rcview);
+        recyclerViewpetsta = (RecyclerView) view.findViewById(R.id.myfeed_rcview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerViewpetsta.setLayoutManager(layoutManager);
 
@@ -88,8 +84,8 @@ public class Petsta_my_fragment extends Fragment {
         adapter = new PetstaPostAdapter(getActivity(), arrayList);
         recyclerViewpetsta.setAdapter(adapter);
 
-        /*GetData task = new GetData();
-        task.execute(PHPURL);*/
+        GetFollower task = new GetFollower();
+        task.execute(fPHPURL, nickname);
 
         return view;
     }
@@ -120,7 +116,7 @@ public class Petsta_my_fragment extends Fragment {
             }
             else {
                 jsonString = result;
-                showResult();
+                showFollower();
             }
         }
 
@@ -129,13 +125,11 @@ public class Petsta_my_fragment extends Fragment {
 
             String serverURL = params[0];
             String nickname = params[1];
-            String postParameters = "nickname"+nickname;
+            String postParameters = "nickname=" + nickname;
 
             try {
-
                 URL url = new URL(serverURL);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-
 
                 httpURLConnection.setReadTimeout(5000);
                 httpURLConnection.setConnectTimeout(5000);
@@ -189,9 +183,11 @@ public class Petsta_my_fragment extends Fragment {
     }
 
     private void showFollower() {
-
         String TAG_JSON = "follow";
         String TAG_NICK = "follower";
+
+        Follower = new ArrayList<>();
+        Follower.add(nickname);
 
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
@@ -205,12 +201,15 @@ public class Petsta_my_fragment extends Fragment {
                 Follower.add(follower);
             }
 
+            GetData task = new GetData();
+            task.execute(Follower);
+
         } catch (JSONException e) {
             Log.d(TAG, "showResult : ", e);
         }
     }
 
-    private class GetData extends AsyncTask<String, Void, String> {
+    private class GetData extends AsyncTask<ArrayList<String>, Void, String> {
         ProgressDialog progressDialog;
         String errorString = null;
 
@@ -241,24 +240,34 @@ public class Petsta_my_fragment extends Fragment {
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(ArrayList<String>... params) {
 
-            String serverURL = params[0];
-            //String align = params[1];
-            String postParameters = "";
+            ArrayList<String> follower = (ArrayList<String>)params[0];
+
+            JSONArray jsonArray = new JSONArray();
+            try {
+                for(int i = 0; i < follower.size(); i++) {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("follower_nick", follower.get(i));
+                    jsonArray.put(jsonObject);
+                }
+                Log.d("ArrayList to JSONArray", jsonArray.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            String serverURL = PHPURL;
+            String postParameters = "follower=" + jsonArray.toString();
 
             try {
-
                 URL url = new URL(serverURL);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-
 
                 httpURLConnection.setReadTimeout(5000);
                 httpURLConnection.setConnectTimeout(5000);
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoInput(true);
                 httpURLConnection.connect();
-
 
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 outputStream.write(postParameters.getBytes("UTF-8"));
