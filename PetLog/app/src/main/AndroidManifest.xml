@@ -35,6 +35,7 @@
         <activity android:name=".diary.DiaryListActivity"></activity>
         <activity android:name=".diary.ShowDiaryActivity"></activity>
         <activity android:name=".diary.DiaryDeleteActivity"></activity>
+        <activity android:name=".app.ChangeInfoActivity"></activity>
 
         <activity android:name=".petsta.PetstaMain"></activity>
 

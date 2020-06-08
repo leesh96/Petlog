@@ -73,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                                 String u_pw = jsonObject.getString("userPassword");
                                 String u_name = jsonObject.getString("userName");
                                 String u_nickname = jsonObject.getString("userNick");
+                                String profileimg = "http://128.199.106.86/" + jsonObject.getString("profileImg");
 
                                 Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -81,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                                 PreferenceManager.setString(LoginActivity.this, "userPass", u_pw);
                                 PreferenceManager.setString(LoginActivity.this, "userName", u_name);
                                 PreferenceManager.setString(LoginActivity.this, "userNick", u_nickname);
+                                PreferenceManager.setString(LoginActivity.this, "userFace", profileimg);
                                 finish();
 
                             } else {//로그인 실패시

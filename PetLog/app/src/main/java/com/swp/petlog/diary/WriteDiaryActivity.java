@@ -27,13 +27,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.content.CursorLoader;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -228,9 +221,6 @@ public class WriteDiaryActivity extends AppCompatActivity {
                     String mood = Integer.toString(inputmood);
                     String diaryid = Integer.toString(getId);
 
-                    //ModifyData task = new ModifyData();
-                    //task.execute(mPHPURL, title, contents, mood, diaryid);
-
                     modify(title, contents, mood, diaryid);
                 }
                 else {
@@ -239,9 +229,6 @@ public class WriteDiaryActivity extends AppCompatActivity {
                     String userid = PreferenceManager.getString(WriteDiaryActivity.this, "userID");
                     String writedate = textViewDate.getText().toString();
                     String mood = Integer.toString(inputmood);
-
-                    //InsertData task = new InsertData();
-                    //task.execute(PHPURL, title, contents, userid, writedate, mood, imgpath);
 
                     upload(title, contents, userid, writedate, mood);
                 }
@@ -355,157 +342,5 @@ public class WriteDiaryActivity extends AppCompatActivity {
         RequestQueue requestQueue= Volley.newRequestQueue(WriteDiaryActivity.this);
         requestQueue.add(smpr);
     }
-
-    /* class InsertData extends AsyncTask<String, Void, String> {
-        ProgressDialog progressDialog;
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            progressDialog = ProgressDialog.show(WriteDiaryActivity.this,
-                    "Please Wait", null, true, true);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            progressDialog.dismiss();
-            Log.d(TAG, "POST response  - " + result);
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            String title = (String)params[1];
-            String contents = (String)params[2];
-            String userid = (String)params[3];
-            String writedate = (String)params[4];
-            String mood = (String)params[5];
-            String image = (String)params[6];
-
-            File file = new File(image);
-
-            String serverURL = (String)params[0];
-            String postParameters = "title=" + title + "&contents=" + contents + "&userid=" + userid + "&image" + file + "&writedate=" + writedate + "&mood=" + mood;
-
-            try {
-                URL url = new URL(serverURL);
-
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setReadTimeout(5000);
-                httpURLConnection.setConnectTimeout(5000);
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.connect();
-
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                outputStream.write(postParameters.getBytes("UTF-8"));
-                outputStream.flush();
-                outputStream.close();
-
-                int responseStatusCode = httpURLConnection.getResponseCode();
-                Log.d(TAG, "POST response code - " + responseStatusCode);
-
-                InputStream inputStream;
-                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = httpURLConnection.getInputStream();
-                }
-                else{
-                    inputStream = httpURLConnection.getErrorStream();
-                }
-
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                StringBuilder sb = new StringBuilder();
-                String line = null;
-
-                while((line = bufferedReader.readLine()) != null){
-                    sb.append(line);
-                }
-
-                bufferedReader.close();
-
-                return sb.toString();
-
-            } catch (Exception e) {
-                Log.d(TAG, "InsertData: Error ", e);
-                return new String("Error: " + e.getMessage());
-            }
-        }
-    }
-
-    class ModifyData extends AsyncTask<String, Void, String> {
-        ProgressDialog progressDialog;
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            progressDialog = ProgressDialog.show(WriteDiaryActivity.this,
-                    "Please Wait", null, true, true);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            progressDialog.dismiss();
-            Log.d(TAG, "POST response  - " + result);
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            String title = (String)params[1];
-            String contents = (String)params[2];
-            String mood = (String)params[3];
-            String diaryid = (String)params[4];
-
-            String serverURL = (String)params[0];
-            String postParameters = "title=" + title + "&contents=" + contents + "&mood=" + mood + "&diaryid=" + diaryid;
-
-            try {
-                URL url = new URL(serverURL);
-
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setReadTimeout(5000);
-                httpURLConnection.setConnectTimeout(5000);
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.connect();
-
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                outputStream.write(postParameters.getBytes("UTF-8"));
-                outputStream.flush();
-                outputStream.close();
-
-                int responseStatusCode = httpURLConnection.getResponseCode();
-                Log.d(TAG, "POST response code - " + responseStatusCode);
-
-                InputStream inputStream;
-                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = httpURLConnection.getInputStream();
-                }
-                else{
-                    inputStream = httpURLConnection.getErrorStream();
-                }
-
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                StringBuilder sb = new StringBuilder();
-                String line = null;
-
-                while((line = bufferedReader.readLine()) != null){
-                    sb.append(line);
-                }
-
-                bufferedReader.close();
-
-                return sb.toString();
-
-            } catch (Exception e) {
-                Log.d(TAG, "InsertData: Error ", e);
-                return new String("Error: " + e.getMessage());
-            }
-        }
-    }*/
 
 }

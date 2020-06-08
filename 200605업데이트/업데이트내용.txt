@@ -1,0 +1,36 @@
+메인액티비티 업데이트
+	헤더에 위치한 버튼클릭이벤트 코드 추가
+
+메인에서 정보변경 버튼클릭시
+Change_info_Activity로 이동
+
+	닉네임 변경 or 비밀번호 변경 따로 가능 - 변경하면 재로그인필수
+	비밀번호변경버튼클릭시 resetpwActivity로 이동
+            
+	ResetpwActivity 내용 업데이트
+	String userID = PreferenceManager.getString(ResetpwActivity.this, "findPw"); 이부분을 
+	String userID = PreferenceManager.getString(ResetpwActivity.this, "userID"); 이렇게 바꿈
+
+
+ShareDetailActivity
+
+ case R.id.completion:
+                                String complete="거래완료된 게시물입니다.";
+                                titleView.setText(complete);
+                                CompleteData completeData=new CompleteData();
+                                completeData.execute(cPHPURL,finalId,complete);
+                                Intent intent=new Intent(getApplicationContext(),ShareActivity.class);
+                                startActivity(intent);
+                                break;
+이부분 추가
+
+
+sharedetail_menu
+-메뉴에 거래완료아이템 추가
+	버튼클릭시 타이틀이 거래완료됐음으로 바뀜
+	거래완료버튼 누르면 다시 복구못하도록했음
+
+
+fragment_home
+상단ui
+툴바랑 겹쳐서 제거함

@@ -1,8 +1,8 @@
 package com.swp.petlog.petsta;
 
 public class PetstaPostData {
-    private int member_id;
-    private String member_content;
+    private int member_id, member_likecnt, member_commentcnt, member_tag;
+    private String member_content, member_image, member_nickname, member_writetime;
 
     public int getMember_id() {
         return member_id;
@@ -12,11 +12,59 @@ public class PetstaPostData {
         this.member_id = member_id;
     }
 
-    public String getMember_contents() {
+    public int getMember_likecnt() {
+        return member_likecnt;
+    }
+
+    public void setMember_likecnt(int member_likecnt) {
+        this.member_likecnt = member_likecnt;
+    }
+
+    public int getMember_commentcnt() {
+        return member_commentcnt;
+    }
+
+    public void setMember_commentcnt(int member_commentcnt) {
+        this.member_commentcnt = member_commentcnt;
+    }
+
+    public int getMember_tag() {
+        return member_tag;
+    }
+
+    public void setMember_tag(int member_tag) {
+        this.member_tag = member_tag;
+    }
+
+    public String getMember_content() {
         return member_content;
     }
 
-    public void setMember_contents(String member_contents) {
+    public void setMember_content(String member_content) {
         this.member_content = member_content;
+    }
+
+    public String getMember_image() {
+        return member_image;
+    }
+
+    public void setMember_image(String member_image) {
+        this.member_image = member_image;
+    }
+
+    public String getMember_nickname() {
+        return member_nickname;
+    }
+
+    public void setMember_nickname(String member_nickname) {
+        this.member_nickname = member_nickname;
+    }
+
+    public String getMember_writetime() {
+        return member_writetime;
+    }
+
+    public void setMember_writetime(String member_writetime) {
+        this.member_writetime = member_writetime;
     }
 }

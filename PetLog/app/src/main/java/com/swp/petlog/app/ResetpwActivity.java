@@ -16,6 +16,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
 
@@ -30,6 +31,8 @@ public class ResetpwActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resetpassword);
 
+        final boolean ischangepw = getIntent().getBooleanExtra("isChangePw", false);
+
         editTextPw = (EditText) findViewById(R.id.et_resetPw);
         editTextPwcheck = (EditText) findViewById(R.id.et_resetPwcheck);
         btn_changePw = (Button) findViewById(R.id.btn_resetPw);
@@ -37,7 +40,13 @@ public class ResetpwActivity extends AppCompatActivity {
         btn_changePw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userID = PreferenceManager.getString(ResetpwActivity.this, "findpwID");
+                String userID;
+
+                if (ischangepw) {
+                    userID = PreferenceManager.getString(ResetpwActivity.this, "userID");
+                }
+                else { userID = PreferenceManager.getString(ResetpwActivity.this, "findpwID"); }
+
                 final String Pw = editTextPw.getText().toString();
                 final String Pwcheck = editTextPwcheck.getText().toString();
 
@@ -62,6 +71,7 @@ public class ResetpwActivity extends AppCompatActivity {
                                             Intent toLogin = new Intent(ResetpwActivity.this, LoginActivity.class);
                                             startActivity(toLogin);
                                             PreferenceManager.removeKey(ResetpwActivity.this, "findpwID");
+                                            PreferenceManager.clear(ResetpwActivity.this);
                                             finish();
                                         }
                                     });

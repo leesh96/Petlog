@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PushActivity"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_push"
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="31dp">
+
+        <Switch
+            android:id="@+id/push_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="댓글알림"
+            android:layout_marginTop="50dp"
+            android:textSize="35dp" />
+
+        <Switch
+            android:id="@+id/push_like"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="좋아요알림"
+            android:textSize="35dp" />
+
+        <Switch
+            android:id="@+id/push_follow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="팔로우알림"
+            android:textSize="35dp" />
+
+        <Switch
+            android:id="@+id/push_diary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="일기알림"
+            android:textSize="35dp" />
+
+        <Switch
+            android:id="@+id/push_bdy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="생일알림"
+            android:textSize="35dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_push"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="PUSH"
+        android:textAlignment="center"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="16dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

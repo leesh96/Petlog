@@ -52,7 +52,6 @@
         android:layout_below="@+id/relativeLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:padding="50dp"
         android:src="@drawable/ic_gallary_100dp" />
 
     <EditText
@@ -73,7 +72,7 @@
 
     <Button
         android:id="@+id/btn_tag"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="40dp"
         android:layout_below="@+id/petsta_content"
         android:layout_alignEnd="@+id/petsta_content"
