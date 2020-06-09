@@ -48,13 +48,13 @@ public class WalkActivity extends AppCompatActivity {
     private WalkAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private String mJsonString;
-    private ImageButton imgbtn_walkmenu,btn_back;
+    private ImageButton btn_walkwrite,btn_back, btn_home;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_walk);
+        setContentView(R.layout.talktalk_walkmain);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.listView_main_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -89,40 +89,26 @@ public class WalkActivity extends AppCompatActivity {
         btn_back.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(getApplicationContext(), TalktalkActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
-        imgbtn_walkmenu = (ImageButton) findViewById(R.id.btn_walkmenu);
-        imgbtn_walkmenu.setOnClickListener(new View.OnClickListener() {
+        btn_home = (ImageButton) findViewById(R.id.btn_home);
+        btn_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Context wrapper = new ContextThemeWrapper(WalkActivity.this, R.style.mypetmenustyle);
-                PopupMenu popupMenu = new PopupMenu(WalkActivity.this, v);
-                MenuInflater inflater = popupMenu.getMenuInflater();
-                Menu menu = popupMenu.getMenu();
-
-                inflater.inflate(R.menu.walk_menu, menu);
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.walkadd:
-                                Intent addintent = new Intent(WalkActivity.this, WalkWriteActivity.class);
-                                startActivity(addintent);
-                                break;
-                            case R.id.home:
-                                Intent homeintent = new Intent(WalkActivity.this, MainActivity.class);
-                                startActivity(homeintent);
-                                break;
-                        }
-                        return false;
-                    }
-                });
-                popupMenu.show();
+                Intent intent = new Intent(WalkActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
-
+        btn_walkwrite = (ImageButton)findViewById(R.id.btn_walkwrite);
+        btn_walkwrite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addintent = new Intent(WalkActivity.this, WalkWriteActivity.class);
+                startActivity(addintent);
+            }
+        });
     }
 
     public interface ClickListener {
@@ -277,12 +263,11 @@ public class WalkActivity extends AppCompatActivity {
         String TAG_TITLE = "title";
         String TAG_CONTENT = "content";
         String TAG_NICKNAME ="nickname";
+        String TAG_IMG = "walkimage";
         String TAG_DATE ="date";
         String TAG_POSTITLE="position";
         String TAG_POSX="posx";
         String TAG_POSY="posy";
-
-
 
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
@@ -297,6 +282,7 @@ public class WalkActivity extends AppCompatActivity {
                 String title = item.getString(TAG_TITLE);
                 String content = item.getString(TAG_CONTENT);
                 String nickname =item.getString(TAG_NICKNAME);
+                String image = "http://" + IP_ADDRESS + "/" + item.get(TAG_IMG);
                 String date =item.getString(TAG_DATE);
                 String walkpostitle=item.getString(TAG_POSTITLE);
                 String posx=item.getString(TAG_POSX);
@@ -307,11 +293,11 @@ public class WalkActivity extends AppCompatActivity {
                 walkData.setWalk_title(title);
                 walkData.setWalk_content(content);
                 walkData.setWalk_nickname(nickname);
+                walkData.setWalk_img(image);
                 walkData.setWalk_date(date);
                 walkData.setWalk_positiontitle(walkpostitle);
                 walkData.setWalk_posx(posx);
                 walkData.setWalk_posy(posy);
-
 
                 mArrayList.add(walkData);
                 mAdapter.notifyDataSetChanged();

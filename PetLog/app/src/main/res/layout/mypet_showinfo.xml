@@ -111,7 +111,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="330dp"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/ic_check_coltheme_24dp"/>
+                    android:src="@drawable/ic_check_24dp"/>
 
                 <ImageButton
                     android:id="@+id/btn_memodel"

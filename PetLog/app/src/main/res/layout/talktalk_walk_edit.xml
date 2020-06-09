@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/theme4">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:clickable="true"
+            android:background="@drawable/button_style_inmain"
+            android:src="@drawable/ic_arrow_back"/>
+
+        <ImageButton
+            android:id="@+id/btn_home"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="80dp"
+            android:clickable="true"
+            android:background="@drawable/button_style_inmain"
+            android:src="@drawable/ic_home"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/nanumbarungothic_b"
+            android:text="산책로 수정"
+            android:textAlignment="center"
+            android:textColor="@color/text"
+            android:textSize="32sp" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/walk_image"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/ic_addphoto"/>
+
+    <EditText
+        android:id="@+id/id"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:hint="Id"
+        android:visibility="invisible"
+        />
+
+    <EditText
+        android:id="@+id/editText_main_title"
+        android:layout_width="400dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/walk_image"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/border_style"
+        android:maxLength="63"
+        android:hint="제목을 입력하세요."
+        android:padding="10dp"
+        android:inputType="text"
+        android:fontFamily="@font/nanumbarungothic_b"
+        android:textSize="22dp"
+        android:textColor="@color/text"/>
+
+    <EditText
+        android:id="@+id/editText_main_content"
+        android:layout_width="400dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/editText_main_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:maxLength="255"
+        android:gravity="top"
+        android:background="@drawable/border_style"
+        android:fontFamily="@font/nanumbarungothic_n"
+        android:hint="내용을 입력하세요."
+        android:inputType="textMultiLine"
+        android:padding="10dp"
+        android:textColor="@color/text"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/btn_edit"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/editText_main_content"
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button_style"
+        android:clickable="true"
+        android:src="@drawable/ic_done"
+        android:text="수정하기"
+        android:textColor="@color/text"
+        android:fontFamily="@font/nanumbarungothic_b"
+        android:textAlignment="center"
+        android:textSize="24dp"/>
+
+
+</RelativeLayout>

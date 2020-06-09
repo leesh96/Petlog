@@ -16,7 +16,6 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
 
@@ -29,7 +28,7 @@ public class ResetpwActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_resetpassword);
+        setContentView(R.layout.app_resetpassword);
 
         final boolean ischangepw = getIntent().getBooleanExtra("isChangePw", false);
 

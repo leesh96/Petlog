@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +69,8 @@ public class GoogleMapActivity extends AppCompatActivity
     private static final int UPDATE_INTERVAL_MS = 1000;  // 1초
     private static final int FASTEST_UPDATE_INTERVAL_MS = 500; // 0.5초
 
+    private TextView view_title;
+
 
     // onRequestPermissionsResult에서 수신된 결과에서 ActivityCompat.requestPermissions를 사용한 퍼미션 요청을 구별하기 위해 사용됩니다.
     private static final int PERMISSIONS_REQUEST_CODE = 100;
@@ -101,6 +104,17 @@ public class GoogleMapActivity extends AppCompatActivity
         setContentView(R.layout.activity_google_map);
 
         mLayout = findViewById(R.id.layout_main);
+
+        view_title = (TextView) findViewById(R.id.maptitle);
+        view_title.setText("위치저장");
+
+        ImageButton btn_back = (ImageButton) findViewById(R.id.btn_back);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         previous_marker = new ArrayList<Marker>();
 
@@ -211,7 +225,6 @@ public class GoogleMapActivity extends AppCompatActivity
             }
 
         }
-
 
 
         mMap.getUiSettings().setMyLocationButtonEnabled(true);

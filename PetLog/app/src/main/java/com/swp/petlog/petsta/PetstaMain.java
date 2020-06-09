@@ -17,16 +17,20 @@ public class PetstaMain extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private FragmentManager fm;
     private FragmentTransaction ft;
-    private Petsta_my_fragment petsta_my_fragment;
-    private Petsta_all_fragment petsta_all_fragment;
-    private Petsta_profile_fragment petsta_profile_fragment;
-    private Petsta_write_fragment petsta_write_fragment;
+    private MyFeed_fragment myFeed_fragment;
+    private AllFeed_fragment allFeed_fragment;
+    private MyProfile_fragment myProfile_fragment;
+    private PostWrite_fragment postWrite_fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.petsta_main);
-        //setPetsta(0);
+        myFeed_fragment = new MyFeed_fragment();
+        allFeed_fragment = new AllFeed_fragment();
+        postWrite_fragment = new PostWrite_fragment();
+        myProfile_fragment = new MyProfile_fragment();
+        setPetsta(0);
         bottomNavigationView = findViewById(R.id.bottomNavi);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -48,10 +52,7 @@ public class PetstaMain extends AppCompatActivity {
                 return true;
             }
         });
-        petsta_my_fragment = new Petsta_my_fragment();
-        petsta_all_fragment = new Petsta_all_fragment();
-        petsta_write_fragment = new Petsta_write_fragment();
-        petsta_profile_fragment = new Petsta_profile_fragment();
+
 
     }
 
@@ -60,19 +61,19 @@ public class PetstaMain extends AppCompatActivity {
         ft = fm.beginTransaction();
         switch (n){
             case 0:
-                ft.replace(R.id.main_frame, petsta_my_fragment);
+                ft.replace(R.id.main_frame, myFeed_fragment);
                 ft.commit();
                 break;
             case 1:
-                ft.replace(R.id.main_frame, petsta_all_fragment);
+                ft.replace(R.id.main_frame, allFeed_fragment);
                 ft.commit();
                 break;
             case 2:
-                ft.replace(R.id.main_frame, petsta_write_fragment);
+                ft.replace(R.id.main_frame, postWrite_fragment);
                 ft.commit();
                 break;
             case 3:
-                ft.replace(R.id.main_frame, petsta_profile_fragment);
+                ft.replace(R.id.main_frame, myProfile_fragment);
                 ft.commit();
                 break;
         }

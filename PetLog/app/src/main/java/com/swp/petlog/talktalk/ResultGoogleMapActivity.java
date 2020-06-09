@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,6 +101,14 @@ public class ResultGoogleMapActivity extends AppCompatActivity
             setContentView(R.layout.activity_google_map);
 
             mLayout = findViewById(R.id.layout_main);
+
+            ImageButton btn_back = (ImageButton) findViewById(R.id.btn_back);
+            btn_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
 
             previous_marker = new ArrayList<Marker>();
 

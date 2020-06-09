@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
@@ -13,11 +14,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.swp.petlog.MainActivity;
+import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
 import com.swp.petlog.talktalk.data.WalkData;
 
@@ -32,22 +37,31 @@ import java.util.ArrayList;
 //아이템클릭시 상세페이지!
 public class WalkDetailActivity extends AppCompatActivity {
     private ArrayList<WalkData>mList;
-    private ImageButton imgbtn_walkmenu,btn_back,btn_comment;
+    private ImageButton imgbtn_walkmenu, btn_back, btn_home;
     private Button btn_look_pos;
     private static String TAG = "TEST02";
     private boolean isModify = false;
     private static String dPHPURL = "http://128.199.106.86/deleteWalk.php";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_walk_detail);
+        setContentView(R.layout.talktalk_walk_detail);
 
 
         btn_back=(ImageButton)findViewById(R.id.btn_back);
         btn_back.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(getApplicationContext(), WalkActivity.class);
+                finish();
+            }
+        });
+
+        btn_home = (ImageButton) findViewById(R.id.btn_home);
+        btn_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WalkDetailActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -66,7 +80,7 @@ public class WalkDetailActivity extends AppCompatActivity {
         title=extras.getString("title");
         content=extras.getString("content");
         nickname=extras.getString("nickname");
-        img=extras.getString("img");
+        img=extras.getString("walkimg");
         walkpos=extras.getString("walktitle");
 
 
@@ -75,13 +89,16 @@ public class WalkDetailActivity extends AppCompatActivity {
         TextView contentView = (TextView) findViewById(R.id.item_detail_content);
         TextView titleView =(TextView) findViewById(R.id.item_detail_title);
         TextView nickView = (TextView) findViewById(R.id.item_detail_nickname);
+        ImageView imageView = (ImageView) findViewById(R.id.item_detail_image);
 
+        Glide.with(WalkDetailActivity.this).load(img).into(imageView);
 
         //데이터 넘겨주는 값
         String idview=id; //나중엔 작성자로 바꿀예정
         String titleview = title; //제목
         String contentview=content; //내용
         String nicknameview=nickname;
+        String imgview=img;
         //추가할거 -> 이미지, 댓글
 
         //클릭시 화면에 보여주는 곳//
@@ -109,25 +126,26 @@ public class WalkDetailActivity extends AppCompatActivity {
             }
         });
 
-        //btn_comment=(ImageButton)findViewById(R.id.btn_comment);
-        //final String finalTitle1 = title;
-       // final String finalId1=id;
-       /**btn_comment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(), WalkCommentActivity.class);
-                intent.putExtra("title", finalTitle1);
-                intent.putExtra("id", finalId1);
-
-                startActivity(intent);
-
-            }
-        });**/
-
         imgbtn_walkmenu = (ImageButton) findViewById(R.id.btn_walkmenu);
         final String finalContent = content;
         final String finalTitle = title;
         final String finalId=id;
+        final String finalImg=img;
+        final String finalNick=nickname;
+
+        final String PetLogNick= PreferenceManager.getString(WalkDetailActivity.this,"userNick");
+
+        if (PetLogNick.equals(finalNick)) {
+            imgbtn_walkmenu.setVisibility(View.VISIBLE);
+            //.makeText(getApplicationContext(),"같은 닉네임입니다",Toast.LENGTH_LONG).show();
+
+        }
+        else if(!PetLogNick.equals(finalNick)){
+            imgbtn_walkmenu.setVisibility(View.INVISIBLE);
+            //Toast.makeText(getApplicationContext(),"닉네임이 다릅니다",Toast.LENGTH_LONG).show();
+
+        }
+
         imgbtn_walkmenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,6 +166,7 @@ public class WalkDetailActivity extends AppCompatActivity {
                                 editintent.putExtra("id",finalId);
                                 editintent.putExtra("title", finalTitle); //편집화면에 제목 내용 불러옴
                                 editintent.putExtra("content", finalContent);
+                                editintent.putExtra("walkimage", finalImg);
                                 editintent.putExtra("ismodify", isModify);
                                 startActivity(editintent);
 

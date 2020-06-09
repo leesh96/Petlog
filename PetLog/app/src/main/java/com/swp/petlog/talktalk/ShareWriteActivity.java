@@ -1,37 +1,37 @@
 package com.swp.petlog.talktalk;
 
-import android.app.ProgressDialog;
+import android.Manifest;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Base64;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.content.CursorLoader;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.SimpleMultiPartRequest;
+import com.android.volley.toolbox.Volley;
+import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class ShareWriteActivity extends AppCompatActivity {
 
@@ -41,27 +41,19 @@ public class ShareWriteActivity extends AppCompatActivity {
     private EditText mEditTextTitle;
     private EditText mEditTextContent;
     private ImageView mImageView;
-    private Bitmap bitmapshareimage;
-    private String image;
     // private TextView mTextViewResult;
-    /**  //20.05.11 추가
-     private ArrayList<ShareData> mArrayList;
-     private ShareAdapter mAdapter;
-     private RecyclerView mRecyclerView;
-     private String mJsonString;
-     **/
     Calendar calendar = Calendar.getInstance();
+
+    private String imgpath;
 
     int year = calendar.get(Calendar.YEAR);
     int month=calendar.get(Calendar.MONTH);
     int day= calendar.get(Calendar.DATE);
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_share_write);
+        setContentView(R.layout.talktalk_share_write);
 
         mEditTextTitle = (EditText)findViewById(R.id.editText_main_title);
         mEditTextContent = (EditText)findViewById(R.id.editText_main_content);
@@ -69,30 +61,46 @@ public class ShareWriteActivity extends AppCompatActivity {
         // mTextViewResult = (TextView)findViewById(R.id.textView_main_result);
         // mTextViewResult.setMovementMethod(new ScrollingMovementMethod());
 
-
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            int permissionResult= checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if(permissionResult== PackageManager.PERMISSION_DENIED){
+                String[] permissions= new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permissions,10);
+            }
+        }else{
+            //cv.setVisibility(View.VISIBLE);
+        }
 
          //20.05.22 추가*//
         mImageView =(ImageView) findViewById(R.id.btn_share_image);
         mImageView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent load_image = new Intent();
-                load_image.setType("image/*");
-                load_image.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(load_image, 1);
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, 10);
             }
         });
 
 
-        /////////////////////////
-        ImageButton buttonBack =(ImageButton)findViewById(R.id.btn_back);
-        buttonBack.setOnClickListener(new View.OnClickListener(){
+        ImageButton btn_back = (ImageButton) findViewById(R.id.btn_back);
+        btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){ //쓰기화면에서 뒤로가기버튼클릭시 나눔게시판메인으로이동
-                Intent intent=new Intent(getApplicationContext(), ShareActivity.class);
-                startActivity(intent);
+            public void onClick(View v) {
+                finish();
             }
         });
+
+        ImageButton btn_home = (ImageButton) findViewById(R.id.btn_home);
+        btn_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShareWriteActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         final String nickname= PreferenceManager.getString(ShareWriteActivity.this,"userNick");
 
         Button buttonInsert = (Button)findViewById(R.id.board_insert);
@@ -103,109 +111,101 @@ public class ShareWriteActivity extends AppCompatActivity {
                 String title = mEditTextTitle.getText().toString();
                 String content = mEditTextContent.getText().toString();
 
-                InsertData task = new InsertData();
+                /*InsertData task = new InsertData();
                 task.execute("http://" + IP_ADDRESS + "/shareinsert.php",title,content,nickname); //
-                //task.execute("http://" + IP_ADDRESS + "/shareinsert.php",title,content); // 디비에 집어너음
+                //task.execute("http://" + IP_ADDRESS + "/shareinsert.php",title,content); // 디비에 집어너음*/
 
-                Intent intent=new Intent(getApplicationContext(), ShareActivity.class);
+                upload(title, content, nickname);
+
+                /*Intent intent=new Intent(getApplicationContext(), ShareActivity.class);
                 startActivity(intent);
+                finish();*/
 
-                mEditTextTitle.setText("");
-                mEditTextContent.setText("");
-
+                /*mEditTextTitle.setText("");
+                mEditTextContent.setText("");*/
             }
         });
     }
-    /////비트맵   uri->bitmap->file
+
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                try {
-                    InputStream is = getContentResolver().openInputStream(data.getData());
-                    bitmapshareimage = BitmapFactory.decodeStream(is);
-                    is.close();
-                    bitmapshareimage = resize(bitmapshareimage);
-                    mImageView.setImageBitmap(bitmapshareimage);
-                    image = BitmapToString(bitmapshareimage);
-                    try {
-                        image = URLEncoder.encode(image, "utf-8");
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case 10 :
+                if(grantResults[0]==PackageManager.PERMISSION_GRANTED) //사용자가 허가 했다면
+                {
+                    Toast.makeText(this, "외부 메모리 읽기/쓰기 사용 가능", Toast.LENGTH_SHORT).show();
+
+                }else{//거부했다면
+                    Toast.makeText(this, "외부 메모리 읽기/쓰기 제한", Toast.LENGTH_SHORT).show();
+
                 }
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode){
+            case 10:
+                if(resultCode==RESULT_OK){
+                    //선택한 사진의 경로(Uri)객체 얻어오기
+                    Uri uri= data.getData();
+                    if(uri!=null){
+                        mImageView.setImageURI(uri);
+                        imgpath = getRealPathFromUri(uri);
+                    }
+
+                }else
+                {
+                    Toast.makeText(this, "이미지 선택을 하지 않았습니다.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+
+    public String getRealPathFromUri(Uri uri){
+        String[] proj= {MediaStore.Images.Media.DATA};
+        CursorLoader loader= new CursorLoader(this, uri, proj, null, null, null);
+        Cursor cursor= loader.loadInBackground();
+        int column_index= ((Cursor) cursor).getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result= cursor.getString(column_index);
+        cursor.close();
+        return result;
+    }
+
+    public void upload(String title, String contents, String nickname) {
+        SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, "http://" + IP_ADDRESS + "/shareinsert.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(ShareWriteActivity.this, "성공" + response, Toast.LENGTH_SHORT).show();
+                Log.d("TAG", response);
+                Intent intent = new Intent(ShareWriteActivity.this, ShareActivity.class);
+                startActivity(intent);
             }
-        }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(ShareWriteActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                Log.d("TAG", error.toString());
+            }
+        });
+        //요청 객체에 보낼 데이터를 추가
+        smpr.addStringParam("title", title);
+        smpr.addStringParam("contents", contents);
+        smpr.addStringParam("nickname", nickname);
+        smpr.addFile("image", imgpath);
+
+        //요청객체를 서버로 보낼 우체통 같은 객체 생성
+        RequestQueue requestQueue= Volley.newRequestQueue(ShareWriteActivity.this);
+        requestQueue.add(smpr);
     }
 
-    public static String BitmapToString(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] bytes = baos.toByteArray();
-        String temp= Base64.encodeToString(bytes, Base64.DEFAULT);
-
-        return temp;
-    }
-
-    private Bitmap resize(Bitmap bm){
-        Configuration config=getResources().getConfiguration();
-        if(config.smallestScreenWidthDp>=600)
-            bm = Bitmap.createScaledBitmap(bm, 300, 180, true);
-        else if(config.smallestScreenWidthDp>=400)
-            bm = Bitmap.createScaledBitmap(bm, 200, 120, true);
-        else if(config.smallestScreenWidthDp>=360)
-            bm = Bitmap.createScaledBitmap(bm, 180, 108, true);
-        else
-            bm = Bitmap.createScaledBitmap(bm, 160, 96, true);
-        return bm;
-    }
-    public static Bitmap StringToBitMap(String image){
-        Log.e("StringToBitMap","StringToBitMap");
-        try{
-            byte [] encodeByte=Base64.decode(image,Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            Log.e("StringToBitMap","good");
-            return bitmap;
-        }catch(Exception e){
-            e.getMessage();
-            return null;
-        }
-    }
-    /**
-    public Bitmap getBitmapFromUri(Uri uri) throws IOException {
-        ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(uri,"r");
-        FileDescriptor fileDescriptor=parcelFileDescriptor.getFileDescriptor();
-        Bitmap image= BitmapFactory.decodeFileDescriptor(fileDescriptor);
-        parcelFileDescriptor.close();
-        return image;
-    }
-
-
-    public File createFileFromBitmap(Bitmap bitmap) throws IOException{
-        File newFile = new File(getFilesDir(), makeImageFilePath());
-        FileOutputStream fileOutputStream=new FileOutputStream(newFile);
-
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, fileOutputStream);
-        fileOutputStream.close();
-        return newFile;
-    }**/
-    public static String makeImageFilePath(){
-
-        long now = System.currentTimeMillis();
-        // 현재시간을 date 변수에 저장한다.
-        Date date = new Date(now);
-        // 시간을 나타냇 포맷을 정한다 ( yyyy/MM/dd 같은 형태로 변형 가능 )
-        SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        // nowDate 변수에 값을 저장한다.
-        String formatDate = sdfNow.format(date);
-        return formatDate+".png";
-    }
-
-    class InsertData extends AsyncTask<String, Void, String> {
+    /*class InsertData extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
 
         @Override
@@ -295,5 +295,5 @@ public class ShareWriteActivity extends AppCompatActivity {
             }
 
         }
-    }
+    }*/
 }

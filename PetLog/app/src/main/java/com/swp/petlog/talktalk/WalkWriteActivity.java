@@ -1,24 +1,33 @@
 package com.swp.petlog.talktalk;
 
-import android.app.ProgressDialog;
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Base64;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
+import androidx.loader.content.CursorLoader;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.SimpleMultiPartRequest;
+import com.android.volley.toolbox.Volley;
+import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
 
@@ -32,50 +41,68 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-
 public class WalkWriteActivity extends AppCompatActivity {
-    static final int getimagesetting=1001;//for request intent
-
     private static String IP_ADDRESS = "128.199.106.86";
     private static String TAG = "test02";
     private EditText mEditTextTitle;
     private EditText mEditTextContent;
     //20.05.11 추가
     private ImageView imageViewWalkimage;
-    private Bitmap bitmapWalkimage;
-    private String image;
+    private String imgpath;
 
-    //ImageView image;
-    //ImageButton get, send;
-    //String temp="";
-    //static ProgressDialog pd;
-    private static final int REQUEST_CAMERA = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_walk_write);
+        setContentView(R.layout.talktalk_walk_write);
         mEditTextTitle = (EditText)findViewById(R.id.editText_main_title);
         mEditTextContent = (EditText)findViewById(R.id.editText_main_content);
-        //image=(String)findViewById(R.id.btn_walk_image);
+        imageViewWalkimage = (ImageView)findViewById(R.id.walk_image);
 
         ImageButton buttonBack =(ImageButton)findViewById(R.id.btn_back);
         buttonBack.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){ //쓰기화면에서 뒤로가기버튼클릭시 게시판메인으로이동
-                Intent intent=new Intent(getApplicationContext(), WalkActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
-        ImageButton ButtonGps =(ImageButton)findViewById(R.id.btn_gps);
+        ImageButton btn_home = (ImageButton) findViewById(R.id.btn_home);
+        btn_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WalkWriteActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        Button ButtonGps =(Button)findViewById(R.id.btn_gps);
         ButtonGps.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(getApplicationContext(), GoogleMapActivity.class);
+                Intent intent=new Intent(WalkWriteActivity.this, GoogleMapActivity.class);
                 startActivity(intent);
             }
         });
 
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            int permissionResult= checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if(permissionResult== PackageManager.PERMISSION_DENIED){
+                String[] permissions= new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permissions,10);
+            }
+        }else{
+            //cv.setVisibility(View.VISIBLE);
+        }
+
+        imageViewWalkimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, 10);
+            }
+        });
 
         final String nickname= PreferenceManager.getString(WalkWriteActivity.this,"userNick");
 
@@ -83,7 +110,7 @@ public class WalkWriteActivity extends AppCompatActivity {
         final String position = intent.getStringExtra("walktitle");
         final Double posx=intent.getDoubleExtra("posx",0);  //위도 받아옴
         final Double posy=intent.getDoubleExtra("posy",0);  //경도 받아옴
-       // final LatLng position1= intent.get("pos1");
+        // final LatLng position1= intent.get("pos1");
         final String posx1=Double.toString(posx);
         final String posy1=Double.toString(posy);
 
@@ -97,125 +124,99 @@ public class WalkWriteActivity extends AppCompatActivity {
                 String content = mEditTextContent.getText().toString();
                 //String walkimage = image.getBytes().toString();
 
-                InsertData task = new InsertData();
-                task.execute("http://" + IP_ADDRESS + "/walkInsert.php", title,content,nickname,position,posx1,posy1);
+                /*InsertData task = new InsertData();
+                task.execute("http://" + IP_ADDRESS + "/walkInsert.php", title,content,nickname,position,posx1,posy1);*/
 
-
-                mEditTextTitle.setText("");
-                mEditTextContent.setText("");
-                Intent intent=new Intent(getApplicationContext(), WalkActivity.class);
-                startActivity(intent);
+                upload(title, content, nickname, position, posx1, posy1);
 
             }
         });
-        ImageButton buttonImage=(ImageButton)findViewById(R.id.btn_walk_image);
-        buttonImage.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent load_image = new Intent();
-                load_image.setType("image/*");
-                load_image.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(load_image, 1);
-                permission_init();
-                      //  addImage();
-                }
-        });
-    }
-    ////
-
-
-
-    void permission_init(){
-        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {	//권한 거절
-            // Request missing location permission.
-            // Check Permissions Now
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    android.Manifest.permission.CAMERA)) {
-                // 이전에 권한거절
-                // Toast.makeText(this,getString(R.string.limit),Toast.LENGTH_SHORT).show();
-
-            } else {
-                ActivityCompat.requestPermissions(
-                        this, new String[]{android.Manifest.permission.CAMERA},
-                        REQUEST_CAMERA);
-            }
-
-        } else {	//권한승인
-            //Log.e("onConnected","else");
-            // mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-        }
 
     }
 
 
-
-/**
-    void addImage(){
-        Intent intent=new Intent(getApplicationContext(),SetWalkImageActivity.class);
-        startActivityForResult(intent, getimagesetting);
-    }**/
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                try {
-                    InputStream is = getContentResolver().openInputStream(data.getData());
-                    bitmapWalkimage = BitmapFactory.decodeStream(is);
-                    is.close();
-                    bitmapWalkimage = resize(bitmapWalkimage);
-                    imageViewWalkimage.setImageBitmap(bitmapWalkimage);
-                    image = BitmapToString(bitmapWalkimage);
-                    try {
-                        image = URLEncoder.encode(image, "utf-8");
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case 10 :
+                if(grantResults[0]==PackageManager.PERMISSION_GRANTED) //사용자가 허가 했다면
+                {
+                    Toast.makeText(this, "외부 메모리 읽기/쓰기 사용 가능", Toast.LENGTH_SHORT).show();
+
+                }else{//거부했다면
+                    Toast.makeText(this, "외부 메모리 읽기/쓰기 제한", Toast.LENGTH_SHORT).show();
+
                 }
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode){
+            case 10:
+                if(resultCode==RESULT_OK){
+                    //선택한 사진의 경로(Uri)객체 얻어오기
+                    Uri uri= data.getData();
+                    if(uri!=null){
+                        imageViewWalkimage.setImageURI(uri);
+                        imgpath = getRealPathFromUri(uri);
+                    }
+
+                }else
+                {
+                    Toast.makeText(this, "이미지 선택을 하지 않았습니다.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+
+    public String getRealPathFromUri(Uri uri){
+        String[] proj= {MediaStore.Images.Media.DATA};
+        CursorLoader loader= new CursorLoader(this, uri, proj, null, null, null);
+        Cursor cursor= loader.loadInBackground();
+        int column_index= ((Cursor) cursor).getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result= cursor.getString(column_index);
+        cursor.close();
+        return result;
+    }
+
+    public void upload(String title, String content, String nickname, String position, String posx, String posy) {
+        SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, "http://" + IP_ADDRESS + "/walkInsert.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(WalkWriteActivity.this, "성공" + response, Toast.LENGTH_SHORT).show();
+                Log.d("TAG", response);
+                Intent intent = new Intent(WalkWriteActivity.this, WalkActivity.class);
+                startActivity(intent);
+                finish();
             }
-        }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(WalkWriteActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                Log.d("TAG", error.toString());
+            }
+        });
+        //요청 객체에 보낼 데이터를 추가
+        smpr.addStringParam("title", title);
+        smpr.addStringParam("content", content);
+        smpr.addStringParam("nickname", nickname);
+        smpr.addStringParam("position", position);
+        smpr.addStringParam("posx", posx);
+        smpr.addStringParam("posy", posy);
+        smpr.addFile("image", imgpath);
+
+        //요청객체를 서버로 보낼 우체통 같은 객체 생성
+        RequestQueue requestQueue= Volley.newRequestQueue(WalkWriteActivity.this);
+        requestQueue.add(smpr);
     }
 
-    public static String BitmapToString(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] bytes = baos.toByteArray();
-        String temp= Base64.encodeToString(bytes, Base64.DEFAULT);
-
-        return temp;
-    }
-
-    private Bitmap resize(Bitmap bm){
-        Configuration config=getResources().getConfiguration();
-        if(config.smallestScreenWidthDp>=600)
-            bm = Bitmap.createScaledBitmap(bm, 300, 180, true);
-        else if(config.smallestScreenWidthDp>=400)
-            bm = Bitmap.createScaledBitmap(bm, 200, 120, true);
-        else if(config.smallestScreenWidthDp>=360)
-            bm = Bitmap.createScaledBitmap(bm, 180, 108, true);
-        else
-            bm = Bitmap.createScaledBitmap(bm, 160, 96, true);
-        return bm;
-    }
-    public static Bitmap StringToBitMap(String image){
-        Log.e("StringToBitMap","StringToBitMap");
-        try{
-            byte [] encodeByte=Base64.decode(image,Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            Log.e("StringToBitMap","good");
-            return bitmap;
-        }catch(Exception e){
-            e.getMessage();
-            return null;
-        }
-    }
-
-    class InsertData extends AsyncTask<String, Void, String>{
+    /*class InsertData extends AsyncTask<String, Void, String>{
         ProgressDialog progressDialog;
 
         @Override
@@ -305,5 +306,5 @@ public class WalkWriteActivity extends AppCompatActivity {
             }
 
         }
-    }
+    }*/
 }

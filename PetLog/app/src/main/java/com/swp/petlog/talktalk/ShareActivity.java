@@ -48,13 +48,12 @@ public class ShareActivity extends AppCompatActivity {
     private ShareAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private String mJsonString;
-    private ImageButton imgbtn_sharemenu, btn_back;
-
+    private ImageButton btn_back, btn_home, btn_write;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_share);
+        setContentView(R.layout.talktalk_sharemain);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.listView_main_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -86,11 +85,28 @@ public class ShareActivity extends AppCompatActivity {
         btn_back.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(getApplicationContext(), TalktalkActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
-        imgbtn_sharemenu = (ImageButton) findViewById(R.id.btn_sharemenu);
+        btn_home=(ImageButton)findViewById(R.id.btn_home);
+        btn_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent homeintent = new Intent(ShareActivity.this, MainActivity.class);
+                startActivity(homeintent);
+                finish();
+            }
+        });
+        btn_write=(ImageButton)findViewById(R.id.btn_sharewrite);
+        btn_write.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addintent = new Intent(ShareActivity.this, ShareWriteActivity.class);
+                startActivity(addintent);
+            }
+        });
+
+        /*imgbtn_sharemenu = (ImageButton) findViewById(R.id.btn_sharemenu);
         imgbtn_sharemenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,8 +134,7 @@ public class ShareActivity extends AppCompatActivity {
                 });
                 popupMenu.show();
             }
-        });
-
+        });*/
     }
 
     public interface ClickListener {
@@ -276,9 +291,8 @@ public class ShareActivity extends AppCompatActivity {
         String TAG_TITLE = "title";
         String TAG_CONTENT = "content";
         String TAG_NICKNAME ="nickname";
+        String TAG_IMG = "imgurl";
         String TAG_DATE ="date";
-
-
 
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
@@ -293,6 +307,7 @@ public class ShareActivity extends AppCompatActivity {
                 String title = item.getString(TAG_TITLE);
                 String content = item.getString(TAG_CONTENT);
                 String nickname =item.getString(TAG_NICKNAME);
+                String postimg ="http://128.199.106.86/"+ item.getString(TAG_IMG);
                 String date =item.getString(TAG_DATE);
 
                 ShareData shareData = new ShareData(id,title,content,nickname,date);
@@ -301,6 +316,7 @@ public class ShareActivity extends AppCompatActivity {
                 shareData.setShare_title(title);
                 shareData.setShare_content(content);
                 shareData.setShare_nickname(nickname);
+                shareData.setShare_img(postimg);
                 shareData.setShare_date(date);
 
                 mArrayList.add(shareData);

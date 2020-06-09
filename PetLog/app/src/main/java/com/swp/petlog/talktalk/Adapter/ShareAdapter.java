@@ -3,8 +3,6 @@ package com.swp.petlog.talktalk.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +12,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.swp.petlog.R;
 import com.swp.petlog.talktalk.ShareDetailActivity;
 import com.swp.petlog.talktalk.data.ShareData;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -39,20 +33,19 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.share_item_list, null);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.talktalk_share_item, null);
         ViewHolder viewHolder = new ViewHolder(view);
 
 
         return viewHolder;
     }
-    Bitmap bitmap;
 
     @Override //리사이클러뷰 리스트 표시하는곳
     public void onBindViewHolder(@NonNull ViewHolder viewholder, final int position) {
-
+        Glide.with(context).load(mList.get(position).getShare_img()).into(viewholder.img);
         //사이즈,위치 정할수있음.
         viewholder.title.setText(mList.get(position).getShare_title());
-        viewholder.nickname.setText(mList.get(position).getShare_nickname());
+        viewholder.nickname.setText("판매자 : " + mList.get(position).getShare_nickname());
         viewholder.date.setText(mList.get(position).getShare_date());
 
         viewholder.title.setTextSize(20);
@@ -74,9 +67,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
                 intent.putExtra("content",mList.get(position).getShare_content());
                 intent.putExtra("nickname",mList.get(position).getShare_nickname());
                 intent.putExtra("date",mList.get(position).getShare_date());
-
-                //intent.putExtra("img",mList.get(position).getShare_img());
-
+                intent.putExtra("img",mList.get(position).getShare_img());
 
                 context.startActivity(intent);
                // Toast.makeText(context,position +"번째 아이템 클릭",Toast.LENGTH_LONG).show(); //몇번째 아이템 클릭됐는지 토스트로 알려줌
@@ -84,40 +75,6 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
         });
     }
     //
-
-    public void setImageSrc(ImageView imageView, final int position) {
-        //ImageView url 설정
-        Thread mThread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    URL url = new URL(mList.get(position).getShare_img());
-
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setDoInput(true);
-                    conn.connect();
-
-                    InputStream is = conn.getInputStream();
-                    bitmap = BitmapFactory.decodeStream(is);
-
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        mThread.start();
-
-        try {
-            mThread.join();
-            imageView.setImageBitmap(bitmap);
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
     //
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ///////////
@@ -143,7 +100,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
             this.title = (TextView) view.findViewById(R.id.textView_list_title);
             this.nickname = (TextView) view.findViewById(R.id.textView_list_nickname);
             this.date =(TextView)view.findViewById(R.id.textView_list_date);
-            // this.img=(ImageView) view.findViewById(R.id.textView_list_img);
+            this.img=(ImageView) view.findViewById(R.id.textView_list_img);
         }
         @Override
         public void onClick(View v){

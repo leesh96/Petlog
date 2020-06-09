@@ -58,7 +58,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.CustomViewHo
     @NonNull
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.dairy_list, null);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.diary_list, null);
         CustomViewHolder viewHolder = new CustomViewHolder(view);
 
         return viewHolder;

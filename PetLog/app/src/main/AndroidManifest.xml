@@ -18,7 +18,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCwMiwblQ0mTe706KjGEoPCtwnTDyJFWoM" />
+            android:value="AIzaSyA_ObXV9h_Q1lsVnO96JI3oZ5JGp9YTd88" />
 
         <activity android:name=".LoadingActivity">
             <intent-filter>
@@ -48,7 +48,6 @@
         <activity
             android:name=".talktalk.navigation.ShareCommentActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".talktalk.navigation.WalkCommentActivity"></activity>
         <activity android:name=".talktalk.ShareActivity"></activity>
         <activity android:name=".talktalk.ShareDetailActivity"></activity>
         <activity android:name=".talktalk.ShareEditActivity"></activity>
@@ -57,6 +56,7 @@
         <activity android:name=".talktalk.SetWalkImageActivity"></activity>
         <activity android:name=".talktalk.WalkDetailActivity"></activity>
         <activity android:name=".talktalk.WalkWriteActivity"></activity>
+        <activity android:name=".talktalk.walkEditActivity"></activity>
         <activity android:name=".app.NoticeActivity"></activity>
         <activity android:name=".app.PushActivity"></activity>
         <activity android:name=".app.NoticeDetailActivity"></activity>

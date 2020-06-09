@@ -16,7 +16,7 @@ public class LoadingActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_launch);
+        setContentView(R.layout.app_launch);
         Handler handler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {

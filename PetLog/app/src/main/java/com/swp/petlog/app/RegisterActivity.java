@@ -73,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.app_signup);
 
         editTextId = (EditText) findViewById(R.id.et_userID);
         editTextPw = (EditText) findViewById(R.id.et_userPassword);

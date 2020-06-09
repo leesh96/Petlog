@@ -16,7 +16,7 @@ public class NoticeDetailActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notice_detail);
+        setContentView(R.layout.setting_noticedetail);
 
         btn_back=(ImageButton)findViewById(R.id.btn_back);
         btn_back.setOnClickListener(new View.OnClickListener(){

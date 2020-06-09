@@ -1,69 +1,201 @@
 package com.swp.petlog.talktalk;
 
-import android.app.ProgressDialog;
+import android.Manifest;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.content.CursorLoader;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.SimpleMultiPartRequest;
+import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.swp.petlog.MainActivity;
 import com.swp.petlog.R;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class ShareEditActivity extends AppCompatActivity {
     private static String TAG = "test02";
     private EditText mId,mTitle, mContent;
+    private ImageView mImg;
+    private String imgpath;
     //private Button mInsertButton;
+
+    private ImageButton btn_back, btn_home;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_share_edit);
+        setContentView(R.layout.talktalk_share_edit);
 
-            mTitle=(EditText)findViewById(R.id.editText_main_title);
-            mContent=(EditText)findViewById(R.id.editText_main_content);
+        mTitle=(EditText)findViewById(R.id.editText_main_title);
+        mContent=(EditText)findViewById(R.id.editText_main_content);
+        mImg=(ImageView)findViewById(R.id.share_image);
 
-            Intent intent = getIntent(); //데이터를 받기위해 선언
-
-            //final int getId = intent.getIntExtra("id", 0);
-            final String ShareId=intent.getStringExtra("id");
-            final String ShareTitle = intent.getStringExtra("title");
-            final String ShareContent = intent.getStringExtra("content");
-            final boolean isModify = intent.getBooleanExtra("ismodify", false);
-
-            if(isModify){
-                mTitle.setText(ShareTitle);
-                mContent.setText(ShareContent);
+        btn_back = (ImageButton) findViewById(R.id.btn_back);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
+        });
+        btn_home = (ImageButton) findViewById(R.id.btn_home);
+        btn_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShareEditActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
-            Button btnedit = (Button) findViewById(R.id.btn_edit);
-            btnedit.setOnClickListener(new View.OnClickListener() {
+        Intent intent = getIntent(); //데이터를 받기위해 선언
+
+        //final int getId = intent.getIntExtra("id", 0);
+        final String ShareId=intent.getStringExtra("id");
+        final String ShareTitle = intent.getStringExtra("title");
+        final String ShareContent = intent.getStringExtra("content");
+        final boolean isModify = intent.getBooleanExtra("ismodify", false);
+        final String ShareImg = intent.getStringExtra("defimg");
+
+        if(isModify){
+            mTitle.setText(ShareTitle);
+            mContent.setText(ShareContent);
+            Glide.with(ShareEditActivity.this).load(ShareImg).into(mImg);
+        }
+
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            int permissionResult= checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if(permissionResult== PackageManager.PERMISSION_DENIED){
+                String[] permissions= new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permissions,10);
+            }
+        }else{
+            //cv.setVisibility(View.VISIBLE);
+        }
+
+        mImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, 10);
+            }
+        });
+
+        Button btnedit = (Button) findViewById(R.id.btn_edit);
+        btnedit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     String ShareTitle=mTitle.getText().toString();
                     String ShareContent=mContent.getText().toString();
 
-                    EditData task = new EditData();
-                    task.execute("http://128.199.106.86/modifyShare.php",ShareId,ShareTitle,ShareContent);
+                    modify(ShareTitle, ShareContent, ShareId);
+                    /*EditData task = new EditData();
+                    task.execute("http://128.199.106.86/modifyShare.php",ShareId,ShareTitle,ShareContent);*/
 
-                    Intent intent = new Intent(ShareEditActivity.this, ShareActivity.class);
+                    /*Intent intent = new Intent(ShareEditActivity.this, ShareActivity.class);
                     startActivity(intent);
-                    finish();
+                    finish();*/
                 }
-            });
-        }
+        });
+    }
 
-        class EditData extends AsyncTask<String, Void, String> {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case 10 :
+                if(grantResults[0]==PackageManager.PERMISSION_GRANTED) //사용자가 허가 했다면
+                {
+                    Toast.makeText(this, "외부 메모리 읽기/쓰기 사용 가능", Toast.LENGTH_SHORT).show();
+
+                }else{//거부했다면
+                    Toast.makeText(this, "외부 메모리 읽기/쓰기 제한", Toast.LENGTH_SHORT).show();
+
+                }
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode){
+            case 10:
+                if(resultCode==RESULT_OK){
+                    //선택한 사진의 경로(Uri)객체 얻어오기
+                    Uri uri= data.getData();
+                    if(uri!=null){
+                        mImg.setImageURI(uri);
+                        imgpath = getRealPathFromUri(uri);
+                    }
+
+                }else
+                {
+                    Toast.makeText(this, "이미지 선택을 하지 않았습니다.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+
+    public String getRealPathFromUri(Uri uri){
+        String[] proj= {MediaStore.Images.Media.DATA};
+        CursorLoader loader= new CursorLoader(this, uri, proj, null, null, null);
+        Cursor cursor= loader.loadInBackground();
+        int column_index= ((Cursor) cursor).getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result= cursor.getString(column_index);
+        cursor.close();
+        return result;
+    }
+
+    public void modify(String title, String contents, String id) {
+        SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, "http://128.199.106.86/modifyShare.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(ShareEditActivity.this, "성공" + response, Toast.LENGTH_SHORT).show();
+                Log.d("TAG", response);
+                Intent intent = new Intent(ShareEditActivity.this, ShareActivity.class);
+                startActivity(intent);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(ShareEditActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                Log.d("TAG", error.toString());
+            }
+        });
+        //요청 객체에 보낼 데이터를 추가
+        smpr.addStringParam("title", title);
+        smpr.addStringParam("contents", contents);
+        smpr.addStringParam("id", id);
+        smpr.addFile("image", imgpath);
+
+        //요청객체를 서버로 보낼 우체통 같은 객체 생성
+        RequestQueue requestQueue= Volley.newRequestQueue(ShareEditActivity.this);
+        requestQueue.add(smpr);
+    }
+
+        /*class EditData extends AsyncTask<String, Void, String> {
             ProgressDialog progressDialog;
 
             @Override
@@ -150,5 +282,5 @@ public class ShareEditActivity extends AppCompatActivity {
                 }
 
             }
-        }
-    }
+        }*/
+}

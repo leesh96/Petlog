@@ -11,12 +11,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
 import com.swp.petlog.talktalk.navigation.ShareCommentActivity;
@@ -30,7 +34,8 @@ import java.net.URL;
 
 //아이템클릭시 상세페이지!
 public class ShareDetailActivity extends AppCompatActivity{
-    private ImageButton btn_back,imgbtn_sharemenu,btn_comment;
+    private ImageButton btn_back, btn_home, imgbtn_sharemenu;
+    private Button btn_comment;
     private static String TAG = "TEST02";
     private boolean isModify = false;
     private static String dPHPURL = "http://128.199.106.86/deleteShare.php"; //삭제php
@@ -39,7 +44,7 @@ public class ShareDetailActivity extends AppCompatActivity{
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_share_detail);
+        setContentView(R.layout.talktalk_share_detail);
 
         btn_back=(ImageButton)findViewById(R.id.btn_back);
 
@@ -47,12 +52,19 @@ public class ShareDetailActivity extends AppCompatActivity{
         btn_back.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(getApplicationContext(), ShareActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
-
+        btn_home = (ImageButton) findViewById(R.id.btn_home);
+        btn_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShareDetailActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         String id="";
         String title="";
@@ -69,12 +81,13 @@ public class ShareDetailActivity extends AppCompatActivity{
         nickname=extras.getString("nickname");
         img=extras.getString("img");
 
-
-
         TextView idView = (TextView) findViewById(R.id.id);
         TextView contentView = (TextView) findViewById(R.id.item_detail_content);
         final TextView titleView =(TextView) findViewById(R.id.item_detail_title);
         TextView nickView = (TextView) findViewById(R.id.item_detail_nickname);
+        ImageView imageView = (ImageView) findViewById(R.id.item_detail_image);
+
+        Glide.with(ShareDetailActivity.this).load(img).into(imageView);
 
 
         //데이터 넘겨주는 값
@@ -82,16 +95,17 @@ public class ShareDetailActivity extends AppCompatActivity{
          final String titleview = title; //제목
          String contentview=content; //내용
          final String nicknameview=nickname;//게시글작성자
-        //추가할거 -> 이미지
+         String imgview = img;
 
 
         //클릭시 화면에 보여주는 곳//
-        nickView.setText(nicknameview); //닉네임표시
+        nickView.setText("판매자 : " + nicknameview); //닉네임표시
         titleView.setText(titleview);   //제목표시
         contentView.setText(contentview);//내용표시
 
         //댓글버튼
-        btn_comment=(ImageButton)findViewById(R.id.btn_comment);
+        btn_comment=(Button)findViewById(R.id.btn_comment);
+
         final String finalTitle1 = title;
         final String finalId1=id;
 
@@ -104,7 +118,6 @@ public class ShareDetailActivity extends AppCompatActivity{
                 intent.putExtra("title", finalTitle1);
                 intent.putExtra("id", finalId1);
                 startActivity(intent);
-
             }
         });
 
@@ -113,6 +126,7 @@ public class ShareDetailActivity extends AppCompatActivity{
         final String finalTitle = title;
         final String finalId=id;
         final String finalNick=nickname;
+        final String finalimg=img;
 
         imgbtn_sharemenu = (ImageButton) findViewById(R.id.btn_sharemenu);
 
@@ -159,6 +173,7 @@ public class ShareDetailActivity extends AppCompatActivity{
                                 editintent.putExtra("title", finalTitle); //편집화면에 제목 내용 불러옴
                                 editintent.putExtra("content", finalContent);
                                 editintent.putExtra("ismodify", isModify);
+                                editintent.putExtra("defimg", finalimg);
                                 startActivity(editintent);
 
                                 //여기에 수정코드 짜기

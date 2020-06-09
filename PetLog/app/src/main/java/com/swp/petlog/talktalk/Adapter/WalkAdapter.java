@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.swp.petlog.R;
 import com.swp.petlog.talktalk.WalkDetailActivity;
 import com.swp.petlog.talktalk.data.WalkData;
@@ -40,17 +41,17 @@ public class WalkAdapter extends RecyclerView.Adapter<WalkAdapter.ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.walk_item_list, null);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.talktalk_walk_item, null);
         ViewHolder viewHolder = new ViewHolder(view);
 
 
         return viewHolder;
     }
-    Bitmap bitmap;
 
     @Override //리사이클러뷰 리스트 표시하는곳
     public void onBindViewHolder(@NonNull ViewHolder viewholder, final int position) {
 
+        Glide.with(context).load(mList.get(position).getWalk_img()).into(viewholder.img);
         //사이즈,위치 정할수있음.
         //viewholder.id.setText(mList.get(position).getShare_id());
         viewholder.title.setText(mList.get(position).getWalk_title());
@@ -73,6 +74,7 @@ public class WalkAdapter extends RecyclerView.Adapter<WalkAdapter.ViewHolder> {
                 intent.putExtra("title",mList.get(position).getWalk_title());
                 intent.putExtra("content",mList.get(position).getWalk_content());
                 intent.putExtra("nickname",mList.get(position).getWalk_nickname());
+                intent.putExtra("walkimg", mList.get(position).getWalk_img());
                 intent.putExtra("date",mList.get(position).getWalk_date());
                 //산책로주소이름
                 intent.putExtra("walktitle",mList.get(position).getWalk_positiontitle());
@@ -89,42 +91,7 @@ public class WalkAdapter extends RecyclerView.Adapter<WalkAdapter.ViewHolder> {
             }
         });
     }
-    //
 
-    public void setImageSrc(ImageView imageView, final int position) {
-        //ImageView url 설정
-        Thread mThread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    URL url = new URL(mList.get(position).getWalk_img());
-
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setDoInput(true);
-                    conn.connect();
-
-                    InputStream is = conn.getInputStream();
-                    bitmap = BitmapFactory.decodeStream(is);
-
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        mThread.start();
-
-        try {
-            mThread.join();
-            imageView.setImageBitmap(bitmap);
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-    //
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         ///////////
@@ -136,8 +103,6 @@ public class WalkAdapter extends RecyclerView.Adapter<WalkAdapter.ViewHolder> {
         protected TextView content;
         protected TextView nickname;
         protected TextView date;
-
-
         protected ImageView img;
 
 
@@ -151,7 +116,7 @@ public class WalkAdapter extends RecyclerView.Adapter<WalkAdapter.ViewHolder> {
             this.title = (TextView) view.findViewById(R.id.textView_list_title);
             this.nickname = (TextView) view.findViewById(R.id.textView_list_nickname);
             this.date =(TextView)view.findViewById(R.id.textView_list_date);
-            // this.img=(ImageView) view.findViewById(R.id.textView_list_img);
+            this.img=(ImageView) view.findViewById(R.id.walklist_img);
         }
         @Override
         public void onClick(View v){

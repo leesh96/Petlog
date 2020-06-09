@@ -21,7 +21,7 @@
         app:itemIconTint="@color/text"
         app:itemTextColor="@color/text"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_menu"
+        app:menu="@menu/petsta_bottomnav"
         android:background="@color/theme4" />
 
 

@@ -85,7 +85,7 @@ public class DiaryListActivity extends AppCompatActivity {
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dairy_main);
+        setContentView(R.layout.diary_main);
 
         final String userid = PreferenceManager.getString(DiaryListActivity.this, "userID");
         imageButtonhome = (ImageButton) findViewById(R.id.btn_home);
@@ -196,10 +196,15 @@ public class DiaryListActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
             String serverURL = params[0];
+            String nickname = (String)params[1];
+
+            String postParameters = "nickname=" + nickname;
+
+            /*String serverURL = params[0];
             String userid = (String)params[1];
             String picdate = (String)params[2];
 
-            String postParameters = "userid=" + userid + "&picdate=" + picdate;
+            String postParameters = "userid=" + userid + "&picdate=" + picdate;*/
 
             try {
 

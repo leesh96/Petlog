@@ -3,6 +3,15 @@ package com.swp.petlog.petsta;
 public class PetstaPostData {
     private int member_id, member_likecnt, member_commentcnt, member_tag;
     private String member_content, member_image, member_nickname, member_writetime;
+    private String member_face;
+
+    public String getMember_face() {
+        return member_face;
+    }
+
+    public void setMember_face(String member_face) {
+        this.member_face = member_face;
+    }
 
     public int getMember_id() {
         return member_id;

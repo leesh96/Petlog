@@ -28,7 +28,7 @@ public class SetWalkImageActivity extends Activity implements OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_set_walk_image);
+        setContentView(R.layout.talktalk_setwalkimage);
         init();
 
 

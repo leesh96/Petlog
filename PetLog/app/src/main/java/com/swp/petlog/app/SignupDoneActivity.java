@@ -18,7 +18,7 @@ public class SignupDoneActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signupdone);
+        setContentView(R.layout.app_signupdone);
 
         tv_15 = (TextView) findViewById(R.id.tv15);
         tv_15.setText(PreferenceManager.getString(SignupDoneActivity.this, "signupNick")+"님 \n회원가입을 축하합니다!");

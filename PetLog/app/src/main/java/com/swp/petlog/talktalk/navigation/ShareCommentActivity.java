@@ -48,7 +48,7 @@ public class ShareCommentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_share_comment);
+        setContentView(R.layout.talktalk_share_comment);
 
         //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
@@ -68,8 +68,7 @@ public class ShareCommentActivity extends AppCompatActivity {
         btn_back.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(getApplicationContext(), ShareActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 

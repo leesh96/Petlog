@@ -36,7 +36,7 @@ public class ShareCommentAdapter extends RecyclerView.Adapter<ShareCommentAdapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.share_item_comment,null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.talktalk_share_comment_item,null);
         ViewHolder viewHolder = new ViewHolder(view);
 
         return viewHolder;

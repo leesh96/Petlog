@@ -57,7 +57,7 @@ public class PetstaPostAdapter extends RecyclerView.Adapter<PetstaPostAdapter.Cu
     @Override
     public void onBindViewHolder(@NonNull PetstaPostAdapter.CustomViewHolder viewHolder, int position) {
         Glide.with(context).load(mList.get(position).getMember_image()).into(viewHolder.imageViewpostimg);
-
+        Glide.with(context).load(mList.get(position).getMember_face()).into(viewHolder.imageViewface);
         viewHolder.textViewwriter.setText(mList.get(position).getMember_nickname());
         viewHolder.textViewtime.setText(mList.get(position).getMember_writetime());
         viewHolder.textViewlikecnt.setText(Integer.toString(mList.get(position).getMember_likecnt()));
@@ -67,49 +67,49 @@ public class PetstaPostAdapter extends RecyclerView.Adapter<PetstaPostAdapter.Cu
 
         switch (tag) {
             case 10:
-                viewHolder.textViewtag.setText("푸들");
+                viewHolder.textViewtag.setText("#푸들");
                 break;
             case 11:
-                viewHolder.textViewtag.setText("말티즈");
+                viewHolder.textViewtag.setText("#말티즈");
                 break;
             case 12:
-                viewHolder.textViewtag.setText("웰시코기");
+                viewHolder.textViewtag.setText("#웰시코기");
                 break;
             case 13:
-                viewHolder.textViewtag.setText("폼피츠");
+                viewHolder.textViewtag.setText("#폼피츠");
                 break;
             case 14:
-                viewHolder.textViewtag.setText("포메라니안");
+                viewHolder.textViewtag.setText("#포메라니안");
                 break;
             case 15:
-                viewHolder.textViewtag.setText("비숑");
+                viewHolder.textViewtag.setText("#비숑");
                 break;
             case 16:
-                viewHolder.textViewtag.setText("치와와");
+                viewHolder.textViewtag.setText("#치와와");
                 break;
             case 20:
-                viewHolder.textViewtag.setText("샴");
+                viewHolder.textViewtag.setText("#샴");
                 break;
             case 21:
-                viewHolder.textViewtag.setText("페르시안");
+                viewHolder.textViewtag.setText("#페르시안");
                 break;
             case 22:
-                viewHolder.textViewtag.setText("러시안블루");
+                viewHolder.textViewtag.setText("#러시안블루");
                 break;
             case 23:
-                viewHolder.textViewtag.setText("스코티쉬폴드");
+                viewHolder.textViewtag.setText("#스코티쉬폴드");
                 break;
             case 24:
-                viewHolder.textViewtag.setText("뱅갈");
+                viewHolder.textViewtag.setText("#뱅갈");
                 break;
             case 25:
-                viewHolder.textViewtag.setText("노르웨이 숲");
+                viewHolder.textViewtag.setText("#노르웨이 숲");
                 break;
             case 26:
-                viewHolder.textViewtag.setText("아메리칸 숏헤어");
+                viewHolder.textViewtag.setText("#아메리칸 숏헤어");
                 break;
             default:
-                viewHolder.textViewtag.setText("");
+                viewHolder.textViewtag.setText("태그없음");
                 break;
         }
 
