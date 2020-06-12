@@ -32,7 +32,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_editaccount);
+        setContentView(R.layout.setting_editaccount);
 
         editTextNick = (EditText) findViewById(R.id.et_changeNick);
 

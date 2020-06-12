@@ -162,6 +162,13 @@ public class MyProfile_fragment extends Fragment {
             }
         });
 
+        btn_controlFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((PetstaMain)getActivity()).replaceFragment(MyFollow_fragment.newInstance());
+            }
+        });
+
         return v;
     }
 
