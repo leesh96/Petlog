@@ -79,7 +79,7 @@ public class ShareCommentActivity extends AppCompatActivity {
         //
         final String nickname= PreferenceManager.getString(ShareCommentActivity.this,"userNick");
 
-//DB불러오는 PHP
+        //DB불러오는 PHP
         GetData show=new GetData();
         show.execute(mGetPHPURL,ShareId);
 

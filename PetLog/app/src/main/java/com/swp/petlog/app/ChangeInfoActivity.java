@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
     private EditText editTextNick;
     private Button btn_change,btn_changepw;
+    private ImageButton btn_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,14 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
         btn_change = (Button) findViewById(R.id.btn_change);
         btn_changepw = (Button) findViewById(R.id.btn_changepw);
+        btn_back = (ImageButton) findViewById(R.id.btn_back);
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         final String userid = PreferenceManager.getString(ChangeInfoActivity.this, "userID");
 

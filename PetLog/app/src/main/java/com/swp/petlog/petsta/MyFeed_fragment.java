@@ -9,11 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,10 +49,14 @@ public class MyFeed_fragment extends Fragment {
     private ArrayList<String> Follower;
     private String nickname;
 
+    public static MyFeed_fragment newInstance() {
+        return new MyFeed_fragment();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.petsta_my_fragment, container, false);
+        view = inflater.inflate(R.layout.petsta_myfeed, container, false);
         btn_back = (ImageButton) view.findViewById(R.id.btn_back);
         btn_home = (ImageButton) view.findViewById(R.id.btn_home);
         btn_search = (ImageButton) view.findViewById(R.id.btn_search);
@@ -62,7 +66,9 @@ public class MyFeed_fragment extends Fragment {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().remove(MyFeed_fragment.this).commit();
+                fragmentManager.popBackStack();
             }
         });
 

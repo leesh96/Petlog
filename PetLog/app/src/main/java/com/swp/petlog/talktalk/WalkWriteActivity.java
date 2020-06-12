@@ -49,6 +49,9 @@ public class WalkWriteActivity extends AppCompatActivity {
     //20.05.11 추가
     private ImageView imageViewWalkimage;
     private String imgpath;
+    private String putimg;
+
+    private Uri imguri = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,27 @@ public class WalkWriteActivity extends AppCompatActivity {
         mEditTextTitle = (EditText)findViewById(R.id.editText_main_title);
         mEditTextContent = (EditText)findViewById(R.id.editText_main_content);
         imageViewWalkimage = (ImageView)findViewById(R.id.walk_image);
+
+        final String nickname= PreferenceManager.getString(WalkWriteActivity.this,"userNick");
+
+        //작성한 데이터값을 gps페이지에 넘긴후 다시 그대로 돌려받음
+        Intent writeintent = getIntent(); //데이터를 받기위해 선언
+        String title = writeintent.getStringExtra("title");
+        String content = writeintent.getStringExtra("content");
+        String image = writeintent.getStringExtra("image");
+
+        String titleview = title; //제목
+        String contentview=content; //내용
+
+        if(image != null) {
+            imguri = Uri.parse(image);
+            imgpath = getRealPathFromUri(imguri);
+            imageViewWalkimage.setImageURI(imguri);
+        }
+
+        //클릭시 화면에 보여주는 곳//
+        mEditTextTitle.setText(titleview);
+        mEditTextContent.setText(contentview);
 
         ImageButton buttonBack =(ImageButton)findViewById(R.id.btn_back);
         buttonBack.setOnClickListener(new View.OnClickListener(){
@@ -80,8 +104,20 @@ public class WalkWriteActivity extends AppCompatActivity {
         ButtonGps.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(WalkWriteActivity.this, GoogleMapActivity.class);
+                Intent intent=new Intent(getApplicationContext(), GoogleMapActivity.class);
+                if (imguri != null) {
+                    putimg = imguri.toString();
+                    intent.putExtra("image", putimg);
+                }
+                String title = mEditTextTitle.getText().toString();
+                String content = mEditTextContent.getText().toString();
+
+                //200609 입력값 그대로 전달
+                intent.putExtra("title",title);
+                intent.putExtra("content",content);
+
                 startActivity(intent);
+
             }
         });
 
@@ -103,8 +139,6 @@ public class WalkWriteActivity extends AppCompatActivity {
                 startActivityForResult(intent, 10);
             }
         });
-
-        final String nickname= PreferenceManager.getString(WalkWriteActivity.this,"userNick");
 
         Intent intent = getIntent(); //데이터를 받기위해 선언
         final String position = intent.getStringExtra("walktitle");
@@ -134,7 +168,6 @@ public class WalkWriteActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -163,6 +196,7 @@ public class WalkWriteActivity extends AppCompatActivity {
                     Uri uri= data.getData();
                     if(uri!=null){
                         imageViewWalkimage.setImageURI(uri);
+                        imguri = uri;
                         imgpath = getRealPathFromUri(uri);
                     }
 

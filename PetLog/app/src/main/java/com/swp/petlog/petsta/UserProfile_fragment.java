@@ -1,22 +1,14 @@
 package com.swp.petlog.petsta;
 
-import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,20 +19,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.loader.content.CursorLoader;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.error.VolleyError;
-import com.android.volley.request.SimpleMultiPartRequest;
-import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,37 +35,34 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class MyProfile_fragment extends Fragment {
-    private static String PHPURL = "http://128.199.106.86/petstaIntro.php";
-    private static String dPHPURL = "http://128.199.106.86/deleteIntro.php";
-    private static String gPHPURL = "http://128.199.106.86/getProfile.php";
-    private static String fPHPURL = "http://128.199.106.86/profileUpload.php";
+public class UserProfile_fragment extends Fragment {
+    private static String gPHPURL = "http://128.199.106.86/getUserProfile.php";
+    private static String mPHPURL = "http://128.199.106.86/makeFollow.php";
+    private static String uPHPURL = "http://128.199.106.86/updateFollow.php";
     private static String TAG = "petsta";
 
     private ImageButton btn_back, btn_home, btn_search;
-
+    private Button btn_follow;
     private ImageView profilePic;
-    private TextView textViewNick, textViewFollowcnt;
-    private EditText editTextIntro;
-    private Button btn_controlFollow, btn_changepic, btn_controlPost;
-    private ImageButton imageButtonApply, imageButtonDel;
+    private TextView textViewNick, textViewFollowcnt, textViewIntro;
 
-    private int follow_cnt;
-    private String jsonString, profileIntro, imgpath, profileimgurl;
+    private int follow_cnt, isfollow;
+    private String jsonString, profileIntro, profileimgurl;
 
-    public static MyProfile_fragment newInstance() {
-        return new MyProfile_fragment();
+    public static UserProfile_fragment newInstance() {
+        return new UserProfile_fragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.petsta_profile, container, false);
+        View v = inflater.inflate(R.layout.petsta_userprofile, container, false);
 
-        final String nickname = PreferenceManager.getString(getActivity(), "userNick");
+        final String mynick = PreferenceManager.getString(getActivity(), "userNick");
+        final String usernick = getArguments().getString("nickname");
 
-        GetProfile getProfile = new GetProfile();
-        getProfile.execute(gPHPURL, nickname);
+        GetProfile task = new GetProfile();
+        task.execute(gPHPURL, usernick, mynick);
 
         btn_back = (ImageButton) v.findViewById(R.id.btn_back);
         btn_home = (ImageButton) v.findViewById(R.id.btn_home);
@@ -90,20 +71,16 @@ public class MyProfile_fragment extends Fragment {
         profilePic = (ImageView) v.findViewById(R.id.petsta_profile_image);
         textViewNick = (TextView) v.findViewById(R.id.profile_text);
         textViewFollowcnt = (TextView) v.findViewById(R.id.follow_cnt);
-        editTextIntro = (EditText) v.findViewById(R.id.profile_text_me);
-        btn_controlFollow = (Button) v.findViewById(R.id.btn_control_follow);
-        imageButtonApply = (ImageButton) v.findViewById(R.id.btn_introapply);
-        imageButtonDel = (ImageButton) v.findViewById(R.id.btn_introdel);
-        btn_changepic = (Button) v.findViewById(R.id.btn_changepic);
-        btn_controlPost = (Button) v.findViewById(R.id.btn_controlpost);
+        textViewIntro = (TextView) v.findViewById(R.id.profile_text_me);
+        btn_follow = (Button) v.findViewById(R.id.btn_follow);
 
-        textViewNick.setText(nickname);
+        textViewNick.setText(usernick);
 
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().remove(MyProfile_fragment.this).commit();
+                fragmentManager.beginTransaction().remove(UserProfile_fragment.this).commit();
                 fragmentManager.popBackStack();
             }
         });
@@ -117,137 +94,39 @@ public class MyProfile_fragment extends Fragment {
             }
         });
 
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-            int permissionResult = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if(permissionResult== PackageManager.PERMISSION_DENIED){
-                String[] permissions= new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                requestPermissions(permissions,10);
-            }
-        }else{
-            //cv.setVisibility(View.VISIBLE);
-        }
-
-        btn_changepic.setOnClickListener(new View.OnClickListener() {
+        btn_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, 10);
-            }
-        });
-
-        imageButtonApply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String intro = editTextIntro.getText().toString();
-                InsertIntro task1 = new InsertIntro();
-                task1.execute(PHPURL, nickname, intro);
-
-            }
-        });
-
-        imageButtonDel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editTextIntro.setText(null);
-                DeleteIntro task2 = new DeleteIntro();
-                task2.execute(dPHPURL, nickname);
-            }
-        });
-
-        btn_controlPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((PetstaMain)getActivity()).replaceFragment(Mypost_fragment.newInstance());
+                Log.d("after task : ", profileIntro + profileimgurl + follow_cnt + isfollow);
+                switch (isfollow) {
+                    case 1:
+                        follow_cnt -= 1;
+                        btn_follow.setText("구독하기");
+                        isfollow = 0;
+                        UpdateFollow updateFollow = new UpdateFollow();
+                        updateFollow.execute(uPHPURL, usernick, mynick, Integer.toString(follow_cnt), Integer.toString(isfollow));
+                        break;
+                    case 0:
+                        follow_cnt += 1;
+                        btn_follow.setText("구독취소");
+                        isfollow = 1;
+                        UpdateFollow updateFollow2 = new UpdateFollow();
+                        updateFollow2.execute(uPHPURL, usernick, mynick, Integer.toString(follow_cnt), Integer.toString(isfollow));
+                        break;
+                    case 2:
+                        follow_cnt += 1;
+                        btn_follow.setText("구독취소");
+                        isfollow = 1;
+                        MakeFollow makeFollow = new MakeFollow();
+                        makeFollow.execute(mPHPURL, usernick, mynick, Integer.toString(follow_cnt), Integer.toString(isfollow));
+                        break;
+                }
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(UserProfile_fragment.this).attach(UserProfile_fragment.this).commit();
             }
         });
 
         return v;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
-            case 10 :
-                if(grantResults[0]==PackageManager.PERMISSION_GRANTED) //사용자가 허가 했다면
-                {
-                    Toast.makeText(getActivity(), "외부 메모리 읽기/쓰기 사용 가능", Toast.LENGTH_SHORT).show();
-
-                }else{//거부했다면
-                    Toast.makeText(getActivity(), "외부 메모리 읽기/쓰기 제한", Toast.LENGTH_SHORT).show();
-
-                }
-                break;
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode){
-            case 10:
-                if(resultCode == -1){
-                    //선택한 사진의 경로(Uri)객체 얻어오기
-                    Uri uri= data.getData();
-                    if(uri!=null){
-                        profilePic.setImageURI(uri);
-                        imgpath = getRealPathFromUri(uri);
-                        String nickname = textViewNick.getText().toString();
-                        upload(nickname);
-                    }
-
-                }else
-                {
-                    Toast.makeText(getActivity(), "이미지 선택을 하지 않았습니다.", Toast.LENGTH_SHORT).show();
-                }
-                break;
-        }
-    }
-
-    public String getRealPathFromUri(Uri uri){
-        String[] proj= {MediaStore.Images.Media.DATA};
-        CursorLoader loader= new CursorLoader(getActivity(), uri, proj, null, null, null);
-        Cursor cursor= loader.loadInBackground();
-        int column_index= ((Cursor) cursor).getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String result= cursor.getString(column_index);
-        cursor.close();
-        return result;
-    }
-
-    public void upload(String nickname) {
-        SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, fPHPURL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Toast.makeText(getActivity(), "성공" + response, Toast.LENGTH_SHORT).show();
-                Log.d("TAG", response);
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    JSONObject jsonObject = jsonArray.getJSONObject(0);
-                    String updateface = jsonObject.getString("userFace");
-                    PreferenceManager.setString(getActivity(), "userFace", "http://128.199.106.86/" + updateface);
-                    Log.d("faceurl", updateface);
-
-                } catch (JSONException e) {
-                    Log.d(TAG, "showResult : ", e);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity(), "ERROR", Toast.LENGTH_SHORT).show();
-                Log.d("TAG", error.toString());
-            }
-        });
-        //요청 객체에 보낼 데이터를 추가
-        smpr.addStringParam("nickname", nickname);
-        smpr.addFile("image", imgpath);
-
-        //요청객체를 서버로 보낼 우체통 같은 객체 생성
-        RequestQueue requestQueue= Volley.newRequestQueue(getActivity());
-        requestQueue.add(smpr);
     }
 
     private class GetProfile extends AsyncTask<String, Void, String> {
@@ -285,9 +164,10 @@ public class MyProfile_fragment extends Fragment {
         protected String doInBackground(String... params) {
 
             String serverURL = params[0];
-            String nickname = (String)params[1];
+            String usernick = (String)params[1];
+            String mynick = (String)params[2];
 
-            String postParameters = "nickname=" + nickname;
+            String postParameters = "usernick=" + usernick + "&mynick=" + mynick;
 
             try {
 
@@ -347,29 +227,43 @@ public class MyProfile_fragment extends Fragment {
     }
 
     private void showResult() {
-        try {
-            String TAG_INTRO = "intro";
-            String TAG_IMG = "imgurl";
-            String TAG_FOLLOW = "followercnt";
+        String TAG_INTRO = "intro";
+        String TAG_IMG = "imgurl";
+        String TAG_FOLLOW = "followercnt";
+        String TAG_ISFOLLOW = "isfollow";
 
+        try {
             JSONObject jsonObject = new JSONObject(jsonString);
 
             profileIntro = jsonObject.getString(TAG_INTRO);
             profileimgurl = "http://128.199.106.86/" + jsonObject.getString(TAG_IMG);
-            if(profileIntro != "null") {editTextIntro.setText(profileIntro);}
-            Glide.with(getActivity()).load(profileimgurl).into(profilePic);
             follow_cnt = jsonObject.getInt(TAG_FOLLOW);
+            String temp = jsonObject.getString(TAG_ISFOLLOW);
             textViewFollowcnt.setText("구독자수" + "\n" + follow_cnt + "명");
+            if (temp.equals("1")) {
+                isfollow = 1;
+            } else if (temp.equals("0")) {
+                isfollow = 0;
+            } else  isfollow = 2;
+
+            switch (isfollow) {
+                case 1:
+                    btn_follow.setText("구독취소");
+                    break;
+                default:
+                    btn_follow.setText("구독하기");
+            }
+            if(profileIntro != "null") {textViewIntro.setText(profileIntro);}
+            Glide.with(getActivity()).load(profileimgurl).into(profilePic);
+
+            Log.d("getprofile - ", profileIntro + profileimgurl + isfollow + follow_cnt);
 
         } catch (JSONException e) {
             Log.d(TAG, "showResult : ", e);
         }
-
-        /*FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.detach(MyProfile_fragment.this).attach(MyProfile_fragment.this).commit();*/
     }
 
-    class InsertIntro extends AsyncTask<String, Void, String> {
+    class MakeFollow extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
         @Override
         protected void onPreExecute() {
@@ -383,17 +277,19 @@ public class MyProfile_fragment extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             progressDialog.dismiss();
-            Log.d(TAG, "POST response  - " + result);
+            Log.d("like", "POST response  - " + result);
         }
 
         @Override
         protected String doInBackground(String... params) {
 
-            String nickname = (String)params[1];
-            String intro = (String)params[2];
-
             String serverURL = (String)params[0];
-            String postParameters = "nickname=" + nickname + "&intro=" + intro;
+            String usernick = (String)params[1];
+            String mynick = (String)params[2];
+            String followcnt = (String)params[3];
+            String isfollowed = (String)params[4];
+
+            String postParameters = "usernick=" + usernick + "&mynick=" + mynick + "&followcnt=" + followcnt + "&isfollowed=" + isfollowed;
 
             try {
                 URL url = new URL(serverURL);
@@ -410,7 +306,7 @@ public class MyProfile_fragment extends Fragment {
                 outputStream.close();
 
                 int responseStatusCode = httpURLConnection.getResponseCode();
-                Log.d(TAG, "POST response code - " + responseStatusCode);
+                Log.d("like", "POST response code - " + responseStatusCode);
 
                 InputStream inputStream;
                 if(responseStatusCode == HttpURLConnection.HTTP_OK) {
@@ -435,13 +331,13 @@ public class MyProfile_fragment extends Fragment {
                 return sb.toString();
 
             } catch (Exception e) {
-                Log.d(TAG, "InsertData: Error ", e);
+                Log.d("like", "InsertData: Error ", e);
                 return new String("Error: " + e.getMessage());
             }
         }
     }
 
-    class DeleteIntro extends AsyncTask<String, Void, String> {
+    class UpdateFollow extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
         @Override
         protected void onPreExecute() {
@@ -455,16 +351,19 @@ public class MyProfile_fragment extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             progressDialog.dismiss();
-            Log.d(TAG, "POST response  - " + result);
+            Log.d("like", "POST response  - " + result);
         }
 
         @Override
         protected String doInBackground(String... params) {
 
-            String nickname = (String)params[1];
-
             String serverURL = (String)params[0];
-            String postParameters = "nickname=" + nickname;
+            String usernick = (String)params[1];
+            String mynick = (String)params[2];
+            String followcnt = (String)params[3];
+            String isfollowed = (String)params[4];
+
+            String postParameters = "usernick=" + usernick + "&mynick=" + mynick + "&followcnt=" + followcnt + "&isfollowed=" + isfollowed;
 
             try {
                 URL url = new URL(serverURL);
@@ -481,7 +380,7 @@ public class MyProfile_fragment extends Fragment {
                 outputStream.close();
 
                 int responseStatusCode = httpURLConnection.getResponseCode();
-                Log.d(TAG, "POST response code - " + responseStatusCode);
+                Log.d("like", "POST response code - " + responseStatusCode);
 
                 InputStream inputStream;
                 if(responseStatusCode == HttpURLConnection.HTTP_OK) {
@@ -506,7 +405,7 @@ public class MyProfile_fragment extends Fragment {
                 return sb.toString();
 
             } catch (Exception e) {
-                Log.d(TAG, "InsertData: Error ", e);
+                Log.d("like", "InsertData: Error ", e);
                 return new String("Error: " + e.getMessage());
             }
         }

@@ -235,9 +235,14 @@ public class GoogleMapActivity extends AppCompatActivity
             public void onMapClick(LatLng latLng) {
                 MarkerOptions markerOptions = new MarkerOptions();
 
+                Intent writeintent = getIntent(); //데이터를 받기위해 선언
+                final String title = writeintent.getStringExtra("title");
+                final String content = writeintent.getStringExtra("content");
+                final String image = writeintent.getStringExtra("image");
+
                 markerOptions.title("마커 좌표12");
-               final Double latitude=latLng.latitude; //위도
-               final Double longitude=latLng.longitude;//경도
+                final Double latitude=latLng.latitude; //위도
+                final Double longitude=latLng.longitude;//경도
 
                 //마커의 텍스트 설정
                 markerOptions.snippet(latitude.toString()+", "+longitude.toString());
@@ -256,11 +261,14 @@ public class GoogleMapActivity extends AppCompatActivity
                 final Double posx=latitude;
                 final Double posy=longitude;
                 Intent intent= new Intent(getApplicationContext(), WalkWriteActivity.class);
+                intent.putExtra("location", true);
                 intent.putExtra("posx",posx);
                 intent.putExtra("posy",posy);
+                intent.putExtra("title",title);
+                intent.putExtra("content",content);
+                intent.putExtra("image", image);
                 Toast.makeText(getApplicationContext(),"장소가 선택되었습니다.",Toast.LENGTH_SHORT).show();
                 startActivity(intent);
-
             }
         });
 

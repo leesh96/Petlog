@@ -5,31 +5,34 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
 
 public class PetstaMain extends AppCompatActivity {
 
-    private BottomNavigationView bottomNavigationView;
+    public BottomNavigationView bottomNavigationView;
     private FragmentManager fm;
     private FragmentTransaction ft;
-    private MyFeed_fragment myFeed_fragment;
+    /*private MyFeed_fragment myFeed_fragment;
     private AllFeed_fragment allFeed_fragment;
     private MyProfile_fragment myProfile_fragment;
-    private PostWrite_fragment postWrite_fragment;
+    private PostWrite_fragment postWrite_fragment;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.petsta_main);
-        myFeed_fragment = new MyFeed_fragment();
+        /*myFeed_fragment = new MyFeed_fragment();
         allFeed_fragment = new AllFeed_fragment();
         postWrite_fragment = new PostWrite_fragment();
-        myProfile_fragment = new MyProfile_fragment();
+        myProfile_fragment = new MyProfile_fragment();*/
+
         setPetsta(0);
         bottomNavigationView = findViewById(R.id.bottomNavi);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -56,26 +59,36 @@ public class PetstaMain extends AppCompatActivity {
 
     }
 
-    private void setPetsta(int n){
+    public void setPetsta(int n){
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
         switch (n){
             case 0:
-                ft.replace(R.id.main_frame, myFeed_fragment);
+                ft.replace(R.id.main_frame, new MyFeed_fragment());
+                ft.addToBackStack(null);
                 ft.commit();
                 break;
             case 1:
-                ft.replace(R.id.main_frame, allFeed_fragment);
+                ft.replace(R.id.main_frame, new AllFeed_fragment());
+                ft.addToBackStack(null);
                 ft.commit();
                 break;
             case 2:
-                ft.replace(R.id.main_frame, postWrite_fragment);
+                ft.replace(R.id.main_frame, new PostWrite_fragment());
+                ft.addToBackStack(null);
                 ft.commit();
                 break;
             case 3:
-                ft.replace(R.id.main_frame, myProfile_fragment);
+                ft.replace(R.id.main_frame, new MyProfile_fragment());
+                ft.addToBackStack(null);
                 ft.commit();
                 break;
         }
+    }
+
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.main_frame, fragment).addToBackStack(null).commit();      // Fragment로 사용할 MainActivity내의 layout공간을 선택합니다.
     }
 }

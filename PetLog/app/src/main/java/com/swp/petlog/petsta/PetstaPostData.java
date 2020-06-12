@@ -4,6 +4,15 @@ public class PetstaPostData {
     private int member_id, member_likecnt, member_commentcnt, member_tag;
     private String member_content, member_image, member_nickname, member_writetime;
     private String member_face;
+    private int member_liked;
+
+    public int getMember_liked() {
+        return member_liked;
+    }
+
+    public void setMember_liked(int member_liked) {
+        this.member_liked = member_liked;
+    }
 
     public String getMember_face() {
         return member_face;

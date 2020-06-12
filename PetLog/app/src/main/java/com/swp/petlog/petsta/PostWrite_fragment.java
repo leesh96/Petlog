@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.loader.content.CursorLoader;
 
 import com.android.volley.Request;
@@ -32,6 +33,7 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
@@ -53,10 +55,14 @@ public class PostWrite_fragment extends Fragment {
     private String[] dogspecie = {"푸들", "말티즈", "웰시코기", "폼피츠", "포메라니안", "비숑", "치와와"};
     private String[] catspecie = {"샴", "페르시안", "러시안블루", "스코티쉬폴드", "뱅갈", "노르웨이 숲", "아메리칸 숏헤어"};
 
+    public static PostWrite_fragment newInstance() {
+        return new PostWrite_fragment();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.petsta_write_fragment, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.petsta_write, container, false);
 
         btn_back = (ImageButton) rootView.findViewById(R.id.btn_back);
         btn_home = (ImageButton) rootView.findViewById(R.id.btn_home);
@@ -67,7 +73,9 @@ public class PostWrite_fragment extends Fragment {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().remove(PostWrite_fragment.this).commit();
+                fragmentManager.popBackStack();
             }
         });
 
@@ -271,8 +279,8 @@ public class PostWrite_fragment extends Fragment {
             public void onResponse(String response) {
                 Toast.makeText(getActivity(), "성공" + response, Toast.LENGTH_SHORT).show();
                 Log.d("TAG", response);
-                Intent intent = new Intent(getActivity(), PetstaMain.class);
-                startActivity(intent);
+                BottomNavigationView bottomNavigationView = ((PetstaMain) getActivity()).bottomNavigationView;
+                bottomNavigationView.setSelectedItemId(R.id.action_mylist);
             }
         }, new Response.ErrorListener() {
             @Override

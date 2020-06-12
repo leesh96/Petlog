@@ -20,10 +20,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.swp.petlog.MainActivity;
+import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
 
 import org.json.JSONArray;
@@ -58,10 +60,14 @@ public class AllFeed_fragment extends Fragment {
     private String[] dogspecie = {"푸들", "말티즈", "웰시코기", "폼피츠", "포메라니안", "비숑", "치와와"};
     private String[] catspecie = {"샴", "페르시안", "러시안블루", "스코티쉬폴드", "뱅갈", "노르웨이 숲", "아메리칸 숏헤어"};
 
+    public static AllFeed_fragment newInstance() {
+        return new AllFeed_fragment();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.petsta_all_fragment, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.petsta_allfeed, container, false);
 
         btn_back = (ImageButton) rootView.findViewById(R.id.btn_back);
         btn_home = (ImageButton) rootView.findViewById(R.id.btn_home);
@@ -71,7 +77,9 @@ public class AllFeed_fragment extends Fragment {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().remove(AllFeed_fragment.this).commit();
+                fragmentManager.popBackStack();
             }
         });
 
@@ -216,8 +224,10 @@ public class AllFeed_fragment extends Fragment {
         adapter = new PetstaPostAdapter(getActivity(), arrayList);
         recyclerViewpetsta.setAdapter(adapter);
 
+        String nickname = PreferenceManager.getString(getActivity(), "userNick");
+
         GetData task = new GetData();
-        task.execute(PHPURL, align);
+        task.execute(PHPURL, align, nickname);
 
         return rootView;
     }
@@ -257,7 +267,8 @@ public class AllFeed_fragment extends Fragment {
 
             String serverURL = params[0];
             String align = params[1];
-            String postParameters = "align=" + align;
+            String nickname = params[2];
+            String postParameters = "align=" + align + "&nickname=" + nickname;
 
             try {
 
@@ -327,6 +338,7 @@ public class AllFeed_fragment extends Fragment {
         String TAG_LIKE = "likecnt";
         String TAG_COMMENT = "commentcnt";
         String TAG_FACE = "writerface";
+        String TAG_ISLIKE = "islike";
 
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
@@ -345,6 +357,18 @@ public class AllFeed_fragment extends Fragment {
                 int likecnt = Integer.parseInt(item.getString(TAG_LIKE));
                 int commentcnt = Integer.parseInt(item.getString(TAG_COMMENT));
                 String writerface = "http://128.199.106.86/" + item.getString(TAG_FACE);
+                String islike = item.getString(TAG_ISLIKE);
+                int userliked;
+
+                Log.d("userliked", islike);
+
+                if (islike.equals("1")) {
+                        userliked = 1;
+                } else if (islike.equals("0")) {
+                    userliked = 0;
+                } else {
+                    userliked = 2;
+                }
 
                 PetstaPostData petstaPostData = new PetstaPostData();
 
@@ -357,6 +381,7 @@ public class AllFeed_fragment extends Fragment {
                 petstaPostData.setMember_likecnt(likecnt);
                 petstaPostData.setMember_commentcnt(commentcnt);
                 petstaPostData.setMember_face(writerface);
+                petstaPostData.setMember_liked(userliked);
 
                 arrayList.add(petstaPostData);
                 adapter.notifyDataSetChanged();

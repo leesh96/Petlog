@@ -1,74 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    >
+    android:background="@color/bg">
 
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/theme4">
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/btn_back"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:clickable="true"
+            android:background="@drawable/button_style_inmain"
+            android:src="@drawable/ic_arrow_back" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/nanumbarungothic_b"
+            android:text="푸쉬알림"
+            android:textAlignment="center"
+            android:textColor="@color/text"
+            android:textSize="40dp" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_push"
-        app:layout_constraintVertical_bias="1.0"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="31dp">
+        android:layout_below="@+id/relativeLayout"
+        android:layout_marginTop="20dp">
 
         <Switch
             android:id="@+id/push_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="댓글알림"
-            android:layout_marginTop="50dp"
-            android:textSize="35dp" />
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:textSize="35dp"
+            android:textColor="@color/text"
+            android:fontFamily="@font/nanumbarungothic_b"/>
 
         <Switch
             android:id="@+id/push_like"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
             android:text="좋아요알림"
-            android:textSize="35dp" />
+            android:textSize="35dp"
+            android:textColor="@color/text"
+            android:fontFamily="@font/nanumbarungothic_b"/>
 
         <Switch
             android:id="@+id/push_follow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
             android:text="팔로우알림"
-            android:textSize="35dp" />
+            android:textSize="35dp"
+            android:textColor="@color/text"
+            android:fontFamily="@font/nanumbarungothic_b"/>
 
         <Switch
             android:id="@+id/push_diary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
             android:text="일기알림"
-            android:textSize="35dp" />
+            android:textSize="35dp"
+            android:textColor="@color/text"
+            android:fontFamily="@font/nanumbarungothic_b"/>
 
         <Switch
             android:id="@+id/push_bdy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
             android:text="생일알림"
-            android:textSize="35dp" />
+            android:textSize="35dp"
+            android:textColor="@color/text"
+            android:fontFamily="@font/nanumbarungothic_b"/>
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/text_push"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="PUSH"
-        android:textAlignment="center"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="16dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
