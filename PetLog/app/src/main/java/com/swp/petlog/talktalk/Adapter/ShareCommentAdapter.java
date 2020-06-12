@@ -87,12 +87,12 @@ public class ShareCommentAdapter extends RecyclerView.Adapter<ShareCommentAdapte
                         AlertDialog.Builder builder= new AlertDialog.Builder(mContext);
 
                         View view = LayoutInflater.from(mContext)
-                            .inflate(R.layout.edit_box,null,false);
+                            .inflate(R.layout.talktalk_editcomment,null,false);
                          builder.setView(view);
 
                          final Button ButtonSubmit =(Button) view.findViewById(R.id.btn_dialog_submit);
-                         final EditText editTextID=(EditText)view.findViewById(R.id.et_comment_dialog_id);
-                         final EditText editTextNickname=(EditText)view.findViewById(R.id.et_comment_dialog_nickname);
+                         final TextView editTextID=(TextView)view.findViewById(R.id.et_comment_dialog_id);
+                         final TextView editTextNickname=(TextView)view.findViewById(R.id.et_comment_dialog_nickname);
                          final EditText editTextCommnet=(EditText)view.findViewById(R.id.et_comment_dialog_comment);
 
                         editTextID.setText(mList.get(getAdapterPosition()).getShare_id());
