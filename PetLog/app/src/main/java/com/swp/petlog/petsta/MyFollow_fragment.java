@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
+import com.swp.petlog.petsta.adapter.MyFollowAdapter;
+import com.swp.petlog.petsta.data.MyFollowData;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -41,6 +41,20 @@
         android:textColor="@color/text"
         android:textSize="24dp" />
 
+    <Button
+        android:id="@+id/btn_checknick"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/tv19"
+        android:layout_alignEnd="@+id/et_changeNick"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/button_style"
+        android:fontFamily="@font/nanumbarungothic_n"
+        android:text="중복확인"
+        android:textAlignment="center"
+        android:textColor="@color/text"
+        android:textSize="12dp" />
+
     <EditText
         android:id="@+id/et_changeNick"
         android:layout_width="400dp"

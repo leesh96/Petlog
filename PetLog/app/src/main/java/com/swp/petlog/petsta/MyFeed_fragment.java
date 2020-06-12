@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
+import com.swp.petlog.petsta.adapter.PetstaPostAdapter;
+import com.swp.petlog.petsta.data.PetstaPostData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -193,7 +195,7 @@ public class MyFeed_fragment extends Fragment {
         String TAG_NICK = "follower";
 
         Follower = new ArrayList<>();
-        Follower.add(nickname);
+        Follower.add(PreferenceManager.getString(getActivity(), "userNick"));
 
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
@@ -331,6 +333,7 @@ public class MyFeed_fragment extends Fragment {
         String TAG_LIKE = "likecnt";
         String TAG_COMMENT = "commentcnt";
         String TAG_FACE = "writerface";
+        String TAG_ISLIKE = "islike";
 
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
@@ -349,6 +352,18 @@ public class MyFeed_fragment extends Fragment {
                 int likecnt = Integer.parseInt(item.getString(TAG_LIKE));
                 int commentcnt = Integer.parseInt(item.getString(TAG_COMMENT));
                 String writerface = "http://128.199.106.86/" + item.getString(TAG_FACE);
+                String islike = item.getString(TAG_ISLIKE);
+                int userliked;
+
+                Log.d("userliked", islike);
+
+                if (islike.equals("1")) {
+                    userliked = 1;
+                } else if (islike.equals("0")) {
+                    userliked = 0;
+                } else {
+                    userliked = 2;
+                }
 
                 PetstaPostData petstaPostData = new PetstaPostData();
 
@@ -361,6 +376,7 @@ public class MyFeed_fragment extends Fragment {
                 petstaPostData.setMember_likecnt(likecnt);
                 petstaPostData.setMember_commentcnt(commentcnt);
                 petstaPostData.setMember_face(writerface);
+                petstaPostData.setMember_liked(userliked);
 
                 arrayList.add(petstaPostData);
                 adapter.notifyDataSetChanged();

@@ -1,14 +1,20 @@
 package com.swp.petlog.talktalk.data;
 
-import android.graphics.Bitmap;
-
 public class ShareCommentData {
+    private String id;
     private String share_id;
-    private Bitmap share_profile;
     private String share_comment;
     private String share_nickname;
 
     //
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getShare_id() {
         return share_id;
@@ -16,14 +22,6 @@ public class ShareCommentData {
 
     public void setShare_id(String share_id) {
         this.share_id = share_id;
-    }
-
-    public Bitmap getShare_profile() {
-        return share_profile;
-    }
-
-    public void setShare_profile(Bitmap share_profile) {
-        this.share_profile = share_profile;
     }
 
     public String getShare_comment() {
@@ -47,7 +45,6 @@ public class ShareCommentData {
 
     public ShareCommentData(String share_id, String share_comment, String share_nickname) {
         this.share_id = share_id;
-        this.share_profile = share_profile;
         this.share_comment = share_comment;
         this.share_nickname = share_nickname;
     }

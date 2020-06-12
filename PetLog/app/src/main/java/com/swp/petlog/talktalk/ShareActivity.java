@@ -6,15 +6,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.GestureDetector;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.PopupMenu;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -23,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.swp.petlog.MainActivity;
 import com.swp.petlog.R;
-import com.swp.petlog.talktalk.Adapter.ShareAdapter;
+import com.swp.petlog.talktalk.adapter.ShareAdapter;
 import com.swp.petlog.talktalk.data.ShareData;
 
 import org.json.JSONArray;

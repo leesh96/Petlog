@@ -2,7 +2,6 @@ package com.swp.petlog.petsta;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -56,6 +55,7 @@ public class MyProfile_fragment extends Fragment {
     private static String dPHPURL = "http://128.199.106.86/deleteIntro.php";
     private static String gPHPURL = "http://128.199.106.86/getProfile.php";
     private static String fPHPURL = "http://128.199.106.86/profileUpload.php";
+    private static String dpPHPURL = "http://128.199.106.86/deleteUserFace.php";
     private static String TAG = "petsta";
 
     private ImageButton btn_back, btn_home, btn_search;
@@ -63,7 +63,7 @@ public class MyProfile_fragment extends Fragment {
     private ImageView profilePic;
     private TextView textViewNick, textViewFollowcnt;
     private EditText editTextIntro;
-    private Button btn_controlFollow, btn_changepic, btn_controlPost;
+    private Button btn_controlFollow, btn_changepic, btn_controlPost, btn_deletepic;
     private ImageButton imageButtonApply, imageButtonDel;
 
     private int follow_cnt;
@@ -96,6 +96,7 @@ public class MyProfile_fragment extends Fragment {
         imageButtonDel = (ImageButton) v.findViewById(R.id.btn_introdel);
         btn_changepic = (Button) v.findViewById(R.id.btn_changepic);
         btn_controlPost = (Button) v.findViewById(R.id.btn_controlpost);
+        btn_deletepic = (Button) v.findViewById(R.id.btn_deletepic);
 
         textViewNick.setText(nickname);
 
@@ -114,6 +115,16 @@ public class MyProfile_fragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
                 getActivity().finish();
+            }
+        });
+
+        btn_deletepic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DeletePic deletePic = new DeletePic();
+                deletePic.execute(dpPHPURL, nickname);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(MyProfile_fragment.this).attach(MyProfile_fragment.this).commit();
             }
         });
 
@@ -203,6 +214,7 @@ public class MyProfile_fragment extends Fragment {
                         imgpath = getRealPathFromUri(uri);
                         String nickname = textViewNick.getText().toString();
                         upload(nickname);
+                        btn_changepic.setText("사진변경");
                     }
 
                 }else
@@ -363,8 +375,14 @@ public class MyProfile_fragment extends Fragment {
 
             profileIntro = jsonObject.getString(TAG_INTRO);
             profileimgurl = "http://128.199.106.86/" + jsonObject.getString(TAG_IMG);
-            if(profileIntro != "null") {editTextIntro.setText(profileIntro);}
-            Glide.with(getActivity()).load(profileimgurl).into(profilePic);
+            if (profileimgurl.equals("http://128.199.106.86/null")) {
+                btn_changepic.setText("사진추가");
+            } else {
+                Glide.with(getActivity()).load(profileimgurl).into(profilePic);
+            }
+            if(profileIntro != "null") {
+                editTextIntro.setText(profileIntro);
+            }
             follow_cnt = jsonObject.getInt(TAG_FOLLOW);
             textViewFollowcnt.setText("구독자수" + "\n" + follow_cnt + "명");
 
@@ -519,4 +537,74 @@ public class MyProfile_fragment extends Fragment {
         }
     }
 
+    class DeletePic extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(getActivity(),
+                    "Please Wait", null, true, true);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            progressDialog.dismiss();
+            Log.d(TAG, "POST response  - " + result);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String serverURL = (String)params[0];
+            String nickname = (String)params[1];
+
+            String postParameters = "nickname=" + nickname;
+
+            try {
+                URL url = new URL(serverURL);
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.connect();
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG, "POST response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+                bufferedReader.close();
+
+                return sb.toString();
+
+            } catch (Exception e) {
+                Log.d(TAG, "InsertData: Error ", e);
+                return new String("Error: " + e.getMessage());
+            }
+        }
+    }
 }

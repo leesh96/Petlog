@@ -46,7 +46,7 @@
 
         <activity android:name=".talktalk.TalktalkActivity"></activity>
         <activity
-            android:name=".talktalk.navigation.ShareCommentActivity"
+            android:name=".talktalk.ShareCommentActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".talktalk.ShareActivity"></activity>
         <activity android:name=".talktalk.ShareDetailActivity"></activity>

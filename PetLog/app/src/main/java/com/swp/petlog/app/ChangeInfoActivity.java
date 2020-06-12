@@ -22,12 +22,17 @@ import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class ChangeInfoActivity extends AppCompatActivity {
     private static String PHPURL = "http://128.199.106.86/changeAccount.php";
 
     private EditText editTextNick;
-    private Button btn_change,btn_changepw;
+    private Button btn_change,btn_changepw, btn_validatenick;
     private ImageButton btn_back;
+    private AlertDialog dialog;
+    private boolean validatenick = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
         btn_change = (Button) findViewById(R.id.btn_change);
         btn_changepw = (Button) findViewById(R.id.btn_changepw);
         btn_back = (ImageButton) findViewById(R.id.btn_back);
+        btn_validatenick = (Button) findViewById(R.id.btn_checknick);
 
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,19 +54,81 @@ public class ChangeInfoActivity extends AppCompatActivity {
         });
 
         final String userid = PreferenceManager.getString(ChangeInfoActivity.this, "userID");
+        final String nickname = PreferenceManager.getString(ChangeInfoActivity.this, "userNick");
+
+        btn_validatenick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String Nick = editTextNick.getText().toString();
+                if (validatenick)
+                    return;
+                if (Nick.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ChangeInfoActivity.this);
+                    dialog = builder.setMessage("닉네임을 입력하세요.").setPositiveButton("확인", null).create();
+                    dialog.show();
+                    return;
+                }
+                if (Nick.equals(nickname)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ChangeInfoActivity.this);
+                    dialog = builder.setMessage("현재 닉네임과 다른 닉네임을 입력하세요.").setPositiveButton("확인", null).create();
+                    dialog.show();
+                    return;
+                }
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+                            if (success) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(ChangeInfoActivity.this);
+                                dialog = builder.setMessage("사용할 수 있는 닉네임입니다.").setPositiveButton("확인", null).create();
+                                dialog.show();
+                                editTextNick.setEnabled(false);
+                                validatenick = true;
+                                btn_validatenick.setText("완료");
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(ChangeInfoActivity.this);
+                                dialog = builder.setMessage("사용할 수 없는 닉네임입니다!").setPositiveButton("확인", null).create();
+                                dialog.show();
+                                return;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                ValidateRequestNick validateRequest = new ValidateRequestNick(Nick, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(ChangeInfoActivity.this);
+                queue.add(validateRequest);
+            }
+        });
 
         btn_change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String nickname = editTextNick.getText().toString();
-                if (nickname.equals("")) {
+                if(nickname.equals("")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ChangeInfoActivity.this);
-                    AlertDialog dialog = builder.setMessage("닉네임을 입력하세요.").setPositiveButton("확인", null).create();
+                    dialog = builder.setMessage("닉네임을 입력하세요.").setPositiveButton("확인", null).create();
                     dialog.show();
+                    return;
                 }
-                else {
+                else if(validatenick) {
                     modify(userid, nickname);
                     PreferenceManager.setString(ChangeInfoActivity.this, "userNick", nickname);
+                }
+                else if (!validatenick) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ChangeInfoActivity.this);
+                    dialog = builder.setMessage("닉네임 중복확인을 해주세요!").setNegativeButton("확인", null).create();
+                    dialog.show();
+                    return;
+                }
+                else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ChangeInfoActivity.this);
+                    dialog = builder.setMessage("닉네임 변경 실패").setPositiveButton("확인", null).create();
+                    dialog.show();
+                    return;
                 }
             }
         });

@@ -23,7 +23,6 @@ import com.bumptech.glide.Glide;
 import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
-import com.swp.petlog.talktalk.navigation.ShareCommentActivity;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

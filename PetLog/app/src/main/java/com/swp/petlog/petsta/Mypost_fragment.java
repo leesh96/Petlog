@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
+import com.swp.petlog.petsta.adapter.PetstaPostAdapter;
+import com.swp.petlog.petsta.data.PetstaPostData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
