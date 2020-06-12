@@ -21,8 +21,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
@@ -53,6 +55,8 @@ public class AllFeed_fragment extends Fragment {
     private ArrayList<PetstaPostData> arrayList;
     private PetstaPostAdapter adapter;
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
     private String align = "";
 
     private AlertDialog isdialog;
@@ -75,6 +79,7 @@ public class AllFeed_fragment extends Fragment {
         btn_home = (ImageButton) rootView.findViewById(R.id.btn_home);
         btn_align = (ImageButton) rootView.findViewById(R.id.btn_align);
         btn_search = (ImageButton) rootView.findViewById(R.id.btn_search);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_allfeed);
 
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,6 +235,16 @@ public class AllFeed_fragment extends Fragment {
 
         GetData task = new GetData();
         task.execute(PHPURL, align, nickname);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(AllFeed_fragment.this).attach(AllFeed_fragment.this).commit();
+                getActivity().overridePendingTransition(R.anim.slide_out_down, R.anim.slide_out_down);
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         return rootView;
     }

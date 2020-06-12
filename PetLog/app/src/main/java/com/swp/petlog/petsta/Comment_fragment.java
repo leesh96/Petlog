@@ -25,8 +25,6 @@ import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
 import com.swp.petlog.petsta.adapter.PetstaCommentAdapter;
 import com.swp.petlog.petsta.data.PetstaCommentData;
-import com.swp.petlog.talktalk.ShareCommentActivity;
-import com.swp.petlog.talktalk.data.ShareCommentData;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -14,8 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
@@ -47,6 +49,7 @@ public class MyFeed_fragment extends Fragment {
     private String jsonString;
     private ArrayList<PetstaPostData> arrayList;
     private PetstaPostAdapter adapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private ArrayList<String> Follower;
     private String nickname;
@@ -62,6 +65,7 @@ public class MyFeed_fragment extends Fragment {
         btn_back = (ImageButton) view.findViewById(R.id.btn_back);
         btn_home = (ImageButton) view.findViewById(R.id.btn_home);
         btn_search = (ImageButton) view.findViewById(R.id.btn_search);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_myfeed);
 
         nickname = PreferenceManager.getString(getActivity(), "userNick");
 
@@ -83,6 +87,13 @@ public class MyFeed_fragment extends Fragment {
             }
         });
 
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((PetstaMain)getActivity()).replaceFragment(UserSearch_fragment.newInstance());
+            }
+        });
+
         recyclerViewpetsta = (RecyclerView) view.findViewById(R.id.myfeed_rcview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerViewpetsta.setLayoutManager(layoutManager);
@@ -95,6 +106,15 @@ public class MyFeed_fragment extends Fragment {
         GetFollower task = new GetFollower();
         task.execute(fPHPURL, nickname);
 
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(MyFeed_fragment.this).attach(MyFeed_fragment.this).commit();
+                getActivity().overridePendingTransition(R.anim.slide_out_down, R.anim.slide_out_down);
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
         return view;
     }
 

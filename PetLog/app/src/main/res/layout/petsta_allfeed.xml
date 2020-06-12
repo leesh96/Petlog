@@ -68,11 +68,18 @@
 
     </RelativeLayout>
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/swipe_allfeed"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_marginTop="20dp" >
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/allfeed_rcview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/relativeLayout"
-        android:layout_marginTop="20dp" />
+        android:layout_height="wrap_content"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

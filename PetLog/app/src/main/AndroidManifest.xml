@@ -40,7 +40,7 @@
         <activity android:name=".diary.DiaryListActivity"></activity>
         <activity android:name=".diary.ShowDiaryActivity"></activity>
         <activity android:name=".diary.DiaryDeleteActivity"></activity>
-        <activity android:name=".app.ChangeInfoActivity"></activity>
+        <activity android:name=".setting.ChangeInfoActivity"></activity>
 
         <activity android:name=".petsta.PetstaMain"></activity>
 
@@ -57,9 +57,9 @@
         <activity android:name=".talktalk.WalkDetailActivity"></activity>
         <activity android:name=".talktalk.WalkWriteActivity"></activity>
         <activity android:name=".talktalk.walkEditActivity"></activity>
-        <activity android:name=".app.NoticeActivity"></activity>
-        <activity android:name=".app.PushActivity"></activity>
-        <activity android:name=".app.NoticeDetailActivity"></activity>
+        <activity android:name=".setting.NoticeActivity"></activity>
+        <activity android:name=".setting.PushActivity"></activity>
+        <activity android:name=".setting.NoticeDetailActivity"></activity>
 
         <activity android:name=".talktalk.GoogleMapActivity"></activity>
         <activity android:name=".talktalk.ResultGoogleMapActivity"></activity>

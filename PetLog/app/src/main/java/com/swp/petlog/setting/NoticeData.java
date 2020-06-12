@@ -1,4 +1,4 @@
-package com.swp.petlog.app;
+package com.swp.petlog.setting;
 
 public class NoticeData {
     private String Notice_id;

@@ -1,4 +1,4 @@
-package com.swp.petlog.app;
+package com.swp.petlog.setting;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -21,6 +21,8 @@ import com.android.volley.toolbox.Volley;
 import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
+import com.swp.petlog.app.ResetpwActivity;
+import com.swp.petlog.app.ValidateRequestNick;
 
 import org.json.JSONException;
 import org.json.JSONObject;

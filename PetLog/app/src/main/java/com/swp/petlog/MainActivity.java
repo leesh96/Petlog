@@ -18,10 +18,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
-import com.swp.petlog.app.ChangeInfoActivity;
+import com.swp.petlog.setting.ChangeInfoActivity;
 import com.swp.petlog.app.LoginActivity;
-import com.swp.petlog.app.NoticeActivity;
-import com.swp.petlog.app.PushActivity;
+import com.swp.petlog.setting.NoticeActivity;
+import com.swp.petlog.setting.PushActivity;
 import com.swp.petlog.diary.DiaryListActivity;
 import com.swp.petlog.mypet.MypetMainActivity;
 import com.swp.petlog.petsta.PetstaMain;

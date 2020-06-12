@@ -1,4 +1,4 @@
-package com.swp.petlog.app;
+package com.swp.petlog.setting;
 
 import android.app.ProgressDialog;
 import android.content.Context;
