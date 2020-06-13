@@ -98,7 +98,10 @@ public class PetstaPostAdapter extends RecyclerView.Adapter<PetstaPostAdapter.Cu
     public void onBindViewHolder(@NonNull final PetstaPostAdapter.CustomViewHolder viewHolder, final int position) {
 
         Glide.with(context).load(mList.get(position).getMember_image()).into(viewHolder.imageViewpostimg);
-        Glide.with(context).load(mList.get(position).getMember_face()).into(viewHolder.imageViewface);
+
+        if (!mList.get(position).getMember_face().equals("http://128.199.106.86/null")) {
+            Glide.with(context).load(mList.get(position).getMember_face()).into(viewHolder.imageViewface);
+        }
 
         switch (mList.get(position).getMember_liked()) {
             case 1:

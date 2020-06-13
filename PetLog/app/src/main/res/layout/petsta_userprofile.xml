@@ -62,7 +62,8 @@
         android:layout_centerHorizontal="true"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_below="@+id/relativeLayout"/>
+        android:layout_below="@+id/relativeLayout"
+        android:src="@drawable/ic_profile"/>
 
     <TextView
         android:id="@+id/profile_text"

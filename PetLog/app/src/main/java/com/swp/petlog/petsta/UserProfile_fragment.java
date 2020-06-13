@@ -254,7 +254,10 @@ public class UserProfile_fragment extends Fragment {
                     btn_follow.setText("구독하기");
             }
             if(profileIntro != "null") {textViewIntro.setText(profileIntro);}
-            Glide.with(getActivity()).load(profileimgurl).into(profilePic);
+            if (!profileimgurl.equals("http://128.199.106.86/null")) {
+                Glide.with(getActivity()).load(profileimgurl).into(profilePic);
+            }
+
 
             Log.d("getprofile - ", profileIntro + profileimgurl + isfollow + follow_cnt);
 

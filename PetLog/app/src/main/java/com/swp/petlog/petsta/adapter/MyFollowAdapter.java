@@ -45,7 +45,9 @@ public class MyFollowAdapter extends RecyclerView.Adapter<MyFollowAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int position) {
-        Glide.with(context).load(mList.get(position).getFollower_face()).into(viewHolder.follower_face);
+        if (!mList.get(position).getFollower_face().equals("http://128.199.106.86/null")) {
+            Glide.with(context).load(mList.get(position).getFollower_face()).into(viewHolder.follower_face);
+        }
         viewHolder.follower_nickname.setText(mList.get(position).getFollowerNickname());
     }
 

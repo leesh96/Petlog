@@ -123,6 +123,7 @@ public class MyProfile_fragment extends Fragment {
             public void onClick(View v) {
                 DeletePic deletePic = new DeletePic();
                 deletePic.execute(dpPHPURL, nickname);
+                PreferenceManager.removeKey(getActivity(), "userFace");
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.detach(MyProfile_fragment.this).attach(MyProfile_fragment.this).commit();
             }

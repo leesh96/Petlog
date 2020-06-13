@@ -70,7 +70,11 @@ public class MainActivity extends AppCompatActivity {
         textViewEmail.setText(PreferenceManager.getString(MainActivity.this, "userID"));
 
         ImageView imageViewFace = (ImageView) header.findViewById(R.id.nav_profile);
-        Glide.with(MainActivity.this).load(PreferenceManager.getString(MainActivity.this, "userFace")).into(imageViewFace);
+
+        if (!PreferenceManager.getString(MainActivity.this, "userFace").equals("http://128.199.106.86/null")) {
+            Glide.with(MainActivity.this).load(PreferenceManager.getString(MainActivity.this, "userFace")).into(imageViewFace);
+        }
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
