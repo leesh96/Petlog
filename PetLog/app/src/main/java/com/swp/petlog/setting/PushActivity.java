@@ -1,9 +1,7 @@
 package com.swp.petlog.setting;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-
 import com.swp.petlog.R;
 
 public class PushActivity extends AppCompatActivity {
@@ -15,4 +13,3 @@ public class PushActivity extends AppCompatActivity {
 
     };
 }
-

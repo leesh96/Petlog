@@ -1,6 +1,7 @@
 package com.swp.petlog.talktalk;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +21,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.loader.content.CursorLoader;
 
 import com.android.volley.Request;
@@ -61,6 +65,7 @@ public class ShareWriteActivity extends AppCompatActivity {
         // mTextViewResult = (TextView)findViewById(R.id.textView_main_result);
         // mTextViewResult.setMovementMethod(new ScrollingMovementMethod());
 
+        //checkSelfPermission();
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
             int permissionResult= checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if(permissionResult== PackageManager.PERMISSION_DENIED){
@@ -127,6 +132,36 @@ public class ShareWriteActivity extends AppCompatActivity {
         });
     }
 
+    /*@Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 1) {
+            int length = permissions.length;
+            for (int i = 0; i < length; i++) {
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("MainActivity","권한 허용 : " + permissions[i]);
+                }
+            }
+        }
+    }*/
+
+   /* public void checkSelfPermission() {
+        String temp = "";
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            temp += Manifest.permission.READ_EXTERNAL_STORAGE + " ";
+        }
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            temp += Manifest.permission.WRITE_EXTERNAL_STORAGE + " ";
+        }
+
+        if (TextUtils.isEmpty(temp) == false) {
+            ActivityCompat.requestPermissions(this, temp.trim().split(" "), 1);
+        } else {
+            Toast.makeText(this, "권한을 모두 허용", Toast.LENGTH_SHORT).show();
+        }
+    }*/
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -165,6 +200,21 @@ public class ShareWriteActivity extends AppCompatActivity {
                 }
                 break;
         }
+
+        /*if (requestCode == 101 && requestCode == RESULT_OK) {
+            try {
+                //선택한 사진의 경로(Uri)객체 얻어오기
+                Uri uri= data.getData();
+                if(uri!=null){
+                    mImageView.setImageURI(uri);
+                    imgpath = getRealPathFromUri(uri);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if(requestCode == 101 && resultCode == RESULT_CANCELED){
+            Toast.makeText(this,"취소", Toast.LENGTH_SHORT).show();
+        }*/
     }
 
     public String getRealPathFromUri(Uri uri){

@@ -222,6 +222,13 @@ public class AllFeed_fragment extends Fragment {
             }
         });
 
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((PetstaMain)getActivity()).replaceFragment(UserSearch_fragment.newInstance());
+            }
+        });
+
         recyclerViewpetsta = (RecyclerView) rootView.findViewById(R.id.allfeed_rcview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerViewpetsta.setLayoutManager(layoutManager);
