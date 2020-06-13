@@ -39,7 +39,7 @@
             android:text="공지사항"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="40sp" />
+            android:textSize="36dp" />
 
     </RelativeLayout>
 

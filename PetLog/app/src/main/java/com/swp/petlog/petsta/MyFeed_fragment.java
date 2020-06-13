@@ -43,7 +43,7 @@ public class MyFeed_fragment extends Fragment {
     private static String PHPURL = "http://128.199.106.86/getMyFeedPost.php";
     private static String TAG = "petstapost";
 
-    private ImageButton btn_back, btn_home, btn_search;
+    private ImageButton btn_home, btn_search;
 
     private RecyclerView recyclerViewpetsta;
     private String jsonString;
@@ -62,21 +62,11 @@ public class MyFeed_fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.petsta_myfeed, container, false);
-        btn_back = (ImageButton) view.findViewById(R.id.btn_back);
         btn_home = (ImageButton) view.findViewById(R.id.btn_home);
         btn_search = (ImageButton) view.findViewById(R.id.btn_search);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_myfeed);
 
         nickname = PreferenceManager.getString(getActivity(), "userNick");
-
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().remove(MyFeed_fragment.this).commit();
-                fragmentManager.popBackStack();
-            }
-        });
 
         btn_home.setOnClickListener(new View.OnClickListener() {
             @Override

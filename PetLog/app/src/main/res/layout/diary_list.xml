@@ -28,6 +28,7 @@
             android:textSize="36dp"
             android:textColor="@color/text"
             android:textAlignment="center"
+            android:fontFamily="@font/nanumbarungothic_b"
             android:gravity="center"
             android:text="제목입니다"/>
 
@@ -38,6 +39,7 @@
             android:gravity="center"
             android:textAlignment="center"
             android:textColor="@color/text"
+            android:fontFamily="@font/nanumbarungothic_n"
             android:textSize="14dp"
             android:layout_marginTop="5dp"
             android:text="작성날짜입니다"

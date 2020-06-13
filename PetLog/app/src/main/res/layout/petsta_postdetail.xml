@@ -36,10 +36,10 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/nanumbarungothic_b"
-            android:text="@string/petsta"
+            android:text="자세히보기"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="36dp" />
+            android:textSize="32dp" />
 
     </RelativeLayout>
 
@@ -49,13 +49,12 @@
         android:layout_height="300dp"
         android:layout_below="@+id/relativeLayout"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:src="@drawable/ic_gallary_100dp" />
+        android:layout_marginTop="40dp" />
 
     <EditText
         android:id="@+id/petsta_content"
         android:layout_width="400dp"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:layout_below="@id/addphoto_image"
         android:layout_marginTop="40dp"
         android:hint="내용을 입력하세요."
@@ -64,7 +63,9 @@
         android:background="@drawable/border_style"
         android:inputType="textMultiLine"
         android:textColor="@color/text"
-        android:textSize="18dp"
+        android:gravity="top"
+        android:padding="10dp"
+        android:textSize="22dp"
         android:maxLength="255"
         android:layout_centerHorizontal="true"/>
 

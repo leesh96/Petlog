@@ -41,7 +41,7 @@ import com.swp.petlog.R;
 public class PostWrite_fragment extends Fragment {
     private static String PHPURL = "http://128.199.106.86/addPetstaPost.php";
 
-    private ImageButton btn_back, btn_home;
+    private ImageButton btn_home;
 
     private Button addphoto_btn_upload, btn_tag;
     private ImageView addphoto_image;
@@ -64,20 +64,10 @@ public class PostWrite_fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.petsta_write, container, false);
 
-        btn_back = (ImageButton) rootView.findViewById(R.id.btn_back);
         btn_home = (ImageButton) rootView.findViewById(R.id.btn_home);
         editContent = (EditText) rootView.findViewById(R.id.petsta_content);
         addphoto_image = (ImageView) rootView.findViewById(R.id.addphoto_image);
         btn_tag = (Button) rootView.findViewById(R.id.btn_tag);
-
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().remove(PostWrite_fragment.this).commit();
-                fragmentManager.popBackStack();
-            }
-        });
 
         btn_home.setOnClickListener(new View.OnClickListener() {
             @Override

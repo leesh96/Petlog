@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/nanumbarungothic_b"
-            android:text="사용자검색"
+            android:text="닉네임검색"
             android:textAlignment="center"
             android:textColor="@color/text"
             android:textSize="32dp" />
@@ -61,7 +61,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="검색"
-        android:textSize="16dp"
+        android:textSize="18dp"
         android:textColor="@color/text"
         android:fontFamily="@font/nanumbarungothic_b"/>
 

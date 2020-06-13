@@ -23,7 +23,7 @@
         android:id="@+id/tv_nickname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
+        android:padding="10dp"
         android:text="닉네임"
         android:fontFamily="@font/nanumbarungothic_b"
         android:textColor="@color/text"
@@ -33,10 +33,10 @@
         android:id="@+id/tv_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
+        android:padding="10dp"
         android:text="이메일 아이디"
         android:fontFamily="@font/nanumbarungothic_n"
         android:textColor="@color/text"
-        android:textSize="18dp"/>
+        android:textSize="20dp"/>
 
 </LinearLayout>

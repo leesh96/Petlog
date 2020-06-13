@@ -34,10 +34,10 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/nanumbarungothic_b"
-            android:text="@string/app_name"
+            android:text="MyPet"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="40sp" />
+            android:textSize="34dp" />
 
     </RelativeLayout>
 
@@ -57,7 +57,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:clickable="true"
-            android:src="@drawable/ic_gallary"/>
+            android:src="@drawable/ic_addphoto"/>
 
         <EditText
             android:id="@+id/et_petName"
@@ -72,7 +72,7 @@
             android:inputType="text"
             android:paddingLeft="20dp"
             android:textColor="@color/text"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <EditText
             android:id="@+id/et_petSex"
@@ -87,7 +87,7 @@
             android:inputType="text"
             android:paddingLeft="20dp"
             android:textColor="@color/text"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <EditText
             android:id="@+id/et_petSpecie"
@@ -102,7 +102,7 @@
             android:inputType="text"
             android:paddingLeft="20dp"
             android:textColor="@color/text"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <EditText
             android:id="@+id/et_petAge"
@@ -134,7 +134,7 @@
             android:inputType="date"
             android:paddingLeft="20dp"
             android:textColor="@color/text"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_regist"
@@ -148,7 +148,7 @@
             android:text="추가하기"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="24sp" />
+            android:textSize="24dp" />
 
     </RelativeLayout>
 

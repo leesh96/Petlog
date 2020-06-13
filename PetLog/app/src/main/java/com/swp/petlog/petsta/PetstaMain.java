@@ -15,25 +15,17 @@ import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
 
 public class PetstaMain extends AppCompatActivity {
-
     public BottomNavigationView bottomNavigationView;
     private FragmentManager fm;
     private FragmentTransaction ft;
-    /*private MyFeed_fragment myFeed_fragment;
-    private AllFeed_fragment allFeed_fragment;
-    private MyProfile_fragment myProfile_fragment;
-    private PostWrite_fragment postWrite_fragment;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.petsta_main);
-        /*myFeed_fragment = new MyFeed_fragment();
-        allFeed_fragment = new AllFeed_fragment();
-        postWrite_fragment = new PostWrite_fragment();
-        myProfile_fragment = new MyProfile_fragment();*/
 
         setPetsta(0);
+
         bottomNavigationView = findViewById(R.id.bottomNavi);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -55,8 +47,6 @@ public class PetstaMain extends AppCompatActivity {
                 return true;
             }
         });
-
-
     }
 
     public void setPetsta(int n){

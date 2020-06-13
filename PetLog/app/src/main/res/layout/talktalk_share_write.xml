@@ -41,7 +41,7 @@
             android:text="나눔 게시판"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="32sp" />
+            android:textSize="32dp" />
 
     </RelativeLayout>
 

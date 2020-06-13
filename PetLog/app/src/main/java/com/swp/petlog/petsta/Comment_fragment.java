@@ -74,6 +74,10 @@ public class Comment_fragment extends Fragment {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(Comment_fragment.this).commit();
                 fragmentManager.popBackStack();
+                Log.d("count", Integer.toString(fragmentManager.getBackStackEntryCount()));
+                if (fragmentManager.getBackStackEntryCount() == 0) {
+                    getActivity().finish();
+                }
             }
         });
 

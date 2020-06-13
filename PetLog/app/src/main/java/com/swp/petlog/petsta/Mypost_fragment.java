@@ -40,7 +40,7 @@ public class Mypost_fragment extends Fragment {
     private static String PHPURL = "http://128.199.106.86/getMyPost.php";
     private static String TAG = "petstapost";
 
-    private ImageButton btn_back, btn_home, btn_search;
+    private ImageButton btn_back, btn_search;
 
     private RecyclerView recyclerViewpetsta;
     private String jsonString;
@@ -57,9 +57,8 @@ public class Mypost_fragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.petsta_myfeed, container, false);
+        view = inflater.inflate(R.layout.petsta_mypost, container, false);
         btn_back = (ImageButton) view.findViewById(R.id.btn_back);
-        btn_home = (ImageButton) view.findViewById(R.id.btn_home);
         btn_search = (ImageButton) view.findViewById(R.id.btn_search);
         btn_search.setVisibility(View.INVISIBLE);
 
@@ -71,15 +70,10 @@ public class Mypost_fragment extends Fragment {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(Mypost_fragment.this).commit();
                 fragmentManager.popBackStack();
-            }
-        });
-
-        btn_home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
-                getActivity().finish();
+                Log.d("count", Integer.toString(fragmentManager.getBackStackEntryCount()));
+                if (fragmentManager.getBackStackEntryCount() == 0) {
+                    getActivity().finish();
+                }
             }
         });
 

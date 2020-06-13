@@ -39,7 +39,7 @@
             android:text="@string/Diary"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="40sp" />
+            android:textSize="34dp" />
 
         <ImageButton
             android:id="@+id/btn_dairymodify"
@@ -65,6 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:fontFamily="@font/nanumbarungothic_n"
                 android:gravity="center"
                 android:text="날짜출력"
                 android:textAlignment="center"
@@ -77,17 +78,18 @@
                 android:layout_height="200dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="40dp"
-                android:padding="10dp"
-                android:src="@drawable/ic_gallary"/>
+                android:padding="10dp" />
 
             <TextView
                 android:id="@+id/diary_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="400dp"
+                android:layout_height="50dp"
+                android:fontFamily="@font/nanumbarungothic_b"
                 android:text="제목들어가는곳"
                 android:textColor="@color/text"
-                android:textSize="30dp"
+                android:textSize="26dp"
                 android:layout_marginTop="40dp"
+                android:background="@drawable/border_style"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textAlignment="center"/>
@@ -97,9 +99,11 @@
                 android:layout_width="400dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:background="@drawable/border_style"
                 android:layout_gravity="center"
                 android:gravity="top"
-                android:inputType="textMultiLine"
+                android:padding="10dp"
+                android:fontFamily="@font/nanumbarungothic_n"
                 android:textColor="@color/text"
                 android:text="내용들어가는곳 내용들어가는곳 내용들어가는곳 내용들어가는곳 내용들어가는곳 내용들어가는곳"
                 android:textSize="18dp"/>

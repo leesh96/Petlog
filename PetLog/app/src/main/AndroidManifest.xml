@@ -54,10 +54,10 @@
         <activity android:name=".talktalk.ShareEditActivity"></activity>
         <activity android:name=".talktalk.ShareWriteActivity"></activity>
         <activity android:name=".talktalk.WalkActivity"></activity>
-        <activity android:name=".talktalk.SetWalkImageActivity"></activity>
         <activity android:name=".talktalk.WalkDetailActivity"></activity>
         <activity android:name=".talktalk.WalkWriteActivity"></activity>
         <activity android:name=".talktalk.walkEditActivity"></activity>
+        <activity android:name=".talktalk.ShareMypostActivity"></activity>
         <activity android:name=".setting.NoticeActivity"></activity>
         <activity android:name=".setting.PushActivity"></activity>
         <activity android:name=".setting.NoticeDetailActivity"></activity>

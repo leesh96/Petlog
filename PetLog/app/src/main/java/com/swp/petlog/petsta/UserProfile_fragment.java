@@ -41,7 +41,7 @@ public class UserProfile_fragment extends Fragment {
     private static String uPHPURL = "http://128.199.106.86/updateFollow.php";
     private static String TAG = "petsta";
 
-    private ImageButton btn_back, btn_home, btn_search;
+    private ImageButton btn_back, btn_search;
     private Button btn_follow;
     private ImageView profilePic;
     private TextView textViewNick, textViewFollowcnt, textViewIntro;
@@ -65,7 +65,6 @@ public class UserProfile_fragment extends Fragment {
         task.execute(gPHPURL, usernick, mynick);
 
         btn_back = (ImageButton) v.findViewById(R.id.btn_back);
-        btn_home = (ImageButton) v.findViewById(R.id.btn_home);
         btn_search = (ImageButton) v.findViewById(R.id.btn_petsta_search);
 
         profilePic = (ImageView) v.findViewById(R.id.petsta_profile_image);
@@ -85,12 +84,10 @@ public class UserProfile_fragment extends Fragment {
             }
         });
 
-        btn_home.setOnClickListener(new View.OnClickListener() {
+        btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
-                getActivity().finish();
+                ((PetstaMain)getActivity()).replaceFragment(UserSearch_fragment.newInstance());
             }
         });
 

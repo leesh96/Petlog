@@ -48,7 +48,7 @@ public class AllFeed_fragment extends Fragment {
     private static String PHPURL = "http://128.199.106.86/getAllFeedPost.php";
     private static String TAG = "petstapost";
 
-    private ImageButton btn_back, btn_home, btn_search, btn_align;
+    private ImageButton btn_home, btn_search, btn_align;
 
     private RecyclerView recyclerViewpetsta;
     private String jsonString;
@@ -75,20 +75,23 @@ public class AllFeed_fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.petsta_allfeed, container, false);
 
-        btn_back = (ImageButton) rootView.findViewById(R.id.btn_back);
         btn_home = (ImageButton) rootView.findViewById(R.id.btn_home);
         btn_align = (ImageButton) rootView.findViewById(R.id.btn_align);
         btn_search = (ImageButton) rootView.findViewById(R.id.btn_search);
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_allfeed);
 
-        btn_back.setOnClickListener(new View.OnClickListener() {
+        /*btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(AllFeed_fragment.this).commit();
                 fragmentManager.popBackStack();
+                Log.d("count", Integer.toString(fragmentManager.getBackStackEntryCount()));
+                if (fragmentManager.getBackStackEntryCount() == 0) {
+                    getActivity().finish();
+                }
             }
-        });
+        });*/
 
         btn_home.setOnClickListener(new View.OnClickListener() {
             @Override

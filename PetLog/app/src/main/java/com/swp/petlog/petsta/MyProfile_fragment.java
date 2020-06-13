@@ -58,7 +58,7 @@ public class MyProfile_fragment extends Fragment {
     private static String dpPHPURL = "http://128.199.106.86/deleteUserFace.php";
     private static String TAG = "petsta";
 
-    private ImageButton btn_back, btn_home, btn_search;
+    private ImageButton btn_home, btn_search;
 
     private ImageView profilePic;
     private TextView textViewNick, textViewFollowcnt;
@@ -83,7 +83,6 @@ public class MyProfile_fragment extends Fragment {
         GetProfile getProfile = new GetProfile();
         getProfile.execute(gPHPURL, nickname);
 
-        btn_back = (ImageButton) v.findViewById(R.id.btn_back);
         btn_home = (ImageButton) v.findViewById(R.id.btn_home);
         btn_search = (ImageButton) v.findViewById(R.id.btn_petsta_search);
 
@@ -100,21 +99,19 @@ public class MyProfile_fragment extends Fragment {
 
         textViewNick.setText(nickname);
 
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().remove(MyProfile_fragment.this).commit();
-                fragmentManager.popBackStack();
-            }
-        });
-
         btn_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
                 getActivity().finish();
+            }
+        });
+
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((PetstaMain)getActivity()).replaceFragment(UserSearch_fragment.newInstance());
             }
         });
 

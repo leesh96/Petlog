@@ -41,7 +41,7 @@
             android:text="산책로 수정"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="32sp" />
+            android:textSize="32dp" />
 
     </RelativeLayout>
 

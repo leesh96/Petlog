@@ -43,7 +43,7 @@ public class ShareActivity extends AppCompatActivity {
     private ShareAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private String mJsonString;
-    private ImageButton btn_back, btn_home, btn_write;
+    private ImageButton btn_back, btn_home, btn_write, btn_mypost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +98,15 @@ public class ShareActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent addintent = new Intent(ShareActivity.this, ShareWriteActivity.class);
                 startActivity(addintent);
+            }
+        });
+
+        btn_mypost = (ImageButton) findViewById(R.id.btn_myboard);
+        btn_mypost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myboard = new Intent(ShareActivity.this, ShareMypostActivity.class);
+                startActivity(myboard);
             }
         });
 

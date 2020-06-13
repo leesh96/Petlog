@@ -91,6 +91,10 @@ public class MyFollow_fragment extends Fragment {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(MyFollow_fragment.this).commit();
                 fragmentManager.popBackStack();
+                Log.d("count", Integer.toString(fragmentManager.getBackStackEntryCount()));
+                if (fragmentManager.getBackStackEntryCount() == 0) {
+                    getActivity().finish();
+                }
             }
         });
 
