@@ -121,8 +121,6 @@ public class MyProfile_fragment extends Fragment {
                 DeletePic deletePic = new DeletePic();
                 deletePic.execute(dpPHPURL, nickname);
                 PreferenceManager.removeKey(getActivity(), "userFace");
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.detach(MyProfile_fragment.this).attach(MyProfile_fragment.this).commit();
             }
         });
 
@@ -550,6 +548,9 @@ public class MyProfile_fragment extends Fragment {
             super.onPostExecute(result);
             progressDialog.dismiss();
             Log.d(TAG, "POST response  - " + result);
+
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.detach(MyProfile_fragment.this).attach(MyProfile_fragment.this).commit();
         }
 
         @Override

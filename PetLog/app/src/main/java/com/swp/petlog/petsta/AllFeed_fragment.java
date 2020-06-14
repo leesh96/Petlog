@@ -75,6 +75,7 @@ public class AllFeed_fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.petsta_allfeed, container, false);
 
+        final String nickname = PreferenceManager.getString(getActivity(), "userNick");
         btn_home = (ImageButton) rootView.findViewById(R.id.btn_home);
         btn_align = (ImageButton) rootView.findViewById(R.id.btn_align);
         btn_search = (ImageButton) rootView.findViewById(R.id.btn_search);
@@ -121,13 +122,13 @@ public class AllFeed_fragment extends Fragment {
                                 align = "";
                                 arrayList.clear();
                                 adapter.notifyDataSetChanged();
-                                task.execute(PHPURL, align);
+                                task.execute(PHPURL, align, nickname);
                                 break;
                             case R.id.align_like:
                                 align = "like";
                                 arrayList.clear();
                                 adapter.notifyDataSetChanged();
-                                task.execute(PHPURL, align);
+                                task.execute(PHPURL, align, nickname);
                                 break;
                             case R.id.align_tag:
                                 isdialog = new AlertDialog.Builder(getActivity())
@@ -162,7 +163,7 @@ public class AllFeed_fragment extends Fragment {
                                                                     }
                                                                     arrayList.clear();
                                                                     adapter.notifyDataSetChanged();
-                                                                    task.execute(PHPURL, align);
+                                                                    task.execute(PHPURL, align, nickname);
                                                                 }
                                                             })
                                                             .setTitle("강아지의 종이 무엇인가요?")
@@ -199,7 +200,7 @@ public class AllFeed_fragment extends Fragment {
                                                                     }
                                                                     arrayList.clear();
                                                                     adapter.notifyDataSetChanged();
-                                                                    task.execute(PHPURL, align);
+                                                                    task.execute(PHPURL, align, nickname);
                                                                 }
                                                             })
                                                             .setTitle("고양이의 종이 무엇인가요?")
@@ -241,7 +242,7 @@ public class AllFeed_fragment extends Fragment {
         adapter = new PetstaPostAdapter(getActivity(), arrayList);
         recyclerViewpetsta.setAdapter(adapter);
 
-        String nickname = PreferenceManager.getString(getActivity(), "userNick");
+
 
         GetData task = new GetData();
         task.execute(PHPURL, align, nickname);

@@ -53,7 +53,10 @@ public class ShareActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.listView_main_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));//구분선
-
+        /*LinearLayoutManager mLayoutManager=new LinearLayoutManager(this);
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
+        mRecyclerView.setLayoutManager(mLayoutManager);*/
         mArrayList = new ArrayList<>();
         mAdapter = new ShareAdapter(this, mArrayList);
         mRecyclerView.setAdapter(mAdapter);
