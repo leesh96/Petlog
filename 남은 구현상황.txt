@@ -6,6 +6,8 @@ ALTER TABLE "' AUTO_INCREMENT = 1;
 SET @COUNT = 0;
 UPDATE '' SET ''.'' = @COUNT:=@COUNT+1;
 
+좋아요, 구독 -> 한글 깨짐
+
 사진 수정, 삭제 할때 한글 깨지는데 이거 어캐함 -> PHP 인코딩 문제인듯.
 	-> 프로필 사진 삭제 -> 제대로 안됌
 
