@@ -10,22 +10,16 @@
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/theme4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        android:layout_height="60dp"
+        android:background="@color/theme4">
 
         <ImageButton
             android:id="@+id/btn_home"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:clickable="true"
             android:background="@drawable/button_style_inmain"
             android:src="@drawable/ic_home" />
@@ -38,25 +32,34 @@
             android:text="@string/mypet"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="34dp" />
+            android:textSize="30dp" />
 
         <ImageButton
             android:id="@+id/btn_mypetmenu"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="10dp"
             android:clickable="true"
             android:background="@drawable/button_style_inmain"
             android:src="@drawable/ic_linedmenu"/>
 
     </RelativeLayout>
 
+    <me.relex.circleindicator.CircleIndicator
+        android:id="@+id/indicator"
+        app:ci_drawable="@drawable/black_radius"
+        app:ci_height="8dp"
+        app:ci_width="8dp"
+        app:ci_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"/>
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/vp_mypet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>

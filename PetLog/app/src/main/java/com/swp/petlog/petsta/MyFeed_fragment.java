@@ -116,8 +116,8 @@ public class MyFeed_fragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            progressDialog = ProgressDialog.show(getActivity(),
-                    "Please Wait", null, true, true);
+           /* progressDialog = ProgressDialog.show(getActivity(),
+                    "Please Wait", null, true, true);*/
         }
 
 
@@ -125,7 +125,7 @@ public class MyFeed_fragment extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            progressDialog.dismiss();
+            //progressDialog.dismiss();
             //mTextViewResult.setText(result);
             Log.d(TAG, "response - " + result);
 
@@ -236,7 +236,7 @@ public class MyFeed_fragment extends Fragment {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(getActivity(),
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
 

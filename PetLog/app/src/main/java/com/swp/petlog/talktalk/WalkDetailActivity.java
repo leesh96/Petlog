@@ -194,7 +194,7 @@ public class WalkDetailActivity extends AppCompatActivity {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(WalkDetailActivity.this,
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
         @Override

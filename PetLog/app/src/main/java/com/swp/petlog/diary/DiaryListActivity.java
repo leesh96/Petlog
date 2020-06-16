@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -97,6 +98,7 @@ public class DiaryListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(DiaryListActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -124,6 +126,7 @@ public class DiaryListActivity extends AppCompatActivity {
         recyclerViewDiary = (RecyclerView) findViewById(R.id.diary_rcview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerViewDiary.setLayoutManager(layoutManager);
+        recyclerViewDiary.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
 
         arrayList = new ArrayList<>();
 
@@ -171,7 +174,7 @@ public class DiaryListActivity extends AppCompatActivity {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(DiaryListActivity.this,
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
 

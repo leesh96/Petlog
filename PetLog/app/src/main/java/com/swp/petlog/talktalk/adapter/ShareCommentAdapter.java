@@ -171,7 +171,7 @@ public class ShareCommentAdapter extends RecyclerView.Adapter<ShareCommentAdapte
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(mContext,
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
         @Override
@@ -239,7 +239,7 @@ public class ShareCommentAdapter extends RecyclerView.Adapter<ShareCommentAdapte
         SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, mPHPURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(mContext, "성공" + response, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "댓글수정", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", response);
             }
         }, new Response.ErrorListener() {

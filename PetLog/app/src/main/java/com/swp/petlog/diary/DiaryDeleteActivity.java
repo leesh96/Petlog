@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,7 +36,7 @@ public class DiaryDeleteActivity extends AppCompatActivity {
     private static String dPHPURL = "http://128.199.106.86/deleteDiary.php";
     private static String TAG = "diary";
 
-    private ImageButton imageButtonhome, imageButtondel;
+    private ImageButton imageButtonhome, imageButtondel, btn_back;
     private RecyclerView recyclerViewDiary;
     private String jsonString;
     private ArrayList<DiarylistData> arrayList;
@@ -49,6 +50,14 @@ public class DiaryDeleteActivity extends AppCompatActivity {
         final String userid = PreferenceManager.getString(DiaryDeleteActivity.this, "userID");
         imageButtonhome = (ImageButton) findViewById(R.id.btn_home);
         imageButtondel = (ImageButton) findViewById(R.id.btn_diarydel);
+        btn_back = (ImageButton) findViewById(R.id.btn_back);
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         imageButtonhome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +70,7 @@ public class DiaryDeleteActivity extends AppCompatActivity {
         recyclerViewDiary = (RecyclerView) findViewById(R.id.diarydel_rcview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerViewDiary.setLayoutManager(layoutManager);
+        recyclerViewDiary.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
 
         arrayList = new ArrayList<>();
 
@@ -107,9 +117,8 @@ public class DiaryDeleteActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
             progressDialog = ProgressDialog.show(DiaryDeleteActivity.this,
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
 
@@ -244,7 +253,7 @@ public class DiaryDeleteActivity extends AppCompatActivity {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(DiaryDeleteActivity.this,
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
         @Override

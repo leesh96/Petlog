@@ -120,7 +120,7 @@ public class Comment_fragment extends Fragment {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(getContext(),
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
 
@@ -136,7 +136,6 @@ public class Comment_fragment extends Fragment {
 
                 //  mTextViewResult.setText(errorString);
             } else {
-
                 jsonString = result;
                 showResult();
             }
@@ -258,7 +257,7 @@ public class Comment_fragment extends Fragment {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(getContext(),
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
         @Override

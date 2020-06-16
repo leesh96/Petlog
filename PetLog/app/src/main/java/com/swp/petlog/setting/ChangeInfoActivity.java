@@ -117,8 +117,8 @@ public class ChangeInfoActivity extends AppCompatActivity {
                     return;
                 }
                 else if(validatenick) {
-                    modify(userid, nickname);
                     PreferenceManager.setString(ChangeInfoActivity.this, "userNick", nickname);
+                    modify(userid, nickname);
                 }
                 else if (!validatenick) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ChangeInfoActivity.this);
@@ -150,7 +150,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
         SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, PHPURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(ChangeInfoActivity.this, "성공" + response, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChangeInfoActivity.this, "닉네임 변경 성공", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", response);
                 Intent intent = new Intent(ChangeInfoActivity.this, MainActivity.class);
                 startActivity(intent);

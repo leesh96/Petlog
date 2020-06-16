@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.swp.petlog.MainActivity;
 import com.swp.petlog.R;
+import com.swp.petlog.mypet.MypetMainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,13 +43,22 @@ public class NoticeActivity extends AppCompatActivity {
     private NoticeAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private String mJsonString;
-    private ImageButton btn_back;
+    private ImageButton btn_back, btn_home;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting_notice);
+        btn_home = (ImageButton) findViewById(R.id.btn_home);
+        btn_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(NoticeActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         mRecyclerView = (RecyclerView) findViewById(R.id.listView_main_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -81,8 +91,7 @@ public class NoticeActivity extends AppCompatActivity {
         btn_back.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
@@ -147,7 +156,7 @@ public class NoticeActivity extends AppCompatActivity {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(NoticeActivity.this,
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
 

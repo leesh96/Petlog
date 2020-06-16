@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.content.CursorLoader;
 
@@ -44,7 +45,8 @@ public class walkEditActivity extends AppCompatActivity {
     private static String TAG = "test02";
     private EditText mId,mTitle, mContent;
     private ImageView imageView;
-    private String imgpath;
+    private String imgpath = "";
+    private AlertDialog nullcheck;
     //private Button mInsertButton;
     private ImageButton btn_back, btn_home;
 
@@ -115,12 +117,25 @@ public class walkEditActivity extends AppCompatActivity {
                 String WalkTitle=mTitle.getText().toString();
                 String WalkContent=mContent.getText().toString();
 
-                modify(WalkTitle, WalkContent, WalkId);
+                if (WalkTitle.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(walkEditActivity.this);
+                    nullcheck = builder.setMessage("제목을 입력하세요.").setNegativeButton("확인", null).create();
+                    nullcheck.show();
+                } else if (WalkContent.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(walkEditActivity.this);
+                    nullcheck = builder.setMessage("내용을 입력하세요.").setNegativeButton("확인", null).create();
+                    nullcheck.show();
+                } else {
+                    if (imgpath.equals("")) {
+                        modify(WalkTitle, WalkContent, WalkId, "false");
+                    } else {
+                        modify(WalkTitle, WalkContent, WalkId, "true");
+                    }
+                }
 
             }
         });
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -172,11 +187,11 @@ public class walkEditActivity extends AppCompatActivity {
         return result;
     }
 
-    public void modify(String title, String contents, String id) {
+    public void modify(String title, String contents, String id, String picchanged) {
         SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, "http://128.199.106.86/modifyWalk.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(walkEditActivity.this, "성공" + response, Toast.LENGTH_SHORT).show();
+                Toast.makeText(walkEditActivity.this, "수정성공", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", response);
                 Intent intent = new Intent(walkEditActivity.this, WalkActivity.class);
                 startActivity(intent);
@@ -193,6 +208,7 @@ public class walkEditActivity extends AppCompatActivity {
         smpr.addStringParam("title", title);
         smpr.addStringParam("content", contents);
         smpr.addStringParam("id", id);
+        smpr.addStringParam("picchanged", picchanged);
         smpr.addFile("image", imgpath);
 
         //요청객체를 서버로 보낼 우체통 같은 객체 생성

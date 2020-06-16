@@ -55,30 +55,37 @@ public class FindpwActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         String VerifyNum = et_verifynum.getText().toString();
-                        if(code.equals(VerifyNum)) {
-                            check = true;
+                        if (VerifyNum.equals("")) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(FindpwActivity.this);
-                            dialog = builder.setMessage("인증번호가 맞습니다.").setPositiveButton("확인", null).create();
+                            dialog = builder.setMessage("인증번호를 입력하세요.").setPositiveButton("확인", null).create();
                             dialog.show();
-                            et_verifynum.setText("인증완료");
-                            et_verifynum.setEnabled(false);
-                            btn_getvn.setText("비밀번호 변경하기");
-                            btn_getvn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    PreferenceManager.setString(FindpwActivity.this, "findpwID", Id);
-                                    Intent intent = new Intent(FindpwActivity.this, ResetpwActivity.class);
-                                    startActivity(intent);
-                                }
-                            });
-                        }
-                        else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(FindpwActivity.this);
-                            dialog = builder.setMessage("인증번호가 틀립니다!").setPositiveButton("확인", null).create();
-                            dialog.show();
-                            et_verifynum.setText(null);
-                            btn_getvn.setText("인증번호 다시받기");
-                            btnclickevent();
+                        } else {
+                            if(code.equals(VerifyNum)) {
+                                check = true;
+                                AlertDialog.Builder builder = new AlertDialog.Builder(FindpwActivity.this);
+                                dialog = builder.setMessage("인증번호가 맞습니다.").setPositiveButton("확인", null).create();
+                                dialog.show();
+                                et_verifynum.setText("인증완료");
+                                et_verifynum.setEnabled(false);
+                                btn_getvn.setText("비밀번호 변경하기");
+                                btn_getvn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        PreferenceManager.setString(FindpwActivity.this, "findpwID", Id);
+                                        Intent intent = new Intent(FindpwActivity.this, ResetpwActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                });
+                            }
+                            else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(FindpwActivity.this);
+                                dialog = builder.setMessage("인증번호가 틀립니다!").setPositiveButton("확인", null).create();
+                                dialog.show();
+                                et_verifynum.setText(null);
+                                btn_getvn.setText("인증번호 다시받기");
+                                btnclickevent();
+                            }
                         }
                     }
                 });

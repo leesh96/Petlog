@@ -1,5 +1,6 @@
 package com.swp.petlog.app;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.swp.petlog.R;
 public class LoginActivity extends AppCompatActivity {
     private EditText et_email, et_pass;
     private Button btn_login, btn_register, btn_findpw;
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,6 @@ public class LoginActivity extends AppCompatActivity {
                             boolean success = jsonObject.getBoolean("success");
 
                             if (success) {//로그인 성공시
-
                                 String u_id = jsonObject.getString("userID");
                                 String u_pw = jsonObject.getString("userPassword");
                                 String u_name = jsonObject.getString("userName");
@@ -86,7 +87,9 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
 
                             } else {//로그인 실패시
-                                Toast.makeText(getApplicationContext(), "로그인 실패 다시 시도하세요", Toast.LENGTH_SHORT).show();
+                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                                dialog = builder.setMessage("로그인 실패!\n이메일과 비밀번호를 확인하세요.").setNegativeButton("확인", null).create();
+                                dialog.show();
                                 return;
                             }
 

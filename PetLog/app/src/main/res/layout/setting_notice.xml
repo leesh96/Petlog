@@ -4,21 +4,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/bg">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         android:background="@color/theme4">
 
         <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:id="@+id/btn_home"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/btn_back"
+            android:background="@drawable/button_style_inmain"
+            android:clickable="true"
+            android:src="@drawable/ic_home" />
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:id="@+id/btn_back"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:clickable="true"
             android:background="@drawable/button_style_inmain"
             android:src="@drawable/ic_arrow_back" />
@@ -30,7 +42,7 @@
             android:text="공지사항"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="36dp" />
+            android:textSize="30dp" />
 
     </RelativeLayout>
 
@@ -38,6 +50,6 @@
         android:id="@+id/listView_main_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>

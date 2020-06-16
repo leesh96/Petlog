@@ -9,21 +9,31 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.swp.petlog.MainActivity;
 import com.swp.petlog.R;
 
 public class NoticeDetailActivity extends AppCompatActivity {
-    private ImageButton btn_back;
+    private ImageButton btn_back, btn_home;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting_noticedetail);
 
+        btn_home = (ImageButton) findViewById(R.id.btn_home);
+        btn_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(NoticeDetailActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         btn_back=(ImageButton)findViewById(R.id.btn_back);
         btn_back.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(getApplicationContext(), NoticeActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 

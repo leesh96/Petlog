@@ -269,7 +269,7 @@ public class AllFeed_fragment extends Fragment {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(getActivity(),
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
 

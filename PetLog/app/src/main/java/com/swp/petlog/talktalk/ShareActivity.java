@@ -203,7 +203,7 @@ public class ShareActivity extends AppCompatActivity {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(ShareActivity.this,
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
 
@@ -288,7 +288,6 @@ public class ShareActivity extends AppCompatActivity {
 
         }
     }
-
 
     private void showResult() {
 

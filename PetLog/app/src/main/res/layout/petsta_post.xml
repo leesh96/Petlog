@@ -9,27 +9,24 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center"
         android:layout_marginTop="3dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="3dp"
         app:contentPadding="10dp"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="10dp"
-        app:cardUseCompatPadding="true"
-        >
+        app:cardCornerRadius="10dp">
 
         <RelativeLayout
             android:id="@+id/petstarl"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/writer_face"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_alignStart="@+id/post_image"
                 android:src="@drawable/ic_profile" />
 
@@ -40,13 +37,14 @@
                 android:layout_alignBottom="@+id/writer_face"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="10dp"
+                android:padding="5dp"
                 android:layout_toEndOf="@+id/writer_face"
                 android:fontFamily="@font/nanumbarungothic_b"
                 android:gravity="center"
                 android:text="작성자 닉네임"
                 android:textAlignment="center"
                 android:textColor="@color/text"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/post_time"
@@ -59,12 +57,12 @@
                 android:text="작성시간"
                 android:textAlignment="center"
                 android:textColor="@color/text"
-                android:textSize="14dp" />
+                android:textSize="12dp" />
 
             <ImageView
                 android:id="@+id/post_image"
-                android:layout_width="400dp"
-                android:layout_height="400dp"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
                 android:layout_below="@+id/writer_face"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp" />
@@ -91,7 +89,7 @@
                 android:text="20"
                 android:textAlignment="center"
                 android:textColor="@color/text"
-                android:textSize="20dp" />
+                android:textSize="18dp" />
 
             <ImageView
                 android:id="@+id/post_comment"
@@ -115,7 +113,7 @@
                 android:text="20"
                 android:textAlignment="center"
                 android:textColor="@color/text"
-                android:textSize="20dp" />
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/post_tag"
@@ -130,21 +128,23 @@
                 android:text="반려동물 태그"
                 android:textAlignment="center"
                 android:textColor="@color/text"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/post_contents"
                 android:layout_width="400dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/post_like"
-                android:layout_centerHorizontal="true"
+                android:layout_alignStart="@+id/post_like"
+                android:layout_alignEnd="@+id/post_tag"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
+                android:padding="5dp"
                 android:fontFamily="@font/nanumbarungothic_n"
                 android:inputType="textMultiLine"
                 android:text="내용이 들어갈 곳입니다."
                 android:textColor="@color/text"
-                android:textSize="20dp" />
+                android:textSize="18dp" />
 
         </RelativeLayout>
 

@@ -192,38 +192,62 @@ public class RegisterActivity extends AppCompatActivity {
                 final String Bdy = editTextBdy.getText().toString();
                 final String Pwcheck = pwcheck.getText().toString();
 
-                if(validateid & validatenick) {
-                    if (Pw.equals(Pwcheck)) {
-                        insertToDatabase(Id, Pw, Name, Nick, Bdy);
-                        PreferenceManager.setString(RegisterActivity.this, "signupNick", Nick);
-                        Intent intent = new Intent(RegisterActivity.this, SignupDoneActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                    else {
+                if (Id.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    dialog = builder.setMessage("이메일을 입력하세요.").setNegativeButton("확인", null).create();
+                    dialog.show();
+                } else if (Nick.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    dialog = builder.setMessage("닉네임을 입력하세요.").setNegativeButton("확인", null).create();
+                    dialog.show();
+                } else if (Name.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    dialog = builder.setMessage("이름을 입력하세요.").setNegativeButton("확인", null).create();
+                    dialog.show();
+                } else if (Bdy.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    dialog = builder.setMessage("생년월일을 입력하세요.").setNegativeButton("확인", null).create();
+                    dialog.show();
+                } else if (Pw.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    dialog = builder.setMessage("비밀번호를 입력하세요.").setNegativeButton("확인", null).create();
+                    dialog.show();
+                } else if (Pwcheck.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    dialog = builder.setMessage("비밀번호확인을 입력하세요.").setNegativeButton("확인", null).create();
+                    dialog.show();
+                }
+                else {
+                    if(validateid & validatenick) {
+                        if (Pw.equals(Pwcheck)) {
+                            insertToDatabase(Id, Pw, Name, Nick, Bdy);
+                            PreferenceManager.setString(RegisterActivity.this, "signupNick", Nick);
+                            Intent intent = new Intent(RegisterActivity.this, SignupDoneActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                            dialog = builder.setMessage("비밀번호 확인이 일치하지 않습니다!").setNegativeButton("확인", null).create();
+                            dialog.show();
+                            return;
+                        }
+                    } else if ((validateid == false) & (validatenick == true)) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                        dialog = builder.setMessage("비밀번호 확인이 일치하지 않습니다!").setNegativeButton("확인", null).create();
+                        dialog = builder.setMessage("아이디 중복확인을 해주세요!").setNegativeButton("확인", null).create();
+                        dialog.show();
+                        return;
+                    } else if ((validatenick == false) & (validateid == true)) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                        dialog = builder.setMessage("닉네임 중복확인을 해주세요!").setNegativeButton("확인", null).create();
+                        dialog.show();
+                        return;
+                    } else if ((validatenick == false) & (validateid == false)) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                        dialog = builder.setMessage("아이디, 닉네임 중복확인 필수!").setNegativeButton("확인", null).create();
                         dialog.show();
                         return;
                     }
-                }
-                else if ((validateid == false) & (validatenick == true)) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                    dialog = builder.setMessage("아이디 중복확인을 해주세요!").setNegativeButton("확인", null).create();
-                    dialog.show();
-                    return;
-                }
-                else if ((validatenick == false) & (validateid == true)) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                    dialog = builder.setMessage("닉네임 중복확인을 해주세요!").setNegativeButton("확인", null).create();
-                    dialog.show();
-                    return;
-                }
-                else if ((validatenick == false) & (validateid == false)) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                    dialog = builder.setMessage("아이디, 닉네임 중복확인 필수!").setNegativeButton("확인", null).create();
-                    dialog.show();
-                    return;
                 }
             }
         });
@@ -235,13 +259,12 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loading = ProgressDialog.show(RegisterActivity.this, "Please Wait", null, true, true);
+                loading = ProgressDialog.show(RegisterActivity.this, "Please Wait...", null, true, true);
             }
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 loading.dismiss();
-                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
             }
             @Override
             protected String doInBackground(String... params) {

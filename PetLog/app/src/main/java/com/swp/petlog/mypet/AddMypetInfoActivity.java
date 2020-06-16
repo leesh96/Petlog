@@ -22,6 +22,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -62,10 +63,11 @@ import com.swp.petlog.diary.WriteDiaryActivity;
 public class AddMypetInfoActivity extends AppCompatActivity {
     private EditText editTextName, editTextSex, editTextSpecies, editTextAge, editTextBday;
     private Button btn_add;
-    private AlertDialog dialog;
+    private TextView textViewStatus;
+    private AlertDialog dialog, nullcheck;
     private ImageView imageViewFace;
     private ImageButton btn_back;
-    private String imgpath;
+    private String imgpath = "";
     private static String PHPURL = "http://128.199.106.86/addMypet.php";
     private static String mPHPURL = "http://128.199.106.86/modifyMypet.php";
     private static String TAG = "mypet";
@@ -102,6 +104,7 @@ public class AddMypetInfoActivity extends AppCompatActivity {
         editTextAge = (EditText) findViewById(R.id.et_petAge);
         editTextBday = (EditText) findViewById(R.id.et_petBday);
         imageViewFace = (ImageView) findViewById(R.id.mypet_image);
+        textViewStatus = (TextView) findViewById(R.id.status_title);
 
         final String PetOwner = PreferenceManager.getString(AddMypetInfoActivity.this, "userID");
 
@@ -122,6 +125,7 @@ public class AddMypetInfoActivity extends AppCompatActivity {
         });
 
         if(isModify) {
+            textViewStatus.setText("수정하기");
             Glide.with(AddMypetInfoActivity.this).load(getFace).into(imageViewFace);
             editTextName.setText(getName);
             editTextSex.setText(getSex);
@@ -172,10 +176,33 @@ public class AddMypetInfoActivity extends AppCompatActivity {
                     String PetBday = editTextBday.getText().toString();
                     String PetId = Integer.toString(getId);
 
-                    //ModifyData task = new ModifyData();
-                    //task.execute(mPHPURL, PetName, PetSex, PetSpecies, PetAge, PetBday, PetId);
-
-                    modify(PetName, PetSex, PetSpecies, PetAge, PetBday, PetId);
+                    if (PetName.equals("")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(AddMypetInfoActivity.this);
+                        nullcheck = builder.setMessage("이름을 입력하세요.").setNegativeButton("확인", null).create();
+                        nullcheck.show();
+                    } else if (PetSex.equals("")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(AddMypetInfoActivity.this);
+                        nullcheck = builder.setMessage("성별을 입력하세요.").setNegativeButton("확인", null).create();
+                        nullcheck.show();
+                    } else if (PetSpecies.equals("")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(AddMypetInfoActivity.this);
+                        nullcheck = builder.setMessage("종을 입력하세요.").setNegativeButton("확인", null).create();
+                        nullcheck.show();
+                    } else if (PetAge.equals("")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(AddMypetInfoActivity.this);
+                        nullcheck = builder.setMessage("나이를 입력하세요.").setNegativeButton("확인", null).create();
+                        nullcheck.show();
+                    } else if (PetBday.equals("")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(AddMypetInfoActivity.this);
+                        nullcheck = builder.setMessage("생일을 입력하세요.").setNegativeButton("확인", null).create();
+                        nullcheck.show();
+                    } else {
+                        if (imgpath.equals("")) {
+                            modify(PetName, PetSex, PetSpecies, PetAge, PetBday, PetId, "false");
+                        } else {
+                            modify(PetName, PetSex, PetSpecies, PetAge, PetBday, PetId, "true");
+                        }
+                    }
                 }
                 else {
                     String PetName = editTextName.getText().toString();
@@ -184,7 +211,29 @@ public class AddMypetInfoActivity extends AppCompatActivity {
                     String PetAge = editTextAge.getText().toString();
                     String PetBday = editTextBday.getText().toString();
 
-                    upload(PetName, PetSex, PetSpecies, PetAge, PetBday, PetOwner);
+                    if (PetName.equals("")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(AddMypetInfoActivity.this);
+                        nullcheck = builder.setMessage("이름을 입력하세요.").setNegativeButton("확인", null).create();
+                        nullcheck.show();
+                    } else if (PetSex.equals("")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(AddMypetInfoActivity.this);
+                        nullcheck = builder.setMessage("성별을 입력하세요.").setNegativeButton("확인", null).create();
+                        nullcheck.show();
+                    } else if (PetSpecies.equals("")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(AddMypetInfoActivity.this);
+                        nullcheck = builder.setMessage("종을 입력하세요.").setNegativeButton("확인", null).create();
+                        nullcheck.show();
+                    } else if (PetAge.equals("")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(AddMypetInfoActivity.this);
+                        nullcheck = builder.setMessage("나이를 입력하세요.").setNegativeButton("확인", null).create();
+                        nullcheck.show();
+                    } else if (PetBday.equals("")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(AddMypetInfoActivity.this);
+                        nullcheck = builder.setMessage("생일을 입력하세요.").setNegativeButton("확인", null).create();
+                        nullcheck.show();
+                    } else {
+                        upload(PetName, PetSex, PetSpecies, PetAge, PetBday, PetOwner);
+                    }
                 }
             }
         });
@@ -243,7 +292,7 @@ public class AddMypetInfoActivity extends AppCompatActivity {
         SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, PHPURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(AddMypetInfoActivity.this, "성공" + response, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddMypetInfoActivity.this, "추가성공", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", response);
                 Intent intent = new Intent(AddMypetInfoActivity.this, MypetMainActivity.class);
                 startActivity(intent);
@@ -263,18 +312,19 @@ public class AddMypetInfoActivity extends AppCompatActivity {
         smpr.addStringParam("petAge", petage);
         smpr.addStringParam("petBday", petbday);
         smpr.addStringParam("petOwner", userid);
-        smpr.addFile("petFace", imgpath);
-
+        if (!imgpath.equals("")) {
+            smpr.addFile("petFace", imgpath);
+        }
         //요청객체를 서버로 보낼 우체통 같은 객체 생성
         RequestQueue requestQueue= Volley.newRequestQueue(AddMypetInfoActivity.this);
         requestQueue.add(smpr);
     }
 
-    public void modify(String petname, String petsex, String petspecie, String petage, String petbday, String petid) {
+    public void modify(String petname, String petsex, String petspecie, String petage, String petbday, String petid, String picchanged) {
         SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, mPHPURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(AddMypetInfoActivity.this, "성공" + response, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddMypetInfoActivity.this, "수정성공", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", response);
                 Intent intent = new Intent(AddMypetInfoActivity.this, MypetMainActivity.class);
                 startActivity(intent);
@@ -294,87 +344,12 @@ public class AddMypetInfoActivity extends AppCompatActivity {
         smpr.addStringParam("petAge", petage);
         smpr.addStringParam("petBday", petbday);
         smpr.addStringParam("petid", petid);
+        smpr.addStringParam("picchanged", picchanged);
         smpr.addFile("petFace", imgpath);
 
         //요청객체를 서버로 보낼 우체통 같은 객체 생성
         RequestQueue requestQueue= Volley.newRequestQueue(AddMypetInfoActivity.this);
         requestQueue.add(smpr);
     }
-
-    /*class ModifyData extends AsyncTask<String, Void, String> {
-        ProgressDialog progressDialog;
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            progressDialog = ProgressDialog.show(AddMypetInfoActivity.this,
-                    "Please Wait", null, true, true);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            progressDialog.dismiss();
-            Log.d(TAG, "POST response  - " + result);
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            String name = (String)params[1];
-            String sex = (String)params[2];
-            String specie = (String)params[3];
-            String age = (String)params[4];
-            String bday = (String)params[5];
-            String petid = (String)params[6];
-
-            String serverURL = (String)params[0];
-            String postParameters = "name=" + name + "&sex=" + sex + "&specie=" + specie + "&age=" + age + "&bday=" + bday + "&petid=" + petid;
-
-            try {
-                URL url = new URL(serverURL);
-
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setReadTimeout(5000);
-                httpURLConnection.setConnectTimeout(5000);
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.connect();
-
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                outputStream.write(postParameters.getBytes("UTF-8"));
-                outputStream.flush();
-                outputStream.close();
-
-                int responseStatusCode = httpURLConnection.getResponseCode();
-                Log.d(TAG, "POST response code - " + responseStatusCode);
-
-                InputStream inputStream;
-                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = httpURLConnection.getInputStream();
-                }
-                else{
-                    inputStream = httpURLConnection.getErrorStream();
-                }
-
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                StringBuilder sb = new StringBuilder();
-                String line = null;
-
-                while((line = bufferedReader.readLine()) != null){
-                    sb.append(line);
-                }
-
-                bufferedReader.close();
-
-                return sb.toString();
-
-            } catch (Exception e) {
-                Log.d(TAG, "InsertData: Error ", e);
-                return new String("Error: " + e.getMessage());
-            }
-        }
-    }*/
 }
 

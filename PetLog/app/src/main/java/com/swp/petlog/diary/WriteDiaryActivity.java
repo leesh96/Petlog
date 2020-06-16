@@ -43,6 +43,7 @@ import com.bumptech.glide.Glide;
 import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
+import com.swp.petlog.app.RegisterActivity;
 
 public class WriteDiaryActivity extends AppCompatActivity {
     private static String PHPURL = "http://128.199.106.86/writeDiary.php";
@@ -52,12 +53,12 @@ public class WriteDiaryActivity extends AppCompatActivity {
     private ImageView imageViewMood, imageViewPic;
     private ImageButton imageButtonback, imageButtonhome, imageButtonUpload;
     private EditText editTextTitle, editTextContent;
-    private TextView textViewDate;
-    private AlertDialog dialog;
+    private TextView textViewDate, textViewStatus;
+    private AlertDialog dialog, nullcheck;
     private String[] mood = {"기쁨", "슬픔", "화남", "아픔", "무표정"};
-    public int inputmood;
+    public int inputmood = 5;
 
-    private String imgpath;
+    private String imgpath = "";
 
     Calendar myCalendar = Calendar.getInstance();
 
@@ -92,6 +93,7 @@ public class WriteDiaryActivity extends AppCompatActivity {
         imageButtonUpload = (ImageButton) findViewById(R.id.btn_dairy_upload);
         imageButtonback = (ImageButton) findViewById(R.id.btn_back);
         imageButtonhome = (ImageButton) findViewById(R.id.btn_home);
+        textViewStatus = (TextView) findViewById(R.id.status_title);
 
         final int getId = getIntent().getIntExtra("m_diaryid", 1);
         String getTitle = getIntent().getStringExtra("m_diarytitle");
@@ -106,6 +108,7 @@ public class WriteDiaryActivity extends AppCompatActivity {
         textViewDate.setText(simpleDateFormat.format(currentTime));
 
         if (isModify) {
+            textViewStatus.setText("일기수정");
             Glide.with(WriteDiaryActivity.this).load(getImgurl).into(imageViewPic);
             textViewDate.setText(getDate);
             textViewDate.setEnabled(false);
@@ -157,6 +160,7 @@ public class WriteDiaryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(WriteDiaryActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -221,7 +225,21 @@ public class WriteDiaryActivity extends AppCompatActivity {
                     String mood = Integer.toString(inputmood);
                     String diaryid = Integer.toString(getId);
 
-                    modify(title, contents, mood, diaryid);
+                    if (title.equals("")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(WriteDiaryActivity.this);
+                        nullcheck = builder.setMessage("제목을 입력하세요.").setNegativeButton("확인", null).create();
+                        nullcheck.show();
+                    } else if (contents.equals("")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(WriteDiaryActivity.this);
+                        nullcheck = builder.setMessage("내용을 입력하세요.").setNegativeButton("확인", null).create();
+                        nullcheck.show();
+                    } else {
+                        if (imgpath.equals("")) {
+                            modify(title, contents, mood, diaryid, "false");
+                        } else {
+                            modify(title, contents, mood, diaryid, "true");
+                        }
+                    }
                 }
                 else {
                     String title = editTextTitle.getText().toString();
@@ -229,8 +247,21 @@ public class WriteDiaryActivity extends AppCompatActivity {
                     String userid = PreferenceManager.getString(WriteDiaryActivity.this, "userID");
                     String writedate = textViewDate.getText().toString();
                     String mood = Integer.toString(inputmood);
-
-                    upload(title, contents, userid, writedate, mood);
+                    if (title.equals("")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(WriteDiaryActivity.this);
+                        nullcheck = builder.setMessage("제목을 입력하세요.").setNegativeButton("확인", null).create();
+                        nullcheck.show();
+                    } else if (contents.equals("")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(WriteDiaryActivity.this);
+                        nullcheck = builder.setMessage("내용을 입력하세요.").setNegativeButton("확인", null).create();
+                        nullcheck.show();
+                    } else if (mood.equals("5")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(WriteDiaryActivity.this);
+                        nullcheck = builder.setMessage("감정스티커를 선택하세요.").setNegativeButton("확인", null).create();
+                        nullcheck.show();
+                    } else {
+                        upload(title, contents, userid, writedate, mood);
+                    }
                 }
             }
         });
@@ -290,15 +321,16 @@ public class WriteDiaryActivity extends AppCompatActivity {
         SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, PHPURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(WriteDiaryActivity.this, "성공" + response, Toast.LENGTH_SHORT).show();
+                Toast.makeText(WriteDiaryActivity.this, "작성성공", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", response);
                 Intent intent = new Intent(WriteDiaryActivity.this, DiaryListActivity.class);
                 startActivity(intent);
+                finish();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(WriteDiaryActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                Toast.makeText(WriteDiaryActivity.this, "작성실패", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", error.toString());
             }
         });
@@ -308,21 +340,24 @@ public class WriteDiaryActivity extends AppCompatActivity {
         smpr.addStringParam("writedate", writedate);
         smpr.addStringParam("mood", mood);
         smpr.addStringParam("userid", userid);
-        smpr.addFile("image", imgpath);
+        if (!imgpath.equals("")) {
+            smpr.addFile("image", imgpath);
+        }
 
         //요청객체를 서버로 보낼 우체통 같은 객체 생성
         RequestQueue requestQueue= Volley.newRequestQueue(WriteDiaryActivity.this);
         requestQueue.add(smpr);
     }
 
-    public void modify(String title, String contents, String mood, String diaryid) {
+    public void modify(String title, String contents, String mood, String diaryid, String picchanged) {
         SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, mPHPURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(WriteDiaryActivity.this, "성공" + response, Toast.LENGTH_SHORT).show();
+                Toast.makeText(WriteDiaryActivity.this, "수정성공", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", response);
                 Intent intent = new Intent(WriteDiaryActivity.this, DiaryListActivity.class);
                 startActivity(intent);
+                finish();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -336,6 +371,7 @@ public class WriteDiaryActivity extends AppCompatActivity {
         smpr.addStringParam("contents", contents);
         smpr.addStringParam("mood", mood);
         smpr.addStringParam("diaryid", diaryid);
+        smpr.addStringParam("picchanged", picchanged);
         smpr.addFile("image", imgpath);
 
         //요청객체를 서버로 보낼 우체통 같은 객체 생성

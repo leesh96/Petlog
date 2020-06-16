@@ -9,16 +9,16 @@
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         android:background="@color/theme4">
 
         <ImageButton
             android:id="@+id/btn_back"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/button_style_inmain"
             android:clickable="true"
             android:src="@drawable/ic_arrow_back" />
@@ -31,15 +31,15 @@
             android:text="내 게시물"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="32dp" />
+            android:textSize="30dp" />
 
         <ImageButton
             android:id="@+id/btn_search"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/button_style_inmain"
             android:clickable="true"
             android:src="@drawable/ic_search" />
@@ -47,18 +47,11 @@
 
     </RelativeLayout>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myfeed_rcview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/swipe_myfeed"
         android:layout_below="@+id/relativeLayout"
-        android:layout_marginTop="20dp" >
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/myfeed_rcview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        android:layout_marginTop="10dp" />
 
 </RelativeLayout>

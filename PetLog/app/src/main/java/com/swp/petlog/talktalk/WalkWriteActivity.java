@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.content.CursorLoader;
 
@@ -48,8 +49,12 @@ public class WalkWriteActivity extends AppCompatActivity {
     private EditText mEditTextContent;
     //20.05.11 추가
     private ImageView imageViewWalkimage;
-    private String imgpath;
+    private String imgpath = "";
     private String putimg;
+
+    private int checklocate = 0;
+
+    private AlertDialog nullcheck;
 
     private Uri imguri = null;
 
@@ -67,7 +72,7 @@ public class WalkWriteActivity extends AppCompatActivity {
         Intent writeintent = getIntent(); //데이터를 받기위해 선언
         String title = writeintent.getStringExtra("title");
         String content = writeintent.getStringExtra("content");
-        String image = writeintent.getStringExtra("image");
+        final String image = writeintent.getStringExtra("image");
 
         String titleview = title; //제목
         String contentview=content; //내용
@@ -117,7 +122,7 @@ public class WalkWriteActivity extends AppCompatActivity {
                 intent.putExtra("content",content);
 
                 startActivity(intent);
-
+                checklocate = 1;
             }
         });
 
@@ -150,8 +155,6 @@ public class WalkWriteActivity extends AppCompatActivity {
 
         Button buttonInsert = (Button)findViewById(R.id.board_insert);
         buttonInsert.setOnClickListener(new View.OnClickListener() {
-
-
             @Override
             public void onClick(View v) {
                 String title = mEditTextTitle.getText().toString();
@@ -161,8 +164,25 @@ public class WalkWriteActivity extends AppCompatActivity {
                 /*InsertData task = new InsertData();
                 task.execute("http://" + IP_ADDRESS + "/walkInsert.php", title,content,nickname,position,posx1,posy1);*/
 
-                upload(title, content, nickname, position, posx1, posy1);
-
+                if (imgpath.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(WalkWriteActivity.this);
+                    nullcheck = builder.setMessage("사진은 필수항목입니다.").setNegativeButton("확인", null).create();
+                    nullcheck.show();
+                } else if (title.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(WalkWriteActivity.this);
+                    nullcheck = builder.setMessage("제목을 입력하세요.").setNegativeButton("확인", null).create();
+                    nullcheck.show();
+                } else if (content.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(WalkWriteActivity.this);
+                    nullcheck = builder.setMessage("내용을 입력하세요.").setNegativeButton("확인", null).create();
+                    nullcheck.show();
+                } else if (posx == 0.0 || posy == 0.0) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(WalkWriteActivity.this);
+                    nullcheck = builder.setMessage("위치선택은 필수입니다.").setNegativeButton("확인", null).create();
+                    nullcheck.show();
+                } else {
+                    upload(title, content, nickname, position, posx1, posy1);
+                }
             }
         });
 
@@ -223,7 +243,7 @@ public class WalkWriteActivity extends AppCompatActivity {
         SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, "http://" + IP_ADDRESS + "/walkInsert.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(WalkWriteActivity.this, "성공" + response, Toast.LENGTH_SHORT).show();
+                Toast.makeText(WalkWriteActivity.this, "작성완료", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", response);
                 Intent intent = new Intent(WalkWriteActivity.this, WalkActivity.class);
                 startActivity(intent);

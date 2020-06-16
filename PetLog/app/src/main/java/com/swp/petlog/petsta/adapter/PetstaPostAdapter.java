@@ -88,7 +88,7 @@ public class PetstaPostAdapter extends RecyclerView.Adapter<PetstaPostAdapter.Cu
     @NonNull
     @Override
     public PetstaPostAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.petsta_post, null);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.petsta_post, viewGroup, false);
         PetstaPostAdapter.CustomViewHolder viewHolder = new PetstaPostAdapter.CustomViewHolder(view);
 
         return viewHolder;
@@ -274,14 +274,14 @@ public class PetstaPostAdapter extends RecyclerView.Adapter<PetstaPostAdapter.Cu
         protected void onPreExecute() {
             super.onPreExecute();
 
-            progressDialog = ProgressDialog.show(context,
-                    "Please Wait", null, true, true);
+            /*progressDialog = ProgressDialog.show(context,
+                    "Please Wait", null, true, true);*/
         }
 
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            progressDialog.dismiss();
+            //progressDialog.dismiss();
             Log.d("like", "POST response  - " + result);
         }
 
@@ -348,14 +348,14 @@ public class PetstaPostAdapter extends RecyclerView.Adapter<PetstaPostAdapter.Cu
         protected void onPreExecute() {
             super.onPreExecute();
 
-            progressDialog = ProgressDialog.show(context,
-                    "Please Wait", null, true, true);
+            /*progressDialog = ProgressDialog.show(context,
+                    "Please Wait", null, true, true);*/
         }
 
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            progressDialog.dismiss();
+            //progressDialog.dismiss();
             Log.d("like", "POST response  - " + result);
         }
 

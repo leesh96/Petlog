@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.content.CursorLoader;
 
@@ -35,7 +36,8 @@ public class ShareEditActivity extends AppCompatActivity {
     private static String TAG = "test02";
     private EditText mId,mTitle, mContent;
     private ImageView mImg;
-    private String imgpath;
+    private String imgpath = "";
+    private AlertDialog nullcheck;
     //private Button mInsertButton;
 
     private ImageButton btn_back, btn_home;
@@ -107,7 +109,21 @@ public class ShareEditActivity extends AppCompatActivity {
                     String ShareTitle=mTitle.getText().toString();
                     String ShareContent=mContent.getText().toString();
 
-                    modify(ShareTitle, ShareContent, ShareId);
+                    if (ShareTitle.equals("")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ShareEditActivity.this);
+                        nullcheck = builder.setMessage("제목을 입력하세요.").setNegativeButton("확인", null).create();
+                        nullcheck.show();
+                    } else if (ShareContent.equals("")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ShareEditActivity.this);
+                        nullcheck = builder.setMessage("내용을 입력하세요.").setNegativeButton("확인", null).create();
+                        nullcheck.show();
+                    } else {
+                        if (imgpath.equals("")) {
+                            modify(ShareTitle, ShareContent, ShareId, "false");
+                        } else {
+                            modify(ShareTitle, ShareContent, ShareId, "true");
+                        }
+                    }
                     /*EditData task = new EditData();
                     task.execute("http://128.199.106.86/modifyShare.php",ShareId,ShareTitle,ShareContent);*/
 
@@ -168,14 +184,15 @@ public class ShareEditActivity extends AppCompatActivity {
         return result;
     }
 
-    public void modify(String title, String contents, String id) {
+    public void modify(String title, String contents, String id, String picchanged) {
         SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, "http://128.199.106.86/modifyShare.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(ShareEditActivity.this, "성공" + response, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ShareEditActivity.this, "수정성공", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", response);
                 Intent intent = new Intent(ShareEditActivity.this, ShareActivity.class);
                 startActivity(intent);
+                finish();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -188,6 +205,7 @@ public class ShareEditActivity extends AppCompatActivity {
         smpr.addStringParam("title", title);
         smpr.addStringParam("contents", contents);
         smpr.addStringParam("id", id);
+        smpr.addStringParam("picchanged", picchanged);
         smpr.addFile("image", imgpath);
 
         //요청객체를 서버로 보낼 우체통 같은 객체 생성

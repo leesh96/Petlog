@@ -17,7 +17,7 @@
             android:layout_width="360dp"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:background="@drawable/border_style"
             android:fontFamily="@font/nanumbarungothic_n"
@@ -30,7 +30,7 @@
             android:layout_width="360dp"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/border_style"
             android:fontFamily="@font/nanumbarungothic_n"
             android:gravity="center_vertical"
@@ -43,7 +43,7 @@
             android:layout_width="360dp"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:fontFamily="@font/nanumbarungothic_n"
             android:background="@drawable/border_style"
@@ -57,7 +57,7 @@
             android:layout_height="40dp"
             android:gravity="center_vertical"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/border_style"
             android:fontFamily="@font/nanumbarungothic_n"
             android:paddingLeft="20dp"
@@ -69,7 +69,7 @@
             android:layout_width="360dp"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:focusable="false"
             android:fontFamily="@font/nanumbarungothic_n"
             android:paddingLeft="20dp"
@@ -81,60 +81,59 @@
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginTop="40dp"
+            android:layout_height="170dp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/button_style_inmain">
 
-            <LinearLayout
-                android:orientation="horizontal"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="30dp"
                 android:background="@color/theme4">
 
                 <TextView
-                    android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
                     android:fontFamily="@font/nanumbarungothic_b"
                     android:text="메모"
-                    android:gravity="center_vertical"
                     android:textColor="@color/text"
-                    android:textSize="18dp" />
+                    android:textSize="14dp" />
 
                 <ImageButton
                     android:id="@+id/btn_memoapply"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="330dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@+id/btn_memodel"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/ic_check_24dp"/>
+                    android:src="@drawable/ic_check_16dp" />
 
                 <ImageButton
                     android:id="@+id/btn_memodel"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/ic_delete" />
+                    android:src="@drawable/ic_delete_16dp"/>
 
-            </LinearLayout>
+            </RelativeLayout>
 
             <EditText
                 android:id="@+id/mypet_memo"
-                android:layout_width="440dp"
-                android:layout_height="240dp"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
                 android:background="@android:color/white"
                 android:inputType="textMultiLine"
                 android:fontFamily="@font/nanumbarungothic_n"
                 android:textColor="@color/text"
-                android:textSize="18dp"
+                android:textSize="14dp"
                 android:hint="메모를 작성하세요"
                 android:gravity="top"
                 android:padding="10dp"/>

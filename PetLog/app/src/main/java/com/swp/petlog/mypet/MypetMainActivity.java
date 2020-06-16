@@ -37,6 +37,8 @@ import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
 
+import me.relex.circleindicator.CircleIndicator;
+
 public class MypetMainActivity extends AppCompatActivity {
     private AlertDialog dialog;
     private ImageButton imgbtn_home, imgbtn_mypetmenu;
@@ -49,6 +51,8 @@ public class MypetMainActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private MypetPagerAdapter pagerAdapter;
+
+    private CircleIndicator indicator;
 
     private boolean isModify = false;
 
@@ -69,10 +73,12 @@ public class MypetMainActivity extends AppCompatActivity {
             }
         });
 
+        indicator = (CircleIndicator) findViewById(R.id.indicator);
         viewPager = (ViewPager) findViewById(R.id.vp_mypet);
         arrayList = new ArrayList<>();
         pagerAdapter = new MypetPagerAdapter(this, arrayList);
         viewPager.setAdapter(pagerAdapter);
+
         arrayList.clear();
         pagerAdapter.notifyDataSetChanged();
 
@@ -135,17 +141,6 @@ public class MypetMainActivity extends AppCompatActivity {
 
     }
 
-    public static Bitmap StringToBitMap(String image){
-        try{
-            byte [] encodeByte= Base64.decode(image,Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        }catch(Exception e){
-            e.getMessage();
-            return null;
-        }
-    }
-
     private class GetData extends AsyncTask<String, Void, String> {
 
         ProgressDialog progressDialog;
@@ -156,7 +151,7 @@ public class MypetMainActivity extends AppCompatActivity {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(MypetMainActivity.this,
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
 
@@ -288,6 +283,7 @@ public class MypetMainActivity extends AppCompatActivity {
                 arrayList.add(mypetData);
 
                 pagerAdapter.notifyDataSetChanged();
+                indicator.setViewPager(viewPager);
             }
 
         } catch (JSONException e) {
@@ -302,7 +298,7 @@ public class MypetMainActivity extends AppCompatActivity {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(MypetMainActivity.this,
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
         @Override

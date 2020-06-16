@@ -205,7 +205,7 @@ public class ShareDetailActivity extends AppCompatActivity{
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(ShareDetailActivity.this,
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
         @Override
@@ -277,7 +277,7 @@ public class ShareDetailActivity extends AppCompatActivity{
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = ProgressDialog.show(ShareDetailActivity.this,
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
         @Override

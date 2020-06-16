@@ -37,6 +37,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
+import com.swp.petlog.diary.WriteDiaryActivity;
 
 public class PostWrite_fragment extends Fragment {
     private static String PHPURL = "http://128.199.106.86/addPetstaPost.php";
@@ -46,7 +47,8 @@ public class PostWrite_fragment extends Fragment {
     private Button addphoto_btn_upload, btn_tag;
     private ImageView addphoto_image;
     private EditText editContent;
-    private String imgpath;
+    private String imgpath = "";
+    private AlertDialog nullcheck;
     private AlertDialog isdialog;
     private AlertDialog speciedialog;
     private int specie_id;
@@ -206,7 +208,13 @@ public class PostWrite_fragment extends Fragment {
                 String contents = editContent.getText().toString();
                 String tag = Integer.toString(specie_id);
 
-                upload(nickname, contents, tag);
+                if (imgpath.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    nullcheck = builder.setMessage("사진을 선택해주세요.").setNegativeButton("확인", null).create();
+                    nullcheck.show();
+                } else {
+                    upload(nickname, contents, tag);
+                }
             }
         });
 
@@ -267,8 +275,11 @@ public class PostWrite_fragment extends Fragment {
         SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, PHPURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getActivity(), "성공" + response, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "공유성공", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", response);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().remove(PostWrite_fragment.this).commit();
+                fragmentManager.popBackStack();
                 BottomNavigationView bottomNavigationView = ((PetstaMain) getActivity()).bottomNavigationView;
                 bottomNavigationView.setSelectedItemId(R.id.action_mylist);
             }

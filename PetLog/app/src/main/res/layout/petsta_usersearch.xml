@@ -6,16 +6,16 @@
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         android:background="@color/theme4">
 
         <ImageButton
             android:id="@+id/btn_back"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:clickable="true"
             android:background="@drawable/button_style_inmain"
             android:src="@drawable/ic_arrow_back"/>
@@ -28,7 +28,7 @@
             android:text="닉네임검색"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="32dp" />
+            android:textSize="30dp" />
 
     </RelativeLayout>
 
@@ -39,15 +39,15 @@
         android:layout_below="@+id/relativeLayout"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_toLeftOf="@+id/btn_search"
-        android:hint="닉네임을 입력하세요."
-        android:textColor="@color/text"
+        android:layout_toStartOf="@+id/btn_gosearch"
+        android:layout_toLeftOf="@+id/btn_gosearch"
         android:fontFamily="@font/nanumbarungothic_n"
+        android:hint="닉네임을 입력하세요."
         android:paddingLeft="10dp"
-        android:textSize="18dp"/>
+        android:textColor="@color/text"
+        android:textSize="16dp" />
 
     <Button
         android:id="@+id/btn_gosearch"
@@ -61,7 +61,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="검색"
-        android:textSize="18dp"
+        android:textSize="16dp"
         android:textColor="@color/text"
         android:fontFamily="@font/nanumbarungothic_b"/>
 
@@ -70,6 +70,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/et_nickname"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="10dp"/>
 
 </RelativeLayout>

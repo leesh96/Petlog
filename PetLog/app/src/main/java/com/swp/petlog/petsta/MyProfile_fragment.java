@@ -236,7 +236,7 @@ public class MyProfile_fragment extends Fragment {
         SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, fPHPURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getActivity(), "성공" + response, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "사진변경성공" + response, Toast.LENGTH_SHORT).show();
                 Log.d("TAG", response);
                 try {
                     JSONArray jsonArray = new JSONArray(response);
@@ -275,7 +275,7 @@ public class MyProfile_fragment extends Fragment {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(getActivity(),
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
 
@@ -397,7 +397,7 @@ public class MyProfile_fragment extends Fragment {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(getActivity(),
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
         @Override
@@ -469,7 +469,7 @@ public class MyProfile_fragment extends Fragment {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(getActivity(),
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
         @Override
@@ -540,7 +540,7 @@ public class MyProfile_fragment extends Fragment {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(getActivity(),
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
         @Override

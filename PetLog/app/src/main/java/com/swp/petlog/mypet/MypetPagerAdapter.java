@@ -116,7 +116,7 @@ public class MypetPagerAdapter extends PagerAdapter {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(mContext,
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
         @Override
@@ -189,7 +189,7 @@ public class MypetPagerAdapter extends PagerAdapter {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(mContext,
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
         @Override

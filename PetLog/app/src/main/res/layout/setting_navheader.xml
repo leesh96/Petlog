@@ -15,25 +15,25 @@
 
     <ImageView
         android:id="@+id/nav_profile"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:src="@drawable/ic_profile"/>
 
     <TextView
         android:id="@+id/tv_nickname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="5dp"
         android:text="닉네임"
         android:fontFamily="@font/nanumbarungothic_b"
         android:textColor="@color/text"
-        android:textSize="26dp"/>
+        android:textSize="24dp"/>
 
     <TextView
         android:id="@+id/tv_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="5dp"
         android:text="이메일 아이디"
         android:fontFamily="@font/nanumbarungothic_n"
         android:textColor="@color/text"

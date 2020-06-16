@@ -5,21 +5,20 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_margin="0dp"
-    android:padding="0dp">
+    android:background="@color/bg">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         android:background="@color/theme4">
 
         <ImageButton
             android:id="@+id/btn_back"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:clickable="true"
             android:layout_centerVertical="true"
             android:background="@drawable/button_style_inmain"
@@ -33,7 +32,7 @@
             android:text="구독자 관리"
             android:textAlignment="center"
             android:textColor="@color/text"
-            android:textSize="32dp" />
+            android:textSize="30dp" />
 
     </RelativeLayout>
 
@@ -41,6 +40,6 @@
         android:id="@+id/myfollow_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="10dp"/>
 
 </LinearLayout>

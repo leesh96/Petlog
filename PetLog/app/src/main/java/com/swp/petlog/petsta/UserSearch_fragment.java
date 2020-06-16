@@ -101,10 +101,12 @@ public class UserSearch_fragment extends Fragment {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(UserSearch_fragment.this).commit();
                 fragmentManager.popBackStack();
+                Log.d("count", Integer.toString(fragmentManager.getBackStackEntryCount()));
+                if (fragmentManager.getBackStackEntryCount() == 0) {
+                    getActivity().finish();
+                }
             }
         });
-
-
 
         return v;
     }
@@ -119,7 +121,7 @@ public class UserSearch_fragment extends Fragment {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(getActivity(),
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
         protected void onPostExecute(String result) {

@@ -56,7 +56,7 @@ public class ControlPost_fragment extends Fragment {
     private Button btn_edit, btn_delete, btn_tag;
     private ImageView addphoto_image;
     private EditText editContent;
-    private String imgpath;
+    private String imgpath = "";
     private AlertDialog isdialog;
     private AlertDialog speciedialog;
     private int specie_id;
@@ -290,7 +290,12 @@ public class ControlPost_fragment extends Fragment {
                 String tag = Integer.toString(specie_id);
                 String postid = Integer.toString(finalPost_id);
 
-                modify(tag, contents, postid);
+                if (imgpath.equals("")) {
+                    modify(tag, contents, postid, "false");
+                } else {
+                    modify(tag, contents, postid, "true");
+                }
+
             }
         });
 
@@ -362,11 +367,11 @@ public class ControlPost_fragment extends Fragment {
         return result;
     }
 
-    public void modify(String tag, String contents, String postid) {
+    public void modify(String tag, String contents, String postid, String picchanged) {
         SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, mPHPURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getActivity(), "성공" + response, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "수정성공" + response, Toast.LENGTH_SHORT).show();
                 Log.d("TAG", response);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().remove(ControlPost_fragment.this).commit();
@@ -383,6 +388,7 @@ public class ControlPost_fragment extends Fragment {
         smpr.addStringParam("contents", contents);
         smpr.addStringParam("tag", tag);
         smpr.addStringParam("id", postid);
+        smpr.addStringParam("picchanged", picchanged);
         smpr.addFile("image", imgpath);
 
         //요청객체를 서버로 보낼 우체통 같은 객체 생성
@@ -397,7 +403,7 @@ public class ControlPost_fragment extends Fragment {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(getActivity(),
-                    "Please Wait", null, true, true);
+                    "Please Wait...", null, true, true);
         }
 
         @Override

@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -34,6 +35,7 @@ import com.android.volley.toolbox.Volley;
 import com.swp.petlog.MainActivity;
 import com.swp.petlog.PreferenceManager;
 import com.swp.petlog.R;
+import com.swp.petlog.diary.WriteDiaryActivity;
 
 import java.util.Calendar;
 
@@ -45,10 +47,12 @@ public class ShareWriteActivity extends AppCompatActivity {
     private EditText mEditTextTitle;
     private EditText mEditTextContent;
     private ImageView mImageView;
+    private AlertDialog nullcheck;
+
     // private TextView mTextViewResult;
     Calendar calendar = Calendar.getInstance();
 
-    private String imgpath;
+    private String imgpath = "";
 
     int year = calendar.get(Calendar.YEAR);
     int month=calendar.get(Calendar.MONTH);
@@ -120,7 +124,21 @@ public class ShareWriteActivity extends AppCompatActivity {
                 task.execute("http://" + IP_ADDRESS + "/shareinsert.php",title,content,nickname); //
                 //task.execute("http://" + IP_ADDRESS + "/shareinsert.php",title,content); // 디비에 집어너음*/
 
-                upload(title, content, nickname);
+                if (imgpath.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ShareWriteActivity.this);
+                    nullcheck = builder.setMessage("사진은 필수항목입니다.").setNegativeButton("확인", null).create();
+                    nullcheck.show();
+                } else if (title.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ShareWriteActivity.this);
+                    nullcheck = builder.setMessage("제목을 입력하세요.").setNegativeButton("확인", null).create();
+                    nullcheck.show();
+                } else if (content.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ShareWriteActivity.this);
+                    nullcheck = builder.setMessage("내용을 입력하세요.").setNegativeButton("확인", null).create();
+                    nullcheck.show();
+                } else {
+                    upload(title, content, nickname);
+                }
 
                 /*Intent intent=new Intent(getApplicationContext(), ShareActivity.class);
                 startActivity(intent);
@@ -232,10 +250,11 @@ public class ShareWriteActivity extends AppCompatActivity {
         SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, "http://" + IP_ADDRESS + "/shareinsert.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(ShareWriteActivity.this, "성공" + response, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ShareWriteActivity.this, "작성완료", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", response);
                 Intent intent = new Intent(ShareWriteActivity.this, ShareActivity.class);
                 startActivity(intent);
+                finish();
             }
         }, new Response.ErrorListener() {
             @Override

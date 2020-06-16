@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,121 +9,99 @@
 
     <ImageButton
         android:id="@+id/btn_back"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/button_style"
         android:src="@drawable/ic_arrow_back"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.035"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.015" />
+        android:clickable="true" />
 
     <TextView
         android:id="@+id/tv6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_back"
+        android:layout_alignStart="@+id/btn_back"
         android:fontFamily="@font/nanumbarungothic_b"
         android:text="@string/makeaccount"
         android:textAlignment="center"
         android:textColor="@color/text"
-        android:textSize="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_back"
-        app:layout_constraintVertical_bias="0.05" />
+        android:textSize="30dp"
+        android:layout_marginTop="20dp"/>
 
     <TextView
         android:id="@+id/tv7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tv6"
+        android:layout_alignStart="@+id/tv6"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/nanumbarungothic_n"
         android:text="@string/email"
         android:textAlignment="center"
         android:textColor="@color/text"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.14"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv6"
-        app:layout_constraintVertical_bias="0.03" />
-
+        android:textSize="18dp" />
 
     <Button
         android:id="@+id/btn_checkemail"
         android:layout_width="70dp"
-        android:layout_height="30dp"
+        android:layout_height="25dp"
+        android:layout_above="@+id/et_userID"
+        android:layout_alignEnd="@+id/et_userID"
         android:background="@drawable/button_style"
         android:fontFamily="@font/nanumbarungothic_n"
         android:text="중복확인"
-        android:textColor="@color/text"
         android:textAlignment="center"
-        android:textSize="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/et_userID"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.902"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv6"
-        app:layout_constraintVertical_bias="0.589" />
+        android:textColor="@color/text"
+        android:textSize="12dp" />
 
     <EditText
         android:id="@+id/et_userID"
-        android:layout_width="400dp"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
         android:background="@drawable/border_style"
         android:ems="10"
         android:fontFamily="@font/nanumbarungothic_n"
         android:hint="이메일주소를 입력하세요."
         android:inputType="textEmailAddress"
-        android:paddingLeft="20dp"
         android:textColor="@color/text"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv7"
-        app:layout_constraintVertical_bias="0.02" />
-
-
+        android:textSize="16dp"
+        android:layout_below="@+id/tv7"/>
 
     <TextView
         android:id="@+id/tv8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/et_userID"
+        android:layout_alignStart="@+id/tv7"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/nanumbarungothic_n"
         android:text="@string/password"
         android:textAlignment="center"
         android:textColor="@color/text"
-        android:textSize="20dp"
-        android:fontFamily="@font/nanumbarungothic_n"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.14"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_userID"
-        app:layout_constraintVertical_bias="0.03" />
+        android:textSize="18dp" />
 
     <EditText
         android:id="@+id/et_userPassword"
-        android:layout_width="400dp"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:background="@drawable/border_style"
         android:ems="10"
         android:fontFamily="@font/nanumbarungothic_n"
         android:hint="비밀번호를 입력하세요."
         android:inputType="textPassword"
-        android:paddingLeft="20dp"
+        android:padding="10dp"
         android:textColor="@color/text"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv8"
-        app:layout_constraintVertical_bias="0.02" />
+        android:textSize="16dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/tv8"/>
 
     <TextView
         android:id="@+id/tv9"
@@ -132,32 +110,28 @@
         android:text="@string/pwcheck"
         android:textAlignment="center"
         android:textColor="@color/text"
-        android:textSize="20dp"
+        android:textSize="18dp"
         android:fontFamily="@font/nanumbarungothic_n"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.14"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_userPassword"
-        app:layout_constraintVertical_bias="0.03" />
+        android:layout_below="@+id/et_userPassword"
+        android:layout_alignStart="@id/tv8"
+        android:layout_marginTop="10dp"/>
 
     <EditText
         android:id="@+id/et_pwCheck"
-        android:layout_width="400dp"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/border_style"
         android:ems="10"
         android:inputType="textPassword"
         android:fontFamily="@font/nanumbarungothic_n"
         android:hint="비밀번호를 한번 더 입력하세요."
-        android:paddingLeft="20dp"
+        android:padding="10dp"
         android:textColor="@color/text"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv9"
-        app:layout_constraintVertical_bias="0.02" />
+        android:textSize="16dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/tv9"/>
 
     <TextView
         android:id="@+id/tv10"
@@ -167,31 +141,27 @@
         android:textAlignment="center"
         android:textColor="@color/text"
         android:fontFamily="@font/nanumbarungothic_n"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.14"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_pwCheck"
-        app:layout_constraintVertical_bias="0.03" />
+        android:textSize="18dp"
+        android:layout_below="@id/et_pwCheck"
+        android:layout_alignStart="@id/tv8"
+        android:layout_marginTop="10dp"/>
 
     <EditText
         android:id="@+id/et_userName"
-        android:layout_width="400dp"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/border_style"
         android:ems="10"
         android:fontFamily="@font/nanumbarungothic_n"
         android:hint="이름을 입력하세요."
         android:inputType="textPersonName"
-        android:paddingLeft="20dp"
+        android:padding="10dp"
         android:textColor="@color/text"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv10"
-        app:layout_constraintVertical_bias="0.02" />
+        android:textSize="16dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/tv10"/>
 
     <TextView
         android:id="@+id/tv11"
@@ -200,50 +170,41 @@
         android:text="@string/nickname"
         android:textAlignment="center"
         android:textColor="@color/text"
-        android:textSize="20dp"
+        android:textSize="18dp"
         android:fontFamily="@font/nanumbarungothic_n"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.14"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_userName"
-        app:layout_constraintVertical_bias="0.03" />
-
+        android:layout_below="@id/et_userName"
+        android:layout_marginTop="10dp"
+        android:layout_alignStart="@id/tv8"/>
 
     <Button
         android:id="@+id/btn_checknick"
         android:layout_width="70dp"
-        android:layout_height="30dp"
+        android:layout_height="25dp"
+        android:layout_above="@+id/et_userNickname"
+        android:layout_alignEnd="@+id/et_userNickname"
         android:background="@drawable/button_style"
         android:fontFamily="@font/nanumbarungothic_n"
         android:text="중복확인"
         android:textAlignment="center"
         android:textColor="@color/text"
-        android:textSize="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/et_userNickname"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.902"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_userName"
-        app:layout_constraintVertical_bias="0.529" />
+        android:textSize="12dp" />
 
     <EditText
         android:id="@+id/et_userNickname"
-        android:layout_width="400dp"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/border_style"
         android:ems="10"
         android:fontFamily="@font/nanumbarungothic_n"
         android:hint="닉네임을 입력하세요."
         android:inputType="text"
-        android:paddingLeft="20dp"
+        android:padding="10dp"
         android:textColor="@color/text"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv11"
-        app:layout_constraintVertical_bias="0.02" />
+        android:textSize="16dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/tv11"/>
 
     <TextView
         android:id="@+id/tv12"
@@ -253,47 +214,41 @@
         android:text="@string/birthday"
         android:textAlignment="center"
         android:textColor="@color/text"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.14"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_userNickname"
-        app:layout_constraintVertical_bias="0.03" />
+        android:textSize="18dp"
+        android:layout_below="@id/et_userNickname"
+        android:layout_marginTop="10dp"
+        android:layout_alignStart="@id/tv8"/>
 
     <EditText
         android:id="@+id/et_userBdy"
-        android:layout_width="400dp"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/border_style"
         android:ems="20"
         android:fontFamily="@font/nanumbarungothic_n"
         android:hint="생년월일을 선택하세요."
-        android:paddingLeft="20dp"
+        android:padding="10dp"
         android:textColor="@color/text"
-        android:textSize="20dp"
+        android:textSize="16dp"
         android:clickable="true"
         android:focusable="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv12"
-        app:layout_constraintVertical_bias="0.02" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/tv12"/>
 
     <Button
-        android:layout_width="200dp"
-        android:layout_height="50dp"
         android:id="@+id/btn_submit"
-        android:text="@string/sudone"
-        android:textSize="24dp"
-        android:textColor="@color/text"
-        android:textAlignment="center"
-        android:fontFamily="@font/nanumbarungothic_b"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/et_userBdy"
+        android:layout_marginTop="20dp"
         android:background="@drawable/button_style"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_userBdy"
-        app:layout_constraintVertical_bias="0.20" />
+        android:fontFamily="@font/nanumbarungothic_b"
+        android:text="@string/sudone"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:textColor="@color/text"
+        android:textSize="20dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
