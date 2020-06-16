@@ -19,7 +19,8 @@
                     echo "MySQL 접속 에러 : ";
                     echo mysqli_connect_error();
                     exit();  
-                }  
+                }
+                mysqli_query($link, 'set names utf8');
             
                 $sql="select pet_face from mypet_info where pet_id = '$petid'";
                 $result=mysqli_query($link, $sql); 

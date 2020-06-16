@@ -4,62 +4,87 @@
 
     include('dbcon.php');
 
-    $id=$_POST['id'];
-    $title=$_POST['title'];
-    $content=$_POST['contents'];
-    $file= $_FILES['image'];
-
     $link=mysqli_connect("localhost","dongmin","dongmin1234", "petlog" );  
     if (!$link)  
     {  
-        echo "MySQL Á¢¼Ó ¿¡·¯ : ";
+        echo "MySQL ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : ";
         echo mysqli_connect_error();
         exit();  
     }
-    $sql="select share_image from share_post where id = '$id'";
-    $result=mysqli_query($link, $sql); 
-    if($result){
-        while($row=mysqli_fetch_array($result)) {
-            $data=$row[0];
-        }
-    }
-    unlink("./$data");
+    mysqli_query($link, 'set names utf8');
 
-    //ÀÌ¹ÌÁö ÆÄÀÏÀ» ¿µ±¸º¸°üÇÏ±â À§ÇØ
-    //ÀÌ¹ÌÁö ÆÄÀÏÀÇ ¼¼ºÎÁ¤º¸ ¾ò¾î¿À±â
-    $srcName= $file['name'];
-    $tmpName= $file['tmp_name']; //php ÆÄÀÏÀ» ¹ÞÀ¸¸é ÀÓ½ÃÀúÀå¼Ò¿¡ ³Ö´Â´Ù. ±×°÷ÀÌ tmp
+    $id=$_POST['id'];
+    $title=$_POST['title'];
+    $content=$_POST['contents'];
+    $picChanged=$_POST['picchanged'];
+    $file= $_FILES['image'];
+
+    if($picChanged == 'true') {
+        $sql="select share_image from share_post where id = '$id'";
+        $result=mysqli_query($link, $sql); 
+        if($result){
+            while($row=mysqli_fetch_array($result)) {
+                $data=$row[0];
+            }
+        }
+        unlink("./$data");
     
-    //ÀÓ½Ã ÀúÀå¼Ò ÀÌ¹ÌÁö¸¦ ¿øÇÏ´Â Æú´õ·Î ÀÌµ¿
-    //print_r($_FILES);exit();
-    $dstName= "shareimg/".date('Ymd_his').$srcName;
-    $result=move_uploaded_file($tmpName, $dstName);
+        //ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½
+        //ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        $srcName= $file['name'];
+        $tmpName= $file['tmp_name']; //php ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ó½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¿ï¿½ ï¿½Ö´Â´ï¿½. ï¿½×°ï¿½ï¿½ï¿½ tmp
         
-    if($result){
-        echo "upload success\n";
-    }else{
-        echo "upload fail\n";
+        //ï¿½Ó½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
+        //print_r($_FILES);exit();
+        $dstName= "shareimg/".date('Ymd_his').$srcName;
+        $result=move_uploaded_file($tmpName, $dstName);
+            
+        if($result){
+            echo "upload success\n";
+        }else{
+            echo "upload fail\n";
+        }
+    
+        try{
+            // SQLï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ MySQL ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½. 
+            $stmt = $con->prepare('UPDATE share_post SET title = (:title), content = (:content), share_image = (:imgurl) WHERE id = (:id)');
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':title', $title);
+            $stmt->bindParam(':content', $content);
+            $stmt->bindParam(':imgurl', $dstName);
+                    
+            if($stmt->execute())
+            {
+                $successMSG = "ï¿½Ô½Ã¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.";
+            }
+            else
+            {
+                $errMSG = "ï¿½Ô½Ã¹ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½";
+            }
+    
+            } catch(PDOException $e) {
+                die("Database error: " . $e->getMessage()); 
+            }
+    } else {
+        try{
+            // SQLï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ MySQL ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½. 
+            $stmt = $con->prepare('UPDATE share_post SET title = (:title), content = (:content) WHERE id = (:id)');
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':title', $title);
+            $stmt->bindParam(':content', $content);
+                    
+            if($stmt->execute())
+            {
+                $successMSG = "ï¿½Ô½Ã¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.";
+            }
+            else
+            {
+                $errMSG = "ï¿½Ô½Ã¹ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½";
+            }
+    
+            } catch(PDOException $e) {
+                die("Database error: " . $e->getMessage()); 
+            }
     }
-
-    try{
-        // SQL¹®À» ½ÇÇàÇÏ¿© µ¥ÀÌÅÍ¸¦ MySQL ¼­¹öÀÇ Å×ÀÌºí¿¡ ÀúÀåÇÕ´Ï´Ù. 
-        $stmt = $con->prepare('UPDATE share_post SET title = (:title), content = (:content), share_image = (:imgurl) WHERE id = (:id)');
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':title', $title);
-        $stmt->bindParam(':content', $content);
-        $stmt->bindParam(':imgurl', $dstName);
-                
-        if($stmt->execute())
-        {
-            $successMSG = "°Ô½Ã¹°À» ¼öÁ¤Çß½À´Ï´Ù.";
-        }
-        else
-        {
-            $errMSG = "°Ô½Ã¹° µî·Ï ¿¡·¯";
-        }
-
-        } catch(PDOException $e) {
-            die("Database error: " . $e->getMessage()); 
-        }
 
 ?>

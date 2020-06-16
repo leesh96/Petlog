@@ -20,6 +20,8 @@
                     echo mysqli_connect_error();
                     exit();  
                 }
+                mysqli_query($link, 'set names utf8');
+
                 $sql="select share_image from share_post where id = '$id'";
                 $result=mysqli_query($link, $sql); 
                 if($result){

@@ -4,11 +4,6 @@
 
     include('dbcon.php');
 
-    $contents=$_POST['contents'];
-    $tag=$_POST['tag'];
-    $postid=$_POST['id'];
-    $file= $_FILES['image'];
-
     $link=mysqli_connect("localhost","dongmin","dongmin1234", "petlog" );  
     if (!$link)  
     {  
@@ -16,37 +11,66 @@
         echo mysqli_connect_error();
         exit();  
     }  
+    mysqli_query($link, 'set names utf8');
 
-    $sql="select petsta_image from petsta_post where post_id = '$postid'";
-    $result=mysqli_query($link, $sql); 
-    if($result){
-        while($row=mysqli_fetch_array($result)) {
-            $data=$row[0];
+    $contents=$_POST['contents'];
+    $tag=$_POST['tag'];
+    $postid=$_POST['id'];
+    $picChanged=$_POST['picchanged'];
+    $file= $_FILES['image'];
+
+    if ($picChanged == 'true') {
+        $sql="select petsta_image from petsta_post where post_id = '$postid'";
+        $result=mysqli_query($link, $sql); 
+        if($result){
+            while($row=mysqli_fetch_array($result)) {
+                $data=$row[0];
+            }
         }
-    }
-    unlink("./$data");
- 
-    //이미지 파일을 영구보관하기 위해
-    //이미지 파일의 세부정보 얻어오기
-    $srcName= $file['name'];
-    $tmpName= $file['tmp_name']; //php 파일을 받으면 임시저장소에 넣는다. 그곳이 tmp
-    
-    //임시 저장소 이미지를 원하는 폴더로 이동
-    //print_r($_FILES);exit();
-    $dstName= "petstaimg/".date('Ymd_his').$srcName;
-    $result=move_uploaded_file($tmpName, $dstName);
+        unlink("./$data");
+     
+        //이미지 파일을 영구보관하기 위해
+        //이미지 파일의 세부정보 얻어오기
+        $srcName= $file['name'];
+        $tmpName= $file['tmp_name']; //php 파일을 받으면 임시저장소에 넣는다. 그곳이 tmp
         
-    if($result){
-        echo "upload success\n";
-    }else{
-        echo "upload fail\n";
-    }
-
+        //임시 저장소 이미지를 원하는 폴더로 이동
+        //print_r($_FILES);exit();
+        $dstName= "petstaimg/".date('Ymd_his').$srcName;
+        $result=move_uploaded_file($tmpName, $dstName);
+            
+        if($result){
+            echo "upload success\n";
+        }else{
+            echo "upload fail\n";
+        }
+    
+            try{
+                // SQL문을 실행하여 데이터를 MySQL 서버의 테이블에 저장합니다. 
+                                                     //여긴 컬럼이름           //자바에서 선언한 변수
+                $stmt = $con->prepare('UPDATE petsta_post SET petsta_image=(:imgurl), contents=(:contents), tag=(:tag)  WHERE post_id = (:id)');
+                $stmt->bindParam(':imgurl', $dstName);
+                $stmt->bindParam(':contents', $contents);
+                $stmt->bindParam(':tag', $tag);
+                $stmt->bindParam(':id', $postid);
+    
+                if($stmt->execute())
+                {
+                    $successMSG = "게시물 수정했습니다.";
+                }
+                else
+                {
+                    $errMSG = "게시물 수정 에러";
+                }
+    
+            } catch(PDOException $e) {
+                die("Database error: " . $e->getMessage()); 
+            }
+    } else {
         try{
             // SQL문을 실행하여 데이터를 MySQL 서버의 테이블에 저장합니다. 
-							                     //여긴 컬럼이름           //자바에서 선언한 변수
-            $stmt = $con->prepare('UPDATE petsta_post SET petsta_image=(:imgurl), contents=(:contents), tag=(:tag)  WHERE post_id = (:id)');
-            $stmt->bindParam(':imgurl', $dstName);
+                                                 //여긴 컬럼이름           //자바에서 선언한 변수
+            $stmt = $con->prepare('UPDATE petsta_post SET contents=(:contents), tag=(:tag)  WHERE post_id = (:id)');
             $stmt->bindParam(':contents', $contents);
             $stmt->bindParam(':tag', $tag);
             $stmt->bindParam(':id', $postid);
@@ -63,6 +87,10 @@
         } catch(PDOException $e) {
             die("Database error: " . $e->getMessage()); 
         }
+    }
+    
+    
+        
 
     /*$android = strpos($_SERVER['HTTP_USER_AGENT'], "Android");
 

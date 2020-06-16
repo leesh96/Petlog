@@ -5,6 +5,7 @@
     include('dbcon.php');
 
     $nickname = $_POST['nickname'];
+    //$nickname = '한찬웅';
 
     $link=mysqli_connect("localhost","dongmin","dongmin1234", "petlog" );  
     if (!$link)  
@@ -13,12 +14,15 @@
         echo mysqli_connect_error();
         exit();  
     } 
+    mysqli_query($link, 'set names utf8');
 
     $sql="select u_face from user_info where u_nickname = '$nickname'";
-    $result=mysqli_query($link, $sql); 
+    $result=mysqli_query($link, $sql);
+    
     if($result){
         while($row=mysqli_fetch_array($result)) {
             $data=$row[0];
+            echo $data;
         }
     }
     unlink("./$data");

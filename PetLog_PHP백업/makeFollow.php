@@ -36,7 +36,9 @@
                     echo "MySQL 접속 에러 : ";
                     echo mysqli_connect_error();
                     exit();  
-                }  
+                } 
+                mysqli_query($link, 'set names utf8');
+                
                 $sql = "insert into follow (user_nickname, follower_nickname, isfollow) values ('$mynick', '$usernick', '$isfollowed')";
 
                 $result=mysqli_query($link, $sql);

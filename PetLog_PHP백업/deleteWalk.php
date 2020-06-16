@@ -8,7 +8,7 @@
 
     if( (($_SERVER['REQUEST_METHOD'] == 'POST') && isset($_POST['submit'])) || $android )
     {
-        // ¾Èµå·ÎÀÌµå ÄÚµåÀÇ postParameters º¯¼ö¿¡ Àû¾îÁØ ÀÌ¸§À» °¡Áö°í °ªÀ» Àü´Þ ¹Þ½À´Ï´Ù.
+        // ï¿½Èµï¿½ï¿½ï¿½Ìµï¿½ ï¿½Úµï¿½ï¿½ï¿½ postParameters ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½Ï´ï¿½.
 
         $id=$_POST['id'];
         
@@ -16,10 +16,11 @@
                 $link=mysqli_connect("localhost","dongmin","dongmin1234", "petlog" );  
                 if (!$link)  
                 {  
-                    echo "MySQL Á¢¼Ó ¿¡·¯ : ";
+                    echo "MySQL ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : ";
                     echo mysqli_connect_error();
                     exit();  
                 }
+                mysqli_query($link, 'set names utf8');
                 $sql="select walk_image from walk_post where id = '$id'";
                 $result=mysqli_query($link, $sql); 
                 if($result){
@@ -28,18 +29,18 @@
                     }
                 }
                 unlink("./$data");
-                // SQL¹®À» ½ÇÇàÇÏ¿© µ¥ÀÌÅÍ¸¦ MySQL ¼­¹öÀÇ Å×ÀÌºí¿¡ ÀúÀåÇÕ´Ï´Ù. 
-							                        //¿©±ä ÄÃ·³ÀÌ¸§           //ÀÚ¹Ù¿¡¼­ ¼±¾ðÇÑ º¯¼ö
+                // SQLï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ MySQL ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½. 
+							                        //ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¸ï¿½           //ï¿½Ú¹Ù¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 $stmt = $con->prepare('DELETE FROM walk_post WHERE id = (:id)');
                 $stmt->bindParam(':id', $id);
 
                 if($stmt->execute())
                 {
-                    $successMSG = "»èÁ¦¼º°ø";
+                    $successMSG = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
                 }
                 else
                 {
-                    $errMSG = "»èÁ¦½ÇÆÐ";
+                    $errMSG = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
                 }
 
             } catch(PDOException $e) {

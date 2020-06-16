@@ -1,6 +1,6 @@
 <?php 
     $con = mysqli_connect("localhost", "dongmin", "dongmin1234", "petlog");
-
+    mysqli_query($con, 'set names utf8');
     $userID = $_POST["userID"];
    
     $statement = mysqli_prepare($con, "SELECT u_id FROM user_info WHERE u_id = ?");

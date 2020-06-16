@@ -25,7 +25,8 @@
                         echo "MySQL 접속 에러 : ";
                         echo mysqli_connect_error();
                         exit();  
-                    }  
+                    } 
+                    mysqli_query($link, 'set names utf8');
                     $sql="select diary_media from diary where diary_id = '$id'";
                     $result=mysqli_query($link, $sql); 
                     if($result){
@@ -46,6 +47,13 @@
                         $errMSG = "삭제실패";
                     }
                 }
+
+                $sql = 'ALTER TABLE diary AUTO_INCREMENT = 1';
+                $result=mysqli_query($link, $sql);
+                $sql = 'SET @COUNT=0';
+                $result=mysqli_query($link, $sql);
+                $sql = 'UPDATE diary SET diary_id = @COUNT:=@COUNT+1';
+                $result=mysqli_query($link, $sql);
 
             } catch(PDOException $e) {
                 die("Database error: " . $e->getMessage()); 

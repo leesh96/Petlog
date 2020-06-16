@@ -9,7 +9,7 @@ if (!$link)
 }
 mysqli_set_charset($link,"utf8"); 
 $nickname = $_POST['nickname'];
-$sql="select * from follow where user_nickname='$nickname'";
+$sql="select * from follow where user_nickname='$nickname' and isfollow=1";
 
 $result=mysqli_query($link,$sql);
 $data = array();   

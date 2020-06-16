@@ -37,6 +37,9 @@
                     echo mysqli_connect_error();
                     exit();  
                 }  
+
+                mysqli_query($link, 'set names utf8');
+
                 $sql = "insert into petsta_like (post_id, nickname, islike) values ('$id', '$nickname', '$isliked')";
 
                 $result=mysqli_query($link, $sql);

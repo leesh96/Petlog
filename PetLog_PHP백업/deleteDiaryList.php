@@ -8,12 +8,12 @@ if (!$link)
     exit();  
 }  
 
-mysqli_set_charset($link,"utf8"); 
+mysqli_query($link,"set names utf8"); 
 
 //$userid = 'lksy1294@naver.com';
 $userid = $_POST['userid'];
 
-$sql="select * from diary where diary_owner = '$userid'";
+$sql="select * from diary where diary_owner = '$userid' order by diary_writedate DESC";
 
 $result=mysqli_query($link,$sql);
 $data = array();   

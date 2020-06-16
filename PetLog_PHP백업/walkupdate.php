@@ -7,7 +7,8 @@
 		//$nickname = $_POST['nickname'];
 		
 		//DB 접속 스크립트를 불러옵니다.
-		require_once('db.php');
+		$con = mysqli_connect("localhost", "dongmin", "dongmin1234", "petlog");
+    	mysqli_query($con, 'set names utf8');
 		
 		//정보를 수정하는 쿼리문을 작성합니다.
 		$sql = "UPDATE walk_post SET title = '$title', content = '$content' WHERE id = $id;";

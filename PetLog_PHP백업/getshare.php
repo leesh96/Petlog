@@ -11,7 +11,7 @@ if (!$link)
 mysqli_set_charset($link,"utf8"); 
 
 
-$sql="select * from share_post";
+$sql="select * from share_post order by date DESC";
 
 $result=mysqli_query($link,$sql);
 $data = array();   

@@ -20,6 +20,8 @@
             exit();  
         }  
 
+        mysqli_query($link, 'set names utf8');
+
         $sql="select petsta_image from petsta_post where post_id = '$postid'";
         $result=mysqli_query($link, $sql); 
         if($result){
