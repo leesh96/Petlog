@@ -157,7 +157,7 @@ public class GoogleMapActivity extends AppCompatActivity
 
         new NRPlaces.Builder()
                 .listener(GoogleMapActivity.this)
-                .key("AIzaSyDgw1MYjHkulFJqhsv11d6a9JJH_izNgbk")
+                .key("AIzaSyBUcW5Z8rZzA6QWin2fqQrhzWpv-RBUIYo")
                 .latlng(location.latitude, location.longitude)//현재 위치
                 .radius(3000) //3000 미터 내에서 검색
                 .type(PlaceType.PARK ) //공원 //type제거시 모든장소나옴
