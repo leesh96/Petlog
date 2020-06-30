@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/theme4">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:clickable="true"
+            android:background="@drawable/button_style_inmain"
+            android:src="@drawable/ic_arrow_back"/>
+
+        <ImageButton
+            android:id="@+id/btn_home"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/btn_back"
+            android:background="@drawable/button_style_inmain"
+            android:clickable="true"
+            android:src="@drawable/ic_home" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/nanumbarungothic_b"
+            android:text="일기보기"
+            android:textAlignment="center"
+            android:textColor="@color/text"
+            android:textSize="30dp" />
+
+        <ImageButton
+            android:id="@+id/btn_dairymodify"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dp"
+            android:clickable="true"
+            android:background="@drawable/button_style_inmain"
+            android:src="@drawable/ic_modify"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/diary_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/nanumbarungothic_n"
+            android:gravity="center"
+            android:text="날짜출력"
+            android:padding="5dp"
+            android:textAlignment="center"
+            android:textColor="@color/text"
+            android:textSize="22dp" />
+
+        <ImageView
+            android:id="@+id/diary_mood"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:padding="10dp" />
+
+        <TextView
+            android:id="@+id/diary_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/border_style"
+            android:fontFamily="@font/nanumbarungothic_b"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="제목들어가는곳"
+            android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:textColor="@color/text"
+            android:textSize="22dp" />
+
+        <TextView
+            android:id="@+id/diary_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/border_style"
+            android:fontFamily="@font/nanumbarungothic_n"
+            android:gravity="top"
+            android:padding="10dp"
+            android:text="내용들어가는곳 내용들어가는곳 내용들어가는곳 내용들어가는곳 내용들어가는곳 내용들어가는곳"
+            android:textColor="@color/text"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:id="@+id/diary_pic"
+            android:layout_width="360dp"
+            android:layout_height="270dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

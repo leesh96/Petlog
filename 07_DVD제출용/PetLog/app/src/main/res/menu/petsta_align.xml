@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/align_time"
+        android:title="시간순 보기"/>
+    <item
+        android:id="@+id/align_like"
+        android:title="인기순 보기"/>
+    <item
+        android:id="@+id/align_tag"
+        android:title="태그로 보기"/>
+</menu>

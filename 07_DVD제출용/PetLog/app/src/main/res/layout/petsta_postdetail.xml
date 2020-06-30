@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/bg">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/theme4">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:clickable="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/button_style_inmain"
+            android:src="@drawable/ic_arrow_back" />
+
+        <ImageButton
+            android:id="@+id/btn_home"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/btn_back"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/button_style_inmain"
+            android:clickable="true"
+            android:src="@drawable/ic_home" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/nanumbarungothic_b"
+            android:text="게시물 관리"
+            android:textAlignment="center"
+            android:textColor="@color/text"
+            android:textSize="30dp" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/addphoto_image"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+
+    <EditText
+        android:id="@+id/petsta_content"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_below="@id/addphoto_image"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:hint="내용을 입력하세요."
+        android:paddingLeft="10dp"
+        android:fontFamily="@font/nanumbarungothic_n"
+        android:background="@drawable/border_style"
+        android:inputType="textMultiLine"
+        android:textColor="@color/text"
+        android:gravity="top"
+        android:padding="10dp"
+        android:textSize="18dp"
+        android:maxLength="255"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/btn_tag"
+        android:layout_width="120dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/petsta_content"
+        android:layout_alignEnd="@+id/petsta_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_style"
+        android:fontFamily="@font/nanumbarungothic_b"
+        android:text="태그하기"
+        android:textAlignment="center"
+        android:textColor="@color/text"
+        android:textSize="18dp" />
+
+    <Button
+        android:id="@+id/btn_edit"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/btn_tag"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_style"
+        android:fontFamily="@font/nanumbarungothic_b"
+        android:text="수정하기"
+        android:textAlignment="center"
+        android:textColor="@color/text"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/btn_delete"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/btn_edit"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_style"
+        android:fontFamily="@font/nanumbarungothic_b"
+        android:text="삭제하기"
+        android:textAlignment="center"
+        android:textColor="@color/text"
+        android:textSize="20dp" />
+
+</RelativeLayout>

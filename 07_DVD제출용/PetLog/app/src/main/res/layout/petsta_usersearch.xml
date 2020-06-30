@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/bg">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/theme4">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:clickable="true"
+            android:background="@drawable/button_style_inmain"
+            android:src="@drawable/ic_arrow_back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/nanumbarungothic_b"
+            android:text="닉네임검색"
+            android:textAlignment="center"
+            android:textColor="@color/text"
+            android:textSize="30dp" />
+
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/et_nickname"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toStartOf="@+id/btn_gosearch"
+        android:layout_toLeftOf="@+id/btn_gosearch"
+        android:fontFamily="@font/nanumbarungothic_n"
+        android:hint="닉네임을 입력하세요."
+        android:paddingLeft="10dp"
+        android:textColor="@color/text"
+        android:textSize="16dp" />
+
+    <Button
+        android:id="@+id/btn_gosearch"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/relativeLayout"
+        android:background="@drawable/button_style"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="검색"
+        android:textSize="16dp"
+        android:textColor="@color/text"
+        android:fontFamily="@font/nanumbarungothic_b"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_nickname"
+        android:layout_marginTop="10dp"/>
+
+</RelativeLayout>

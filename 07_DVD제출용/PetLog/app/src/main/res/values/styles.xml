@@ -1,0 +1,15 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="mypetmenustyle" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">26dp</item>
+        <item name="itemBackground">@color/bg</item>
+        <item name="fontFamily">@font/nanumbarungothic_b</item>
+    </style>
+
+</resources>

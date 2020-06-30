@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg">
+
+    <ImageView
+        android:id="@+id/iv_logo2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_logo2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"/>
+
+    <TextView
+        android:id="@+id/tv15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_logo2"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/nanumbarungothic_b"
+        android:lineHeight="50dp"
+        android:text="'닉네임출력'님, \n회원가입을 축하합니다."
+        android:textColor="@color/text"
+        android:textSize="32dp"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/btn_gotologin"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/tv15"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/button_style"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/nanumbarungothic_b"
+        android:text="로그인 하러가기"
+        android:textAlignment="center"
+        android:textColor="@color/text"
+        android:textSize="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv15"
+        app:layout_constraintVertical_bias="0.2" />
+
+</RelativeLayout>

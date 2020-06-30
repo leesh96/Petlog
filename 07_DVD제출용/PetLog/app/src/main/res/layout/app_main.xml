@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/theme4">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="32dp"
+                android:text="@string/app_name"
+                android:fontFamily="@font/nanumbarungothic_b"
+                android:textAlignment="center"
+                android:textColor="@color/text"/>
+
+            <ImageButton
+                android:id="@+id/btn_setting"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/button_style_inmain"
+                android:src="@drawable/ic_setting"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout3"
+            android:layout_width="300dp"
+            android:layout_height="440dp"
+            android:layout_below="@+id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/btn_diaryin"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/button_style"
+                android:clickable="true"
+                android:src="@drawable/ic_diarybtn" />
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_diaryin"
+                android:layout_alignEnd="@+id/btn_diaryin"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/nanumbarungothic_b"
+                android:text="@string/Diary"
+                android:textAlignment="center"
+                android:textColor="@color/text"
+                android:textSize="26dp" />
+
+            <ImageButton
+                android:id="@+id/btn_petstain"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/button_style"
+                android:clickable="true"
+                android:src="@drawable/ic_petstabtn" />
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_petstain"
+                android:layout_alignStart="@+id/btn_petstain"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/nanumbarungothic_b"
+                android:text="@string/petsta"
+                android:textAlignment="center"
+                android:textColor="@color/text"
+                android:textSize="26dp" />
+
+            <ImageButton
+                android:id="@+id/btn_mypetin"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_above="@+id/tv13"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/button_style"
+                android:clickable="true"
+                android:src="@drawable/ic_mypetbtn" />
+
+            <TextView
+                android:id="@+id/tv13"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:fontFamily="@font/nanumbarungothic_b"
+                android:text="@string/mypet"
+                android:textAlignment="center"
+                android:textColor="@color/text"
+                android:textSize="26dp" />
+
+            <ImageButton
+                android:id="@+id/btn_talktalkin"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_above="@+id/tv14"
+                android:layout_alignStart="@+id/tv14"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/button_style"
+                android:clickable="true"
+                android:src="@drawable/ic_talktalkbtn" />
+
+            <TextView
+                android:id="@+id/tv14"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:fontFamily="@font/nanumbarungothic_b"
+                android:text="@string/talk"
+                android:textAlignment="center"
+                android:textColor="@color/text"
+                android:textSize="26dp" />
+
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/setting_navheader"
+        app:menu="@menu/app_nav"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>

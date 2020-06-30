@@ -82,7 +82,6 @@ public class DiaryListActivity extends AppCompatActivity {
             task.execute(PHPURL, userid, et_date.getText().toString());
         }
     }
-
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -305,4 +304,5 @@ public class DiaryListActivity extends AppCompatActivity {
             Log.d(TAG, "showResult : ", e);
         }
     }
+
 }

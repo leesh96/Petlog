@@ -1,0 +1,72 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.swp.petlog">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBUcW5Z8rZzA6QWin2fqQrhzWpv-RBUIYo" />
+
+        <activity android:name=".LoadingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".app.LoginActivity"></activity>
+        <activity android:name=".app.SignupDoneActivity"></activity>
+        <activity android:name=".app.RegisterActivity"></activity>
+        <activity android:name=".app.FindpwActivity"></activity>
+        <activity android:name=".app.ResetpwActivity"></activity>
+        <activity android:name=".mypet.AddMypetInfoActivity"></activity>
+        <activity android:name=".mypet.MypetMainActivity"></activity>
+        <activity android:name=".diary.WriteDiaryActivity"></activity>
+        <activity android:name=".diary.DiaryListActivity"></activity>
+        <activity android:name=".diary.ShowDiaryActivity"></activity>
+        <activity android:name=".diary.DiaryDeleteActivity"></activity>
+        <activity android:name=".setting.ChangeInfoActivity"></activity>
+
+        <activity android:name=".petsta.PetstaMain"></activity>
+
+        <activity android:name=".talktalk.TalktalkActivity"></activity>
+        <activity
+            android:name=".talktalk.ShareCommentActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".talktalk.ShareActivity"></activity>
+        <activity android:name=".talktalk.ShareDetailActivity"></activity>
+        <activity android:name=".talktalk.ShareEditActivity"></activity>
+        <activity android:name=".talktalk.ShareWriteActivity"></activity>
+        <activity android:name=".talktalk.WalkActivity"></activity>
+        <activity android:name=".talktalk.WalkDetailActivity"></activity>
+        <activity android:name=".talktalk.WalkWriteActivity"></activity>
+        <activity android:name=".talktalk.walkEditActivity"></activity>
+        <activity android:name=".talktalk.ShareMypostActivity"></activity>
+        <activity android:name=".setting.NoticeActivity"></activity>
+        <activity android:name=".setting.PushActivity"></activity>
+        <activity android:name=".setting.NoticeDetailActivity"></activity>
+
+        <activity android:name=".talktalk.GoogleMapActivity"></activity>
+        <activity android:name=".talktalk.ResultGoogleMapActivity"></activity>
+
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
+    </application>
+
+</manifest>

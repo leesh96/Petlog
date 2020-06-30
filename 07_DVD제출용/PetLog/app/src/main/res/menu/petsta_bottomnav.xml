@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_mylist"
+        android:enabled="true"
+        android:icon="@drawable/ic_mylist"
+        android:title="내리스트" />
+
+    <item
+        android:id="@+id/action_all"
+        android:enabled="true"
+        android:icon="@drawable/ic_all"
+        android:title="전체보기"/>
+    <item
+        android:id="@+id/action_write"
+        android:enabled="true"
+        android:icon="@drawable/ic_add"
+        android:title="글작성"/>
+    <item
+        android:id="@+id/action_myprofile"
+        android:enabled="true"
+        android:icon="@drawable/ic_profile"
+        android:title="내프로필"/>
+
+</menu>

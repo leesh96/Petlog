@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/theme4">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:clickable="true"
+            android:background="@drawable/button_style_inmain"
+            android:src="@drawable/ic_arrow_back"/>
+
+        <ImageButton
+            android:id="@+id/btn_home"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_toEndOf="@id/btn_back"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:clickable="true"
+            android:background="@drawable/button_style_inmain"
+            android:src="@drawable/ic_home"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/nanumbarungothic_b"
+            android:text="추천산책로"
+            android:textAlignment="center"
+            android:textColor="@color/text"
+            android:textSize="30dp"/>
+
+        <ImageButton
+            android:id="@+id/btn_walkmenu"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dp"
+            android:clickable="true"
+            android:background="@drawable/button_style_inmain"
+            android:src="@drawable/ic_linedmenu"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/item_detail_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/border_style"
+        android:padding="10dp"
+        android:fontFamily="@font/nanumbarungothic_b"
+        android:text="제목입니다"
+        android:textAlignment="center"
+        android:textSize="22dp"
+        android:textColor="@color/text"/>
+
+    <ImageView
+        android:id="@+id/item_detail_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/item_detail_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/item_detail_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_detail_image"
+        android:layout_alignStart="@+id/item_detail_title"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/nanumbarungothic_b"
+        android:padding="5dp"
+        android:text="작성자"
+        android:textAlignment="center"
+        android:textColor="@color/text"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/item_detail_content"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@+id/item_detail_nickname"
+        android:layout_alignStart="@+id/item_detail_title"
+        android:layout_alignEnd="@+id/item_detail_title"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/border_style"
+        android:fontFamily="@font/nanumbarungothic_n"
+        android:gravity="top"
+        android:padding="10dp"
+        android:text="내용입니다"
+        android:textColor="@color/text"
+        android:textSize="18dp" />
+
+    <Button
+        android:id="@+id/btn_look_position"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/item_detail_content"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button_style"
+        android:clickable="true"
+        android:src="@drawable/ic_done"
+        android:text="위치보기"
+        android:textColor="@color/text"
+        android:fontFamily="@font/nanumbarungothic_b"
+        android:textAlignment="center"
+        android:textSize="20dp"/>
+
+</RelativeLayout>
